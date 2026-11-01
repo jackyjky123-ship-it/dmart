@@ -214,12 +214,14 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                                 <Button
                                     type="button"
                                     onClick={handleSimulateSuccess}
-                                    disabled={isSimulating}
+                                    loading={isSimulating}
+                                    loadingText="Confirming Mock KHQR..."
                                     size="lg"
-                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-11 rounded-xl shadow-md gap-2"
+                                    variant="emerald"
+                                    className="w-full font-bold shadow-md gap-2"
                                 >
                                     <CheckCircle2 className="w-4 h-4" />
-                                    <span>{isSimulating ? 'Simulating...' : 'Simulate Payment Success'}</span>
+                                    <span>Simulate Payment Success</span>
                                 </Button>
 
                                 <Button

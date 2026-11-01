@@ -180,7 +180,7 @@ export default function CartView() {
                             </div>
                         </div>
 
-                        <Button asChild size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-11 rounded-xl shadow-md gap-2">
+                        <Button asChild size="xl" variant="emerald" className="w-full font-bold shadow-md gap-2">
                             <Link href="/checkout">
                                 <span>Proceed to Checkout</span>
                                 <ArrowRight className="w-4 h-4" />

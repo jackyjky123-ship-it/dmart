@@ -18,6 +18,8 @@ import {
     X,
     Shield,
     ChevronRight,
+    ExternalLink,
+    Bell,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -38,28 +40,30 @@ const NAV_ITEMS = [
 
 function AdminSidebar({ currentPath, onNavClick }: AdminNavProps) {
     return (
-        <aside className="w-64 border-r bg-card flex flex-col h-full shrink-0">
+        <aside className="w-64 border-r border-border/60 bg-card/90 backdrop-blur-xl flex flex-col h-full shrink-0">
             {/* Admin Header */}
-            <div className="h-16 px-6 border-b flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center font-black text-lg shadow-sm">
-                    D
-                </div>
-                <div>
-                    <div className="font-extrabold tracking-tight text-foreground text-sm flex items-center gap-1.5">
-                        DMart Admin
-                        <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
-                            v1.0
-                        </Badge>
+            <div className="h-16 px-5 border-b border-border/60 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center font-black text-lg shadow-sm shadow-purple-600/30">
+                        D
                     </div>
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
-                        Back Office &bull; Ops
+                    <div>
+                        <div className="font-extrabold tracking-tight text-foreground text-sm flex items-center gap-1.5">
+                            DMart Admin
+                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300 font-bold">
+                                Ops
+                            </Badge>
+                        </div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
+                            Back Office System
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* Navigation links */}
             <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-                <div className="px-3 pb-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                <div className="px-3 pb-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                     Store Operations
                 </div>
                 {NAV_ITEMS.map((item) => {
@@ -71,7 +75,7 @@ function AdminSidebar({ currentPath, onNavClick }: AdminNavProps) {
                             key={item.href}
                             href={item.href}
                             onClick={onNavClick}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-150 ${
                                 isActive
                                     ? 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 font-semibold shadow-2xs'
                                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
@@ -79,15 +83,15 @@ function AdminSidebar({ currentPath, onNavClick }: AdminNavProps) {
                         >
                             <span className="flex items-center gap-2.5">
                                 <Icon className={`w-4 h-4 ${isActive ? 'text-purple-600 dark:text-purple-400' : 'text-muted-foreground'}`} />
-                                {item.label}
+                                <span>{item.label}</span>
                             </span>
                             {item.badge && (
-                                <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0 font-bold">
+                                <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0 font-bold rounded-md">
                                     {item.badge}
                                 </Badge>
                             )}
                             {item.badgeAlert && (
-                                <span className="w-2 h-2 rounded-full bg-amber-500" title="Low stock alert" />
+                                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" title="Low stock alert" />
                             )}
                         </Link>
                     );
@@ -95,34 +99,36 @@ function AdminSidebar({ currentPath, onNavClick }: AdminNavProps) {
             </div>
 
             {/* Bottom Quick Switchers */}
-            <div className="p-3 border-t bg-muted/20 space-y-2">
-                <div className="px-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            <div className="p-3 border-t border-border/60 bg-muted/20 space-y-2.5">
+                <div className="px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                     Quick Portals
                 </div>
                 <div className="grid grid-cols-2 gap-1.5">
                     <Link
                         href="/"
-                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-background border hover:bg-muted transition-colors text-emerald-700 dark:text-emerald-400"
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-background border border-border/80 hover:bg-muted transition-colors text-emerald-700 dark:text-emerald-400"
                     >
                         <Store className="w-3.5 h-3.5" />
-                        <span>Store</span>
+                        <span>Storefront</span>
                     </Link>
                     <Link
                         href="/pos"
-                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-background border hover:bg-muted transition-colors text-blue-700 dark:text-blue-400"
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-background border border-border/80 hover:bg-muted transition-colors text-blue-700 dark:text-blue-400"
                     >
                         <Terminal className="w-3.5 h-3.5" />
-                        <span>POS</span>
+                        <span>POS Term</span>
                     </Link>
                 </div>
-                <div className="pt-2 border-t flex items-center justify-between px-2 text-xs text-muted-foreground">
+                <div className="pt-2 border-t border-border/40 flex items-center justify-between px-2 text-xs text-muted-foreground">
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300 flex items-center justify-center font-bold text-[10px]">
                             AM
                         </div>
                         <span className="font-medium text-[11px] truncate max-w-[120px]">admin@dmart.test</span>
                     </div>
-                    <Badge variant="outline" className="text-[9px] py-0">Admin</Badge>
+                    <Badge variant="outline" className="text-[9px] py-0 border-purple-200 dark:border-purple-900 text-purple-600">
+                        Admin
+                    </Badge>
                 </div>
             </div>
         </aside>
@@ -148,10 +154,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Mobile Sheet/Overlay Sidebar */}
             {mobileOpen && (
                 <div className="fixed inset-0 z-50 flex lg:hidden">
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
                     <div className="relative w-64 max-w-[80vw] bg-card z-50 flex flex-col h-full shadow-2xl">
                         <div className="absolute top-4 right-4">
-                            <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)} className="h-8 w-8">
+                            <Button variant="ghost" size="icon-sm" onClick={() => setMobileOpen(false)}>
                                 <X className="w-4 h-4" />
                             </Button>
                         </div>
@@ -163,12 +169,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Right Main Content */}
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Admin Top Bar */}
-                <header className="h-16 border-b bg-card px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
+                <header className="h-16 border-b border-border/60 bg-card/85 backdrop-blur-xl px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
                     <div className="flex items-center gap-3">
                         <Button
                             variant="ghost"
-                            size="icon"
-                            className="lg:hidden h-9 w-9"
+                            size="icon-sm"
+                            className="lg:hidden"
                             onClick={() => setMobileOpen(true)}
                             aria-label="Open sidebar"
                         >
@@ -178,7 +184,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <Shield className="w-3.5 h-3.5 text-purple-600" />
                             <span>Admin</span>
-                            <ChevronRight className="w-3 h-3" />
+                            <ChevronRight className="w-3 h-3 text-muted-foreground/60" />
                             <span className="font-semibold text-foreground capitalize">
                                 {url === '/admin' ? 'Dashboard' : url.replace('/admin/', '').split('/')[0]}
                             </span>
@@ -186,8 +192,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9">
-                            {resolvedAppearance === 'dark' ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4" />}
+                        <Button asChild variant="outline" size="xs" className="hidden sm:inline-flex rounded-lg gap-1 text-xs">
+                            <Link href="/">
+                                <Store className="w-3 h-3 text-emerald-600" />
+                                <span>Preview Store</span>
+                                <ExternalLink className="w-2.5 h-2.5 text-muted-foreground" />
+                            </Link>
+                        </Button>
+
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={toggleTheme}
+                            aria-label="Toggle theme"
+                        >
+                            {resolvedAppearance === 'dark' ? (
+                                <Sun className="h-4 w-4 text-amber-400" />
+                            ) : (
+                                <Moon className="h-4 w-4 text-muted-foreground" />
+                            )}
                         </Button>
                     </div>
                 </header>

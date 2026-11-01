@@ -67,18 +67,14 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 <Button
                     type="button"
                     size="sm"
+                    variant={cartItem ? "subtle" : "emerald"}
                     disabled={isOutOfStock}
                     onClick={() => addToCart(product)}
-                    className={cn(
-                        'h-8 px-3 rounded-lg text-xs font-semibold gap-1.5 transition-all',
-                        cartItem
-                            ? 'bg-emerald-700 hover:bg-emerald-800 text-white'
-                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                    )}
+                    className="font-semibold text-xs shadow-xs"
                 >
                     {cartItem ? (
                         <>
-                            <Check className="w-3.5 h-3.5" />
+                            <Check className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-300" />
                             <span>{cartItem.quantity} in cart</span>
                         </>
                     ) : (

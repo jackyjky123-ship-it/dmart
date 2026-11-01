@@ -118,15 +118,13 @@ export default function ProductsIndex({
             </div>
 
             {/* Category Filter Chips */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                 <Button
                     type="button"
-                    variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                    variant={selectedCategory === 'all' ? 'emerald' : 'outline'}
                     size="sm"
                     onClick={() => setSelectedCategory('all')}
-                    className={`rounded-full text-xs h-8 px-3.5 shrink-0 ${
-                        selectedCategory === 'all' ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''
-                    }`}
+                    className="rounded-full text-xs shrink-0 font-medium"
                 >
                     All Items ({products.length})
                 </Button>
@@ -134,12 +132,10 @@ export default function ProductsIndex({
                     <Button
                         key={cat.slug}
                         type="button"
-                        variant={selectedCategory === cat.slug ? 'default' : 'outline'}
+                        variant={selectedCategory === cat.slug ? 'emerald' : 'outline'}
                         size="sm"
                         onClick={() => setSelectedCategory(cat.slug)}
-                        className={`rounded-full text-xs h-8 px-3.5 shrink-0 ${
-                            selectedCategory === cat.slug ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : ''
-                        }`}
+                        className="rounded-full text-xs shrink-0 font-medium"
                     >
                         {cat.name}
                     </Button>

@@ -1,66 +1,51 @@
 <?php
 
-use App\Support\MockData;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StockController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('admin/dashboard', [
-            'stats' => MockData::adminStats(),
-            'recentOrders' => MockData::orders(),
-        ]);
-    })->name('admin.dashboard');
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'active', 'role:admin'])
+    ->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('admin/dashboard', [
+                'stats' => [],
+                'recentOrders' => [],
+            ]);
+        })->name('dashboard');
 
-    Route::get('/products', function () {
-        return Inertia::render('admin/products/index', [
-            'products' => MockData::products(),
-            'categories' => MockData::categories(),
-        ]);
-    })->name('admin.products.index');
+        Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::resource('products', ProductController::class)->except(['show']);
+        Route::post('products/{product}/images', [ProductImageController::class, 'store'])->name('products.images.store');
+        Route::patch('products/{product}/images/{image}/primary', [ProductImageController::class, 'primary'])->name('products.images.primary');
+        Route::delete('products/{product}/images/{image}', [ProductImageController::class, 'destroy'])->name('products.images.destroy');
 
-    Route::get('/products/create', function () {
-        return Inertia::render('admin/products/create', [
-            'categories' => MockData::categories(),
-        ]);
-    })->name('admin.products.create');
+        Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+        Route::post('/products/{product}/stock', [StockController::class, 'store'])->name('stock.store');
 
-    Route::get('/categories', function () {
-        return Inertia::render('admin/categories/index', [
-            'categories' => MockData::categories(),
-        ]);
-    })->name('admin.categories.index');
+        Route::get('/orders', function () {
+            return Inertia::render('admin/orders/index', [
+                'orders' => [],
+            ]);
+        })->name('orders.index');
 
-    Route::get('/orders', function () {
-        return Inertia::render('admin/orders/index', [
-            'orders' => MockData::orders(),
-        ]);
-    })->name('admin.orders.index');
+        Route::get('/orders/{order}', function (string $orderId) {
+            return Inertia::render('admin/orders/show', [
+                'order' => null,
+            ]);
+        })->name('orders.show');
 
-    Route::get('/orders/{order}', function (string $orderId) {
-        $orders = MockData::orders();
-        $order = collect($orders)->firstWhere('id', (int) $orderId) ?? $orders[2];
+        Route::get('/staff', function () {
+            return Inertia::render('admin/staff/index', [
+                'staff' => [],
+            ]);
+        })->name('staff.index');
 
-        return Inertia::render('admin/orders/show', [
-            'order' => $order,
-        ]);
-    })->name('admin.orders.show');
-
-    Route::get('/stock', function () {
-        return Inertia::render('admin/stock/index', [
-            'products' => MockData::products(),
-        ]);
-    })->name('admin.stock.index');
-
-    Route::get('/staff', function () {
-        return Inertia::render('admin/staff/index', [
-            'staff' => MockData::staff(),
-        ]);
-    })->name('admin.staff.index');
-
-    Route::get('/settings', function () {
-        return Inertia::render('admin/settings', [
-            'settings' => MockData::settings(),
-        ]);
-    })->name('admin.settings.edit');
-});
+        Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::patch('/settings', [SettingController::class, 'update'])->name('settings.update');
+    });

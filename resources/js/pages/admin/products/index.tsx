@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { ProductThumb } from '@/components/product-thumb';
 import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,8 @@ import {
     Plus,
     Search,
     Edit,
-    Boxes,
     Trash2,
     SlidersHorizontal,
-    Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -30,29 +28,61 @@ interface Product {
     low_stock_threshold: number;
     is_active: boolean;
     image_url: string | null;
-    unit: string;
 }
 
 interface ProductsIndexProps {
-    products?: Product[];
+    products?: {
+        data: Product[];
+        current_page?: number;
+        last_page?: number;
+        total?: number;
+        links?: Array<{ url: string | null; label: string; active: boolean }>;
+    } | Product[];
     categories?: Array<{ id: number; name: string; slug: string }>;
+    filters?: {
+        search?: string;
+        category_id?: string;
+        is_active?: string;
+        low_stock?: string;
+    };
 }
 
-export default function AdminProductsIndex({ products = [], categories = [] }: ProductsIndexProps) {
-    const [search, setSearch] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('all');
+export default function AdminProductsIndex({ products: propProducts, categories = [], filters = {} }: ProductsIndexProps) {
+    const productList: Product[] = Array.isArray(propProducts)
+        ? propProducts
+        : propProducts?.data || [];
 
-    const filtered = products.filter((p) => {
-        const matchesSearch =
-            p.name.toLowerCase().includes(search.toLowerCase()) ||
-            p.sku.toLowerCase().includes(search.toLowerCase());
-        const matchesCat =
-            selectedCategory === 'all' || p.category_name.toLowerCase() === selectedCategory.toLowerCase();
-        return matchesSearch && matchesCat;
-    });
+    const paginationLinks = !Array.isArray(propProducts) ? propProducts?.links : null;
 
-    const handleDelete = (name: string) => {
-        toast.info(`Product "${name}" marked as soft deleted in database.`);
+    const [search, setSearch] = useState(filters.search || '');
+    const [selectedCategory, setSelectedCategory] = useState(filters.category_id || 'all');
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get('/admin/products', {
+            search: search.trim() || undefined,
+            category_id: selectedCategory !== 'all' ? selectedCategory : undefined,
+        }, { preserveState: true });
+    };
+
+    const handleCategoryChange = (catId: string) => {
+        setSelectedCategory(catId);
+        router.get('/admin/products', {
+            search: search.trim() || undefined,
+            category_id: catId !== 'all' ? catId : undefined,
+        }, { preserveState: true });
+    };
+
+    const handleDelete = (product: Product) => {
+        if (confirm(`Are you sure you want to delete product "${product.name}"?`)) {
+            router.delete(`/admin/products/${product.id}`, {
+                onSuccess: () => toast.success(`Product "${product.name}" deleted.`),
+                onError: (err) => {
+                    const firstError = Object.values(err)[0];
+                    toast.error(firstError || 'Failed to delete product.');
+                },
+            });
+        }
     };
 
     return (
@@ -79,7 +109,7 @@ export default function AdminProductsIndex({ products = [], categories = [] }: P
             </div>
 
             {/* Search & Category Filter */}
-            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-card p-4 rounded-2xl border shadow-xs">
+            <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-card p-4 rounded-2xl border shadow-xs">
                 <div className="relative w-full sm:w-80">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
@@ -97,16 +127,16 @@ export default function AdminProductsIndex({ products = [], categories = [] }: P
                     </span>
                     <select
                         value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        onChange={(e) => handleCategoryChange(e.target.value)}
                         className="bg-background border rounded-lg px-2.5 py-1 text-xs font-medium focus:ring-1 focus:ring-purple-500"
                     >
                         <option value="all">All Departments</option>
                         {categories.map((c) => (
-                            <option key={c.id} value={c.name}>{c.name}</option>
+                            <option key={c.id} value={c.id.toString()}>{c.name}</option>
                         ))}
                     </select>
                 </div>
-            </div>
+            </form>
 
             {/* Products Table */}
             <div className="border rounded-2xl bg-card overflow-hidden shadow-xs">
@@ -124,87 +154,116 @@ export default function AdminProductsIndex({ products = [], categories = [] }: P
                             </tr>
                         </thead>
                         <tbody className="divide-y">
-                            {filtered.map((product) => {
-                                const isLowStock = product.stock <= product.low_stock_threshold;
+                            {productList.length === 0 ? (
+                                <tr>
+                                    <td colSpan={7} className="p-8 text-center text-muted-foreground">
+                                        No products found. Click "Add New Product" to create one.
+                                    </td>
+                                </tr>
+                            ) : (
+                                productList.map((product) => {
+                                    const isLowStock = product.stock <= product.low_stock_threshold;
 
-                                return (
-                                    <tr key={product.id} className="hover:bg-muted/30 transition-colors">
-                                        <td className="p-3.5">
-                                            <div className="flex items-center gap-3">
-                                                <ProductThumb
-                                                    name={product.name}
-                                                    imageUrl={product.image_url}
-                                                    size="sm"
-                                                    className="rounded-lg shrink-0"
-                                                />
-                                                <div className="min-w-0">
-                                                    <div className="font-semibold text-foreground truncate max-w-[200px]">
-                                                        {product.name}
+                                    return (
+                                        <tr key={product.id} className="hover:bg-muted/30 transition-colors">
+                                            <td className="p-3.5">
+                                                <div className="flex items-center gap-3">
+                                                    <ProductThumb
+                                                        name={product.name}
+                                                        imageUrl={product.image_url}
+                                                        size="sm"
+                                                        className="rounded-lg shrink-0"
+                                                    />
+                                                    <div className="min-w-0">
+                                                        <div className="font-semibold text-foreground truncate max-w-[200px]">
+                                                            {product.name}
+                                                        </div>
+                                                        <div className="text-[10px] text-muted-foreground font-mono">{product.slug}</div>
                                                     </div>
-                                                    <div className="text-[10px] text-muted-foreground">{product.unit}</div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td className="p-3.5 font-mono text-muted-foreground">
-                                            {product.sku}
-                                        </td>
-                                        <td className="p-3.5">
-                                            <Badge variant="outline" className="text-[10px] py-0">
-                                                {product.category_name}
-                                            </Badge>
-                                        </td>
-                                        <td className="p-3.5">
-                                            <div className="font-bold text-foreground">
-                                                {formatMoney(product.price_cents)}
-                                            </div>
-                                            {product.compare_at_price_cents && (
-                                                <div className="text-[10px] text-muted-foreground line-through">
-                                                    {formatMoney(product.compare_at_price_cents)}
+                                            </td>
+                                            <td className="p-3.5 font-mono text-muted-foreground">
+                                                {product.sku}
+                                            </td>
+                                            <td className="p-3.5">
+                                                <Badge variant="outline" className="text-[10px] py-0">
+                                                    {product.category_name}
+                                                </Badge>
+                                            </td>
+                                            <td className="p-3.5">
+                                                <div className="font-bold text-foreground">
+                                                    {formatMoney(product.price_cents)}
                                                 </div>
-                                            )}
-                                        </td>
-                                        <td className="p-3.5">
-                                            <Badge
-                                                variant="outline"
-                                                className={`text-[10px] font-semibold ${
-                                                    isLowStock
-                                                        ? 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300'
-                                                        : 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
-                                                }`}
-                                            >
-                                                {product.stock} units
-                                            </Badge>
-                                        </td>
-                                        <td className="p-3.5">
-                                            <StatusBadge status={product.is_active ? 'active' : 'inactive'} />
-                                        </td>
-                                        <td className="p-3.5 text-right space-x-1">
-                                            <Button
-                                                asChild
-                                                variant="ghost"
-                                                size="sm"
-                                                className="h-7 px-2 text-xs text-purple-600 hover:text-purple-700"
-                                            >
-                                                <Link href={`/admin/products/create?edit=${product.id}`}>
-                                                    <Edit className="w-3.5 h-3.5" />
-                                                </Link>
-                                            </Button>
-                                            <Button
-                                                type="button"
-                                                variant="ghost"
-                                                size="sm"
-                                                onClick={() => handleDelete(product.name)}
-                                                className="h-7 px-2 text-xs text-rose-600 hover:text-rose-700"
-                                            >
-                                                <Trash2 className="w-3.5 h-3.5" />
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                                                {product.compare_at_price_cents && (
+                                                    <div className="text-[10px] text-muted-foreground line-through">
+                                                        {formatMoney(product.compare_at_price_cents)}
+                                                    </div>
+                                                )}
+                                            </td>
+                                            <td className="p-3.5">
+                                                <Badge
+                                                    variant="outline"
+                                                    className={`text-[10px] font-semibold ${
+                                                        isLowStock
+                                                            ? 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300'
+                                                            : 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
+                                                    }`}
+                                                >
+                                                    {product.stock} units
+                                                </Badge>
+                                            </td>
+                                            <td className="p-3.5">
+                                                <StatusBadge status={product.is_active ? 'active' : 'inactive'} />
+                                            </td>
+                                            <td className="p-3.5 text-right space-x-1">
+                                                <Button
+                                                    asChild
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="h-7 px-2 text-xs text-purple-600 hover:text-purple-700"
+                                                    title="Edit Product"
+                                                >
+                                                    <Link href={`/admin/products/${product.id}/edit`}>
+                                                        <Edit className="w-3.5 h-3.5" />
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleDelete(product)}
+                                                    className="h-7 px-2 text-xs text-rose-600 hover:text-rose-700"
+                                                    title="Delete Product"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            )}
                         </tbody>
                     </table>
                 </div>
+
+                {/* Pagination */}
+                {paginationLinks && paginationLinks.length > 3 && (
+                    <div className="p-3.5 border-t flex items-center justify-between">
+                        <div className="flex gap-1">
+                            {paginationLinks.map((link, idx) => (
+                                <Button
+                                    key={idx}
+                                    variant={link.active ? 'default' : 'outline'}
+                                    size="sm"
+                                    className="h-7 px-2.5 text-xs"
+                                    disabled={!link.url}
+                                    onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
+                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

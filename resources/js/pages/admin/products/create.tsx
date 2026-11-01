@@ -6,9 +6,8 @@ import { Label } from '@/components/ui/label';
 import {
     ArrowLeft,
     UploadCloud,
-    Check,
     Save,
-    Image as ImageIcon,
+    X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -20,28 +19,70 @@ interface Category {
 
 interface ProductCreateProps {
     categories?: Category[];
+    errors?: Record<string, string>;
 }
 
-export default function ProductCreate({ categories = [] }: ProductCreateProps) {
-    const [name, setName] = useState('Fresh Dragonfruit (Red Flesh)');
-    const [sku, setSku] = useState('PROD-DRG-006');
-    const [categoryId, setCategoryId] = useState('1');
-    const [price, setPrice] = useState('2.80');
-    const [compareAt, setCompareAt] = useState('3.50');
-    const [stock, setStock] = useState('35');
+export default function ProductCreate({ categories = [], errors = {} }: ProductCreateProps) {
+    const [name, setName] = useState('');
+    const [slug, setSlug] = useState('');
+    const [sku, setSku] = useState('');
+    const [categoryId, setCategoryId] = useState(categories[0]?.id?.toString() || '');
+    const [price, setPrice] = useState('');
+    const [compareAt, setCompareAt] = useState('');
+    const [stock, setStock] = useState('0');
     const [lowStockThreshold, setLowStockThreshold] = useState('5');
-    const [unit, setUnit] = useState('1 kg');
-    const [description, setDescription] = useState(
-        'Sweet, vibrant purple-red flesh dragonfruit grown locally in Kampong Cham. Rich in antioxidants and vitamin C.'
-    );
+    const [description, setDescription] = useState('');
     const [isActive, setIsActive] = useState(true);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+    const [submitting, setSubmitting] = useState(false);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+        const filesArray = Array.from(e.target.files).slice(0, 5 - selectedFiles.length);
+        const newFiles = [...selectedFiles, ...filesArray].slice(0, 5);
+        setSelectedFiles(newFiles);
+
+        const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+        setPreviewUrls(newPreviews);
+    };
+
+    const removeFile = (index: number) => {
+        const newFiles = selectedFiles.filter((_, i) => i !== index);
+        setSelectedFiles(newFiles);
+        setPreviewUrls(newFiles.map((file) => URL.createObjectURL(file)));
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success(`Product "${name}" successfully saved to catalog!`);
-        setTimeout(() => {
-            router.visit('/admin/products');
-        }, 500);
+        setSubmitting(true);
+
+        const formData = new FormData();
+        formData.append('name', name);
+        if (slug) formData.append('slug', slug);
+        formData.append('sku', sku);
+        formData.append('category_id', categoryId);
+        formData.append('price', price);
+        if (compareAt) formData.append('compare_at_price', compareAt);
+        formData.append('initial_stock', stock);
+        formData.append('low_stock_threshold', lowStockThreshold);
+        formData.append('description', description);
+        formData.append('is_active', isActive ? '1' : '0');
+
+        selectedFiles.forEach((file) => {
+            formData.append('images[]', file);
+        });
+
+        router.post('/admin/products', formData, {
+            onSuccess: () => {
+                toast.success(`Product "${name}" created successfully.`);
+            },
+            onError: (err) => {
+                const first = Object.values(err)[0];
+                toast.error(first || 'Failed to create product.');
+            },
+            onFinish: () => setSubmitting(false),
+        });
     };
 
     return (
@@ -76,8 +117,10 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                placeholder="e.g. Organic Red Apples 1kg"
                                 className="h-10 text-xs rounded-xl"
                             />
+                            {errors.name && <p className="text-xs text-rose-600">{errors.name}</p>}
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -88,33 +131,39 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                     required
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
+                                    placeholder="e.g. FRU-APP-001"
                                     className="h-10 text-xs rounded-xl font-mono"
                                 />
+                                {errors.sku && <p className="text-xs text-rose-600">{errors.sku}</p>}
                             </div>
 
                             <div className="space-y-1.5">
                                 <Label htmlFor="category" className="text-xs">Category</Label>
                                 <select
                                     id="category"
+                                    required
                                     value={categoryId}
                                     onChange={(e) => setCategoryId(e.target.value)}
                                     className="w-full h-10 px-3 bg-background border rounded-xl text-xs font-medium focus:ring-1 focus:ring-purple-500"
                                 >
+                                    <option value="" disabled>Select Department</option>
                                     {categories.map((cat) => (
                                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                                     ))}
                                 </select>
+                                {errors.category_id && <p className="text-xs text-rose-600">{errors.category_id}</p>}
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="unit" className="text-xs">Unit / Packaging</Label>
+                                <Label htmlFor="slug" className="text-xs">Slug (Optional)</Label>
                                 <Input
-                                    id="unit"
-                                    value={unit}
-                                    onChange={(e) => setUnit(e.target.value)}
-                                    placeholder="e.g. 1L carton, 250g pack"
-                                    className="h-10 text-xs rounded-xl"
+                                    id="slug"
+                                    value={slug}
+                                    onChange={(e) => setSlug(e.target.value)}
+                                    placeholder="auto-generated"
+                                    className="h-10 text-xs rounded-xl font-mono"
                                 />
+                                {errors.slug && <p className="text-xs text-rose-600">{errors.slug}</p>}
                             </div>
                         </div>
 
@@ -125,8 +174,10 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                 rows={3}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Product details, origins, organic status..."
                                 className="w-full p-3 bg-background border rounded-xl text-xs focus:ring-1 focus:ring-purple-500"
                             />
+                            {errors.description && <p className="text-xs text-rose-600">{errors.description}</p>}
                         </div>
                     </div>
                 </div>
@@ -149,9 +200,11 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                     required
                                     value={price}
                                     onChange={(e) => setPrice(e.target.value)}
+                                    placeholder="0.00"
                                     className="pl-7 h-10 text-xs rounded-xl font-bold"
                                 />
                             </div>
+                            {errors.price && <p className="text-xs text-rose-600">{errors.price}</p>}
                         </div>
 
                         <div className="space-y-1.5">
@@ -164,21 +217,23 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                     step="0.01"
                                     value={compareAt}
                                     onChange={(e) => setCompareAt(e.target.value)}
+                                    placeholder="0.00"
                                     className="pl-7 h-10 text-xs rounded-xl"
                                 />
                             </div>
+                            {errors.compare_at_price && <p className="text-xs text-rose-600">{errors.compare_at_price}</p>}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="stock" className="text-xs">Initial Stock</Label>
+                            <Label htmlFor="stock" className="text-xs">Initial Stock (Recorded in Ledger)</Label>
                             <Input
                                 id="stock"
                                 type="number"
-                                required
                                 value={stock}
                                 onChange={(e) => setStock(e.target.value)}
                                 className="h-10 text-xs rounded-xl font-medium"
                             />
+                            {errors.initial_stock && <p className="text-xs text-rose-600">{errors.initial_stock}</p>}
                         </div>
 
                         <div className="space-y-1.5">
@@ -190,6 +245,7 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                                 onChange={(e) => setLowStockThreshold(e.target.value)}
                                 className="h-10 text-xs rounded-xl"
                             />
+                            {errors.low_stock_threshold && <p className="text-xs text-rose-600">{errors.low_stock_threshold}</p>}
                         </div>
                     </div>
                 </div>
@@ -197,18 +253,48 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                 {/* Media Upload Dropzone Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Product Imagery
+                        Product Imagery (Up to 5 images)
                     </h2>
 
-                    <div className="border-2 border-dashed rounded-2xl p-6 text-center space-y-3 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer">
+                    <label className="border-2 border-dashed rounded-2xl p-6 text-center space-y-3 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer block">
+                        <input
+                            type="file"
+                            multiple
+                            accept="image/png,image/jpeg,image/webp"
+                            onChange={handleFileChange}
+                            className="hidden"
+                            disabled={selectedFiles.length >= 5}
+                        />
                         <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mx-auto">
                             <UploadCloud className="w-6 h-6" />
                         </div>
                         <div className="space-y-1">
-                            <div className="text-xs font-semibold text-foreground">Click to upload product image</div>
-                            <div className="text-[11px] text-muted-foreground">JPG, PNG, WebP up to 2MB (or falls back to letter tile)</div>
+                            <div className="text-xs font-semibold text-foreground">Click or drag images to upload</div>
+                            <div className="text-[11px] text-muted-foreground">JPG, PNG, WebP up to 2MB (first image becomes primary)</div>
                         </div>
-                    </div>
+                    </label>
+
+                    {previewUrls.length > 0 && (
+                        <div className="grid grid-cols-5 gap-3 pt-2">
+                            {previewUrls.map((url, idx) => (
+                                <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border bg-muted group">
+                                    <img src={url} alt="Preview" className="w-full h-full object-cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(idx)}
+                                        className="absolute top-1 right-1 p-1 bg-black/60 text-white rounded-full hover:bg-rose-600 transition-colors"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                    {idx === 0 && (
+                                        <div className="absolute bottom-1 left-1 bg-purple-600 text-white text-[9px] px-1.5 py-0.5 rounded-md font-bold">
+                                            Primary
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Active Checkbox */}
@@ -229,9 +315,9 @@ export default function ProductCreate({ categories = [] }: ProductCreateProps) {
                     <Button asChild variant="outline" className="rounded-xl text-xs">
                         <Link href="/admin/products">Cancel</Link>
                     </Button>
-                    <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold gap-1.5 px-6 shadow-md">
+                    <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold gap-1.5 px-6 shadow-md">
                         <Save className="w-4 h-4" />
-                        <span>Save Product</span>
+                        <span>{submitting ? 'Saving...' : 'Save Product'}</span>
                     </Button>
                 </div>
             </form>

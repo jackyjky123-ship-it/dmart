@@ -1,39 +1,58 @@
 <?php
 
-use App\Support\MockData;
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $categories = Category::withCount('products')
+        ->orderBy('name')
+        ->get()
+        ->map(fn ($cat) => [
+            'id' => $cat->id,
+            'name' => $cat->name,
+            'slug' => $cat->slug,
+            'description' => $cat->description ?? '',
+            'product_count' => $cat->products_count,
+        ]);
+
+    $featuredProducts = Product::with(['category', 'primaryImage'])
+        ->where('is_active', true)
+        ->take(8)
+        ->get()
+        ->map(fn ($product) => [
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'sku' => $product->sku,
+            'price_cents' => $product->price_cents,
+            'compare_at_price_cents' => $product->compare_at_price_cents,
+            'stock' => $product->stock,
+            'unit' => 'unit',
+            'category_name' => $product->category?->name ?? 'Grocery',
+            'image_url' => $product->primaryImage?->path ? asset('storage/'.$product->primaryImage->path) : null,
+        ]);
+
     return Inertia::render('storefront/home', [
-        'categories' => MockData::categories(),
-        'featuredProducts' => MockData::products(),
+        'categories' => $categories,
+        'featuredProducts' => $featuredProducts,
     ]);
 })->name('home');
 
-Route::get('/products', function (Request $request) {
+Route::get('/products', function () {
     return Inertia::render('storefront/products/index', [
-        'products' => MockData::products(),
-        'categories' => MockData::categories(),
-        'initialCategory' => $request->query('category', 'all'),
-        'initialSearch' => $request->query('q', ''),
+        'products' => [],
+        'categories' => [],
+        'initialCategory' => 'all',
+        'initialSearch' => '',
     ]);
 })->name('products.index');
 
 Route::get('/products/{slug}', function (string $slug) {
-    $products = MockData::products();
-    $product = collect($products)->firstWhere('slug', $slug) ?? $products[0];
-    $related = collect($products)
-        ->where('category_name', $product['category_name'])
-        ->where('id', '!==', $product['id'])
-        ->take(4)
-        ->values()
-        ->all();
-
     return Inertia::render('storefront/products/show', [
-        'product' => $product,
-        'relatedProducts' => $related,
+        'product' => null,
+        'relatedProducts' => [],
     ]);
 })->name('products.show');
 
@@ -46,25 +65,19 @@ Route::get('/checkout', function () {
 })->name('checkout.index');
 
 Route::get('/payment/{order}', function (string $orderId) {
-    $orders = MockData::orders();
-    $order = collect($orders)->firstWhere('id', (int) $orderId) ?? $orders[4];
-
     return Inertia::render('storefront/payment', [
-        'order' => $order,
+        'order' => null,
     ]);
 })->name('payment.show');
 
 Route::get('/orders', function () {
     return Inertia::render('storefront/orders/index', [
-        'orders' => MockData::orders(),
+        'orders' => [],
     ]);
 })->name('orders.index');
 
 Route::get('/orders/{order}', function (string $orderId) {
-    $orders = MockData::orders();
-    $order = collect($orders)->firstWhere('id', (int) $orderId) ?? $orders[1];
-
     return Inertia::render('storefront/orders/show', [
-        'order' => $order,
+        'order' => null,
     ]);
 })->name('orders.show');

@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Save, Store, Truck, BellRing } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface SettingsProps {
-    settings?: {
-        store_name: string;
-        store_address: string;
-        store_phone: string;
-        shipping_fee_cents: number;
-        free_shipping_threshold_cents: number;
-        low_stock_threshold: number;
-    };
+interface SettingsData {
+    store_name: string;
+    store_address: string;
+    store_phone: string;
+    shipping_fee_cents: number;
+    free_shipping_threshold_cents: number;
+    low_stock_threshold: number;
 }
 
-export default function AdminSettingsView({ settings: initialSettings }: SettingsProps) {
+interface SettingsProps {
+    settings?: SettingsData;
+    errors?: Record<string, string>;
+}
+
+export default function AdminSettingsView({ settings: initialSettings, errors = {} }: SettingsProps) {
     const settings = initialSettings || {
         store_name: 'DMart Grocery & Mini-Mart',
         store_address: '#24 Samdach Penn Nouth St (214), Phnom Penh',
@@ -33,10 +36,29 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
     const [shippingFee, setShippingFee] = useState((settings.shipping_fee_cents / 100).toFixed(2));
     const [freeThreshold, setFreeThreshold] = useState((settings.free_shipping_threshold_cents / 100).toFixed(2));
     const [lowStock, setLowStock] = useState(settings.low_stock_threshold.toString());
+    const [submitting, setSubmitting] = useState(false);
 
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success('Store parameters and delivery settings saved successfully.');
+        setSubmitting(true);
+
+        router.patch('/admin/settings', {
+            store_name: storeName,
+            store_address: storeAddress,
+            store_phone: storePhone,
+            shipping_fee: shippingFee,
+            free_shipping_threshold: freeThreshold,
+            low_stock_threshold: lowStock,
+        }, {
+            onSuccess: () => {
+                toast.success('Store parameters and delivery settings saved successfully.');
+            },
+            onError: (err) => {
+                const first = Object.values(err)[0];
+                toast.error(first || 'Failed to save settings.');
+            },
+            onFinish: () => setSubmitting(false),
+        });
     };
 
     return (
@@ -72,6 +94,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                                 onChange={(e) => setStoreName(e.target.value)}
                                 className="h-10 text-xs rounded-xl"
                             />
+                            {errors.store_name && <p className="text-xs text-rose-600">{errors.store_name}</p>}
                         </div>
 
                         <div className="space-y-1.5">
@@ -83,6 +106,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                                 onChange={(e) => setStoreAddress(e.target.value)}
                                 className="h-10 text-xs rounded-xl"
                             />
+                            {errors.store_address && <p className="text-xs text-rose-600">{errors.store_address}</p>}
                         </div>
 
                         <div className="space-y-1.5">
@@ -94,6 +118,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                                 onChange={(e) => setStorePhone(e.target.value)}
                                 className="h-10 text-xs rounded-xl"
                             />
+                            {errors.store_phone && <p className="text-xs text-rose-600">{errors.store_phone}</p>}
                         </div>
                     </div>
                 </div>
@@ -122,6 +147,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                                     className="pl-7 h-10 text-xs rounded-xl font-bold"
                                 />
                             </div>
+                            {errors.shipping_fee && <p className="text-xs text-rose-600">{errors.shipping_fee}</p>}
                         </div>
 
                         <div className="space-y-1.5">
@@ -138,6 +164,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                                     className="pl-7 h-10 text-xs rounded-xl font-bold"
                                 />
                             </div>
+                            {errors.free_shipping_threshold && <p className="text-xs text-rose-600">{errors.free_shipping_threshold}</p>}
                         </div>
                     </div>
                 </div>
@@ -161,6 +188,7 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                             onChange={(e) => setLowStock(e.target.value)}
                             className="h-10 text-xs rounded-xl font-bold"
                         />
+                        {errors.low_stock_threshold && <p className="text-xs text-rose-600">{errors.low_stock_threshold}</p>}
                         <div className="text-[11px] text-muted-foreground">
                             Products with stock &le; this number show warning badges on Dashboard & POS.
                         </div>
@@ -168,9 +196,9 @@ export default function AdminSettingsView({ settings: initialSettings }: Setting
                 </div>
 
                 <div className="flex justify-end pt-2">
-                    <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs gap-1.5 px-6 shadow-md">
+                    <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs gap-1.5 px-6 shadow-md">
                         <Save className="w-4 h-4" />
-                        <span>Save Store Settings</span>
+                        <span>{submitting ? 'Saving...' : 'Save Store Settings'}</span>
                     </Button>
                 </div>
             </form>

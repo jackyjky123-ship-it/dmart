@@ -121,9 +121,10 @@ export default function ProductShow({ product, relatedProducts = [] }: ProductSh
                             />
                             <Button
                                 size="lg"
+                                variant="emerald"
                                 disabled={isOutOfStock}
                                 onClick={handleAdd}
-                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-11 rounded-xl shadow-md gap-2"
+                                className="flex-1 font-bold shadow-md gap-2"
                             >
                                 <ShoppingCart className="w-5 h-5" />
                                 <span>Add {quantity} to Cart</span>

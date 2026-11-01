@@ -233,11 +233,14 @@ export default function CheckoutView() {
 
                     <Button
                         type="submit"
-                        disabled={loading || items.length === 0}
-                        size="lg"
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 rounded-xl shadow-md"
+                        disabled={items.length === 0}
+                        loading={loading}
+                        loadingText="Generating Payment..."
+                        size="xl"
+                        variant="emerald"
+                        className="w-full font-bold shadow-md"
                     >
-                        {loading ? 'Generating Payment...' : `Place Order (${formatMoney(totalCents)})`}
+                        Place Order ({formatMoney(totalCents)})
                     </Button>
                 </div>
             </form>
