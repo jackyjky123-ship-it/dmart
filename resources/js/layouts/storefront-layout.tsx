@@ -185,7 +185,7 @@ function StorefrontHeader() {
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
                                 <Link href="/pos" className="flex items-center py-2 px-2.5">
-                                    <Terminal className="w-4 h-4 mr-2.5 text-blue-400 shrink-0" />
+                                    <img src="/images/pos_icon.png" alt="" className="w-4 h-4 mr-2.5 object-contain shrink-0" />
                                     <div>
                                         <div className="font-semibold text-xs text-white">POS Cashier Terminal</div>
                                         <div className="text-[10px] text-[#a3a3a3]">In-store register</div>
@@ -246,8 +246,8 @@ function StorefrontHeader() {
                                 )}
                                 {(user.role === 'cashier' || user.role === 'admin') && (
                                     <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
-                                        <Link href="/pos" className="flex items-center text-xs text-blue-400 font-medium">
-                                            <Terminal className="w-3.5 h-3.5 mr-2" />
+                                        <Link href="/pos" className="flex items-center text-xs text-white font-medium">
+                                            <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 mr-2 object-contain" />
                                             POS Terminal
                                         </Link>
                                     </DropdownMenuItem>

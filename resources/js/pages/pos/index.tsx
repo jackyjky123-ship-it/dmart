@@ -593,9 +593,9 @@ export default function PosIndex({
                         </Button>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#888] shrink-0 pl-2 border-l border-[#2d2d2d]">
+                    <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-[#888] shrink-0 pl-2 border-l border-[#2d2d2d]">
                         <User className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span className="text-white font-semibold">{cashier?.name || 'Cashier'}</span>
+                        <span className="text-white font-semibold truncate max-w-[120px]">{cashier?.name || 'Cashier'}</span>
                     </div>
                 </div>
 
