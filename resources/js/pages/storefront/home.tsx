@@ -50,7 +50,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 24,
         unit: 'Charcoal Gray',
         category_name: 'Hoodies & Sweats',
-        image_url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 102,
@@ -62,7 +62,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 18,
         unit: 'Jet Black',
         category_name: 'Hoodies & Sweats',
-        image_url: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 103,
@@ -74,7 +74,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 15,
         unit: 'Onyx Black',
         category_name: 'Hoodies & Sweats',
-        image_url: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 104,
@@ -86,7 +86,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 22,
         unit: 'Washed Black',
         category_name: 'Hoodies & Sweats',
-        image_url: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 105,
@@ -98,7 +98,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 11,
         unit: 'Deep Black',
         category_name: 'Hoodies & Sweats',
-        image_url: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 106,
@@ -110,7 +110,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 35,
         unit: 'Acid Gray',
         category_name: 'Graphic Tees',
-        image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 107,
@@ -122,7 +122,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 8,
         unit: 'Matte Slate',
         category_name: 'Cargos & Denim',
-        image_url: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 108,
@@ -134,7 +134,7 @@ const DEFAULT_PRODUCTS: CartProduct[] = [
         stock: 6,
         unit: 'Obsidian Black',
         category_name: 'Outerwear',
-        image_url: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
 ];
 
@@ -161,13 +161,9 @@ export default function Home({
 
             {/* 1. HERO SECTION (Inspired by design_ref.png) */}
             <section className="relative overflow-hidden rounded-2xl bg-[#121212] border border-[#262626] min-h-[580px] lg:min-h-[640px] flex items-center justify-center text-center px-6 py-20">
-                {/* Background Atmosphere & Dual Model Overlay */}
-                <div className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity">
-                    <img
-                        src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1800&q=80"
-                        alt="Editorial Streetwear"
-                        className="w-full h-full object-cover object-center filter grayscale contrast-125"
-                    />
+                {/* Background Atmosphere */}
+                <div className="absolute inset-0 z-0 opacity-40">
+                    <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent" />
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#121212]/60 to-[#121212]" />
                 </div>
@@ -371,23 +367,23 @@ export default function Home({
                         </div>
                     </div>
 
-                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-[#222] border border-[#333]">
-                        <img
-                            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80"
-                            alt="Our Mission Fashion Model"
-                            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                        />
+                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-br from-[#1f1f1f] to-[#121212] border border-[#333] flex flex-col justify-between p-8">
+                        <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / MISSION / 01</div>
+                        <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
+                            BUILT FOR<br />THE STREETS
+                        </div>
+                        <div className="text-xs text-[#F25623] font-mono uppercase">EST. 2026 &bull; PHNOM PENH</div>
                     </div>
                 </div>
 
                 {/* Block 2: Our Vision (Image Left, Text Right) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#171717] rounded-2xl border border-[#262626] p-6 lg:p-10">
-                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-[#222] border border-[#333] order-2 md:order-1">
-                        <img
-                            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1000&q=80"
-                            alt="Our Vision Fashion Model"
-                            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                        />
+                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-tr from-[#1a1a1a] via-[#222] to-[#161616] border border-[#333] order-2 md:order-1 flex flex-col justify-between p-8">
+                        <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / ARCHIVE / 02</div>
+                        <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
+                            TIMELESS<br />HEAVYWEIGHT
+                        </div>
+                        <div className="text-xs text-[#888] font-mono uppercase">PRE-SHRUNK &bull; 460 GSM FLEECE</div>
                     </div>
 
                     <div className="space-y-4 max-w-lg order-1 md:order-2">

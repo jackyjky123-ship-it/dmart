@@ -32,7 +32,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 24,
         unit: 'Charcoal Gray',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 102,
@@ -44,7 +44,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 18,
         unit: 'Jet Black',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 103,
@@ -56,7 +56,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 15,
         unit: 'Onyx Black',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 104,
@@ -68,7 +68,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 22,
         unit: 'Washed Black',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 105,
@@ -80,7 +80,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 11,
         unit: 'Deep Black',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 106,
@@ -92,7 +92,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 35,
         unit: 'Acid Gray',
         category_name: 'Tees',
-        image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 107,
@@ -104,7 +104,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 8,
         unit: 'Matte Slate',
         category_name: 'Bottoms',
-        image_url: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
     {
         id: 108,
@@ -116,7 +116,7 @@ const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
         stock: 6,
         unit: 'Obsidian Black',
         category_name: 'Outerwear',
-        image_url: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+        image_url: null,
     },
 ];
 

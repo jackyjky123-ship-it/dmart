@@ -32,6 +32,7 @@ interface Sale {
     payment_method: string;
     total_cents: number;
     subtotal_cents: number;
+    cashier_name?: string;
     items: SaleItem[];
 }
 
@@ -70,7 +71,7 @@ export default function PosSalesIndex({ sales = [] }: PosSalesIndexProps) {
                             <span>Cashier Sales History</span>
                         </h1>
                         <p className="text-xs text-muted-foreground">
-                            Register #01 &bull; Dara Chan &bull; Today's completed counter transactions
+                            Register #01 &bull; Counter Sales Archive &bull; Scoped shift transactions
                         </p>
                     </div>
                 </div>
@@ -161,8 +162,8 @@ export default function PosSalesIndex({ sales = [] }: PosSalesIndexProps) {
                     {selectedSale && (
                         <div className="p-6 bg-white text-slate-900 border rounded-xl font-mono text-xs space-y-3 shadow-inner max-h-[60vh] overflow-y-auto">
                             <div className="text-center space-y-1">
-                                <div className="font-black text-base tracking-tight">DMART GROCERY & MINI-MART</div>
-                                <div className="text-[10px] text-slate-600">#24 Samdach Penn Nouth St (214), Phnom Penh</div>
+                                <div className="font-black text-base tracking-tight">DMART FLAGSHIP STORE</div>
+                                <div className="text-[10px] text-slate-600">Samdach Penn Nouth St (214), Phnom Penh</div>
                                 <div className="text-[10px] text-slate-600">Tel: +855 23 888 999</div>
                                 <div className="border-b border-dashed border-slate-400 my-2" />
                                 <div className="flex justify-between text-[10px]">
@@ -170,7 +171,7 @@ export default function PosSalesIndex({ sales = [] }: PosSalesIndexProps) {
                                     <span>{selectedSale.created_at}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px]">
-                                    <span>Cashier: Dara Chan</span>
+                                    <span>Cashier: {selectedSale.cashier_name || 'Staff'}</span>
                                     <span>Reg #01</span>
                                 </div>
                                 <div className="border-b border-dashed border-slate-400 my-2" />

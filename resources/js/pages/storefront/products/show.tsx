@@ -36,33 +36,10 @@ const DEFAULT_STREETWEAR_PRODUCT = {
     stock: 24,
     unit: 'Charcoal Gray',
     category_name: 'Hoodies & Fleece',
-    image_url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
+    image_url: null,
     description:
         'Premium heavyweight cotton hoodie with an oversized fit for ultimate comfort and modern style. Tailored with dropped shoulders and double-needle reinforced seams.',
 };
-
-const PRODUCT_GALLERY = [
-    {
-        id: 1,
-        label: 'Front View',
-        url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=1200&q=80',
-    },
-    {
-        id: 2,
-        label: 'Side Profile',
-        url: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=80',
-    },
-    {
-        id: 3,
-        label: 'Back View',
-        url: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=1200&q=80',
-    },
-    {
-        id: 4,
-        label: 'Fabric Detail',
-        url: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80',
-    },
-];
 
 const COLOR_OPTIONS = [
     { name: 'Charcoal Gray', hex: '#374151', class: 'bg-[#374151]' },
@@ -85,7 +62,7 @@ const DEFAULT_RELATED: CartProduct[] = [
         stock: 16,
         unit: 'Sand Beige',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=600&q=80',
+        image_url: null,
     },
     {
         id: 103,
@@ -97,7 +74,7 @@ const DEFAULT_RELATED: CartProduct[] = [
         stock: 20,
         unit: 'Jet Black',
         category_name: 'Sweatshirts',
-        image_url: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+        image_url: null,
     },
     {
         id: 104,
@@ -109,7 +86,7 @@ const DEFAULT_RELATED: CartProduct[] = [
         stock: 12,
         unit: 'Oatmeal Heather',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=600&q=80',
+        image_url: null,
     },
     {
         id: 105,
@@ -121,7 +98,7 @@ const DEFAULT_RELATED: CartProduct[] = [
         stock: 10,
         unit: 'Pitch Black',
         category_name: 'Hoodies',
-        image_url: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80',
+        image_url: null,
     },
 ];
 
@@ -129,7 +106,13 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
     const product = propProduct || DEFAULT_STREETWEAR_PRODUCT;
     const { addToCart, items } = useCart();
 
-    const [selectedImage, setSelectedImage] = useState<string>(product.image_url || PRODUCT_GALLERY[0].url);
+    const gallery = (product.images && product.images.length > 0)
+        ? product.images.map((img) => ({ id: img.id, url: img.url, label: img.alt || product.name }))
+        : product.image_url
+            ? [{ id: 0, url: product.image_url, label: product.name }]
+            : [];
+
+    const [selectedImage, setSelectedImage] = useState<string | null>(gallery[0]?.url || product.image_url || null);
     const [selectedColor, setSelectedColor] = useState(COLOR_OPTIONS[0]);
     const [selectedSize, setSelectedSize] = useState('M');
     const [activeTab, setActiveTab] = useState<'details' | 'materials' | 'fit' | 'shipping'>('details');
@@ -168,39 +151,51 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                 {/* Left Column: Vertical Thumbnails + Main Viewport (7 cols) */}
                 <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4">
                     {/* Thumbnail Stack */}
-                    <div className="flex sm:flex-col gap-3 shrink-0 overflow-x-auto sm:overflow-visible">
-                        {PRODUCT_GALLERY.map((thumb) => (
-                            <button
-                                key={thumb.id}
-                                onClick={() => setSelectedImage(thumb.url)}
-                                className={cn(
-                                    'relative w-16 h-20 sm:w-20 sm:h-24 rounded-lg overflow-hidden border transition-all bg-[#1e1e1e]',
-                                    selectedImage === thumb.url
-                                        ? 'border-[#F25623] ring-1 ring-[#F25623]'
-                                        : 'border-[#333] opacity-70 hover:opacity-100 hover:border-[#666]'
-                                )}
-                            >
-                                <img src={thumb.url} alt={thumb.label} className="w-full h-full object-cover" />
-                            </button>
-                        ))}
-                    </div>
+                    {gallery.length > 1 && (
+                        <div className="flex sm:flex-col gap-3 shrink-0 overflow-x-auto sm:overflow-visible">
+                            {gallery.map((thumb) => (
+                                <button
+                                    key={thumb.id}
+                                    onClick={() => setSelectedImage(thumb.url)}
+                                    className={cn(
+                                        'relative w-16 h-20 sm:w-20 sm:h-24 rounded-lg overflow-hidden border transition-all bg-[#1e1e1e]',
+                                        selectedImage === thumb.url
+                                            ? 'border-[#F25623] ring-1 ring-[#F25623]'
+                                            : 'border-[#333] opacity-70 hover:opacity-100 hover:border-[#666]'
+                                    )}
+                                >
+                                    <img src={thumb.url} alt={thumb.label} className="w-full h-full object-cover" />
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* Main High-Res Viewport */}
                     <div className="relative flex-1 aspect-3/4 rounded-2xl overflow-hidden bg-[#1c1c1c] border border-[#2d2d2d] group">
-                        <img
-                            src={selectedImage}
-                            alt={product.name}
-                            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                        />
+                        {selectedImage ? (
+                            <img
+                                src={selectedImage}
+                                alt={product.name}
+                                className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                            />
+                        ) : (
+                            <ProductThumb
+                                name={product.name}
+                                size="full"
+                                className="w-full h-full rounded-2xl"
+                            />
+                        )}
 
                         {/* Zoom button */}
-                        <button
-                            onClick={() => setZoomOpen(true)}
-                            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20 flex items-center justify-center hover:bg-[#F25623] hover:border-[#F25623] transition-all shadow-lg"
-                            title="Expand preview"
-                        >
-                            <Maximize2 className="w-4 h-4" />
-                        </button>
+                        {selectedImage && (
+                            <button
+                                onClick={() => setZoomOpen(true)}
+                                className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md text-white border border-white/20 flex items-center justify-center hover:bg-[#F25623] hover:border-[#F25623] transition-all shadow-lg"
+                                title="Expand preview"
+                            >
+                                <Maximize2 className="w-4 h-4" />
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -449,16 +444,16 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                         )}
                     </div>
 
-                    {/* Macro Fabric Close-up Photo */}
-                    <div className="relative aspect-16/10 rounded-xl overflow-hidden bg-[#222] border border-[#333]">
-                        <img
-                            src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80"
-                            alt="Fabric texture close-up"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute bottom-3 left-4 text-[11px] font-mono uppercase tracking-widest text-white/90">
-                            460 GSM Heavyweight Fleece Texture
+                    {/* Material Specification Card */}
+                    <div className="relative aspect-16/10 rounded-xl overflow-hidden bg-gradient-to-br from-[#1e1e1e] to-[#121212] border border-[#333] p-6 flex flex-col justify-between">
+                        <div className="text-[11px] font-mono uppercase tracking-widest text-[#F25623]">
+                            Material Specification
+                        </div>
+                        <div className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white font-mono">
+                            460 GSM Heavyweight Dense Fleece
+                        </div>
+                        <div className="text-xs text-[#888] font-mono">
+                            Double-needle reinforcement &bull; Anti-shrink pre-wash
                         </div>
                     </div>
                 </div>
