@@ -375,5 +375,4 @@ class OrderController extends Controller
 
         return $orderNumber;
     }
-
 }
