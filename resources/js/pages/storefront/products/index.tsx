@@ -3,10 +3,10 @@ import { Head, Link } from '@inertiajs/react';
 import { ProductCard } from '@/components/product-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/empty-state';
 import { CartProduct } from '@/hooks/use-cart';
-import { Search, SlidersHorizontal, X, ArrowUpDown } from 'lucide-react';
+import { Search, SlidersHorizontal, X, ArrowUpDown, Flame, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Category {
     id: number;
@@ -15,27 +15,135 @@ interface Category {
 }
 
 interface ProductsIndexProps {
-    products: CartProduct[];
-    categories: Category[];
+    products?: CartProduct[];
+    categories?: Category[];
     initialCategory?: string;
     initialSearch?: string;
 }
 
+const DEFAULT_STREETWEAR_PRODUCTS: CartProduct[] = [
+    {
+        id: 101,
+        name: 'Essential Oversized Hoodie',
+        slug: 'essential-oversized-hoodie',
+        sku: 'HD-ESS-01',
+        price_cents: 5999,
+        compare_at_price_cents: 8999,
+        stock: 24,
+        unit: 'Charcoal Gray',
+        category_name: 'Hoodies',
+        image_url: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 102,
+        name: 'Los Angeles California Unisex Hoodie',
+        slug: 'la-california-unisex-hoodie',
+        sku: 'HD-LAC-02',
+        price_cents: 4500,
+        compare_at_price_cents: 6700,
+        stock: 18,
+        unit: 'Jet Black',
+        category_name: 'Hoodies',
+        image_url: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 103,
+        name: 'Smile Planet Cosmic Pullover',
+        slug: 'smile-planet-cosmic-pullover',
+        sku: 'HD-SMI-03',
+        price_cents: 4500,
+        compare_at_price_cents: 6700,
+        stock: 15,
+        unit: 'Onyx Black',
+        category_name: 'Hoodies',
+        image_url: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 104,
+        name: 'Armour House Strengthwear Hoodie',
+        slug: 'armour-house-strengthwear-hoodie',
+        sku: 'HD-ARM-04',
+        price_cents: 5600,
+        compare_at_price_cents: 6700,
+        stock: 22,
+        unit: 'Washed Black',
+        category_name: 'Hoodies',
+        image_url: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 105,
+        name: 'Monster Heavy Graphic Hoodie',
+        slug: 'monster-heavy-graphic-hoodie',
+        sku: 'HD-MON-05',
+        price_cents: 5600,
+        compare_at_price_cents: 6700,
+        stock: 11,
+        unit: 'Deep Black',
+        category_name: 'Hoodies',
+        image_url: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 106,
+        name: 'Acid Wash Vintage Boxy Tee',
+        slug: 'acid-wash-vintage-boxy-tee',
+        sku: 'TEE-ACD-06',
+        price_cents: 3400,
+        compare_at_price_cents: 4800,
+        stock: 35,
+        unit: 'Acid Gray',
+        category_name: 'Tees',
+        image_url: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 107,
+        name: 'Utility Multi-Pocket Cargo Pant',
+        slug: 'utility-multipocket-cargo-pant',
+        sku: 'BOT-CRG-07',
+        price_cents: 6800,
+        compare_at_price_cents: 8500,
+        stock: 8,
+        unit: 'Matte Slate',
+        category_name: 'Bottoms',
+        image_url: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+        id: 108,
+        name: 'Monochrome Tech Flight Bomber',
+        slug: 'monochrome-tech-flight-bomber',
+        sku: 'OUT-BMB-08',
+        price_cents: 12000,
+        compare_at_price_cents: 15000,
+        stock: 6,
+        unit: 'Obsidian Black',
+        category_name: 'Outerwear',
+        image_url: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+    },
+];
+
+const DEFAULT_CATEGORIES: Category[] = [
+    { id: 1, name: 'Hoodies & Fleece', slug: 'hoodies' },
+    { id: 2, name: 'Graphic Tees', slug: 'tees' },
+    { id: 3, name: 'Outerwear', slug: 'outerwear' },
+    { id: 4, name: 'Bottoms & Cargo', slug: 'bottoms' },
+];
+
 export default function ProductsIndex({
-    products = [],
-    categories = [],
+    products: initialProducts = [],
+    categories: initialCategories = [],
     initialCategory,
     initialSearch = '',
 }: ProductsIndexProps) {
+    const rawProducts = initialProducts.length > 0 ? initialProducts : DEFAULT_STREETWEAR_PRODUCTS;
+    const categories = initialCategories.length > 0 ? initialCategories : DEFAULT_CATEGORIES;
+
     const [search, setSearch] = useState(initialSearch);
     const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'all');
     const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name'>('featured');
     const [inStockOnly, setInStockOnly] = useState(false);
 
     const filteredProducts = useMemo(() => {
-        let result = [...products];
+        let result = [...rawProducts];
 
-        // Search query
         if (search.trim()) {
             const q = search.toLowerCase();
             result = result.filter(
@@ -46,19 +154,18 @@ export default function ProductsIndex({
             );
         }
 
-        // Category filter
         if (selectedCategory && selectedCategory !== 'all') {
             result = result.filter(
-                (p) => (p as any).category_slug === selectedCategory || p.category_name.toLowerCase().includes(selectedCategory.replace(/-/g, ' '))
+                (p) =>
+                    (p as any).category_slug === selectedCategory ||
+                    p.category_name.toLowerCase().includes(selectedCategory.replace(/-/g, ' '))
             );
         }
 
-        // In-stock filter
         if (inStockOnly) {
             result = result.filter((p) => p.stock > 0);
         }
 
-        // Sort
         if (sortBy === 'price-asc') {
             result.sort((a, b) => a.price_cents - b.price_cents);
         } else if (sortBy === 'price-desc') {
@@ -68,9 +175,7 @@ export default function ProductsIndex({
         }
 
         return result;
-    }, [products, search, selectedCategory, inStockOnly, sortBy]);
-
-    const hasActiveFilters = search || selectedCategory !== 'all' || inStockOnly || sortBy !== 'featured';
+    }, [rawProducts, search, selectedCategory, inStockOnly, sortBy]);
 
     const clearFilters = () => {
         setSearch('');
@@ -80,35 +185,39 @@ export default function ProductsIndex({
     };
 
     return (
-        <div className="space-y-6">
-            <Head title="Products Catalog — DMart Fresh Groceries" />
+        <div className="space-y-8 pb-12 text-white">
+            <Head title="Capsule Drops & Catalog — DMART" />
 
             {/* Page Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Grocery Catalog
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#282828]">
+                <div className="space-y-1">
+                    <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-[#F25623]">
+                        <Flame className="w-3.5 h-3.5" />
+                        <span>COLLECTION CATALOG</span>
+                    </div>
+                    <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
+                        All Capsule Drops
                     </h1>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                        Showing {filteredProducts.length} of {products.length} products
+                    <p className="text-xs text-[#737373] font-mono">
+                        SHOWING {filteredProducts.length} OF {rawProducts.length} PIECES
                     </p>
                 </div>
 
                 {/* Search Bar */}
                 <div className="relative w-full sm:w-80">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737373] pointer-events-none" />
                     <Input
                         type="text"
-                        placeholder="Search produce, milk, snacks..."
+                        placeholder="SEARCH HOODIES, TEES, SKU..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="pl-9 pr-9 h-10 rounded-xl bg-card"
+                        className="pl-10 pr-9 h-10 rounded-full bg-[#1e1e1e] border-[#333] text-xs text-white placeholder:text-[#666] placeholder:text-[11px] focus:border-[#F25623]"
                     />
                     {search && (
                         <button
                             type="button"
                             onClick={() => setSearch('')}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#737373] hover:text-white"
                             aria-label="Clear search"
                         >
                             <X className="w-3.5 h-3.5" />
@@ -118,90 +227,95 @@ export default function ProductsIndex({
             </div>
 
             {/* Category Filter Chips */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-                <Button
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                <button
                     type="button"
-                    variant={selectedCategory === 'all' ? 'emerald' : 'outline'}
-                    size="sm"
                     onClick={() => setSelectedCategory('all')}
-                    className="rounded-full text-xs shrink-0 font-medium"
+                    className={cn(
+                        'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap',
+                        selectedCategory === 'all'
+                            ? 'bg-[#F25623] text-white shadow-md shadow-[#F25623]/25'
+                            : 'bg-[#222] text-[#888] hover:text-white hover:bg-[#2c2c2c]'
+                    )}
                 >
-                    All Items ({products.length})
-                </Button>
+                    All Items ({rawProducts.length})
+                </button>
                 {categories.map((cat) => (
-                    <Button
+                    <button
                         key={cat.slug}
                         type="button"
-                        variant={selectedCategory === cat.slug ? 'emerald' : 'outline'}
-                        size="sm"
                         onClick={() => setSelectedCategory(cat.slug)}
-                        className="rounded-full text-xs shrink-0 font-medium"
+                        className={cn(
+                            'px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap',
+                            selectedCategory === cat.slug
+                                ? 'bg-[#F25623] text-white shadow-md shadow-[#F25623]/25'
+                                : 'bg-[#222] text-[#888] hover:text-white hover:bg-[#2c2c2c]'
+                        )}
                     >
                         {cat.name}
-                    </Button>
+                    </button>
                 ))}
             </div>
 
             {/* Sub-Filters / Sort Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-muted/30 p-3 rounded-xl border text-xs">
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold text-muted-foreground flex items-center gap-1">
-                        <SlidersHorizontal className="w-3.5 h-3.5" /> Filters:
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-[#1a1a1a] p-3.5 rounded-xl border border-[#282828] text-xs text-[#a3a3a3]">
+                <div className="flex items-center gap-3">
+                    <span className="font-semibold text-white flex items-center gap-1.5 uppercase tracking-wider font-mono text-[11px]">
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#F25623]" /> Filter:
                     </span>
-                    <label className="flex items-center gap-1.5 cursor-pointer select-none text-foreground">
+                    <label className="flex items-center gap-2 cursor-pointer select-none text-xs hover:text-white">
                         <input
                             type="checkbox"
                             checked={inStockOnly}
                             onChange={(e) => setInStockOnly(e.target.checked)}
-                            className="rounded text-emerald-600 focus:ring-emerald-500"
+                            className="rounded border-[#444] bg-[#222] text-[#F25623] focus:ring-[#F25623]"
                         />
                         <span>In Stock Only</span>
                     </label>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground flex items-center gap-1">
-                        <ArrowUpDown className="w-3.5 h-3.5" /> Sort:
-                    </span>
+                <div className="flex items-center gap-3">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-[#737373]">Sort:</span>
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
-                        className="bg-background border rounded-lg px-2.5 py-1 text-xs font-medium focus:ring-1 focus:ring-emerald-500"
+                        className="bg-[#222] border border-[#333] text-white text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[#F25623]"
                     >
-                        <option value="featured">Featured</option>
+                        <option value="featured">Featured Drops</option>
                         <option value="price-asc">Price: Low to High</option>
                         <option value="price-desc">Price: High to Low</option>
-                        <option value="name">Alphabetical</option>
+                        <option value="name">Product Name (A-Z)</option>
                     </select>
 
-                    {hasActiveFilters && (
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
+                    {(search || selectedCategory !== 'all' || inStockOnly || sortBy !== 'featured') && (
+                        <button
                             onClick={clearFilters}
-                            className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                            className="text-[#F25623] hover:underline text-xs font-mono uppercase"
                         >
                             Reset
-                        </Button>
+                        </button>
                     )}
                 </div>
             </div>
 
-            {/* Products Grid */}
-            {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {filteredProducts.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
+            {/* Product Grid */}
+            {filteredProducts.length === 0 ? (
+                <div className="text-center py-20 border border-[#282828] bg-[#1a1a1a] rounded-2xl p-8 space-y-4">
+                    <Sparkles className="w-10 h-10 mx-auto text-[#F25623]" />
+                    <h3 className="text-lg font-bold uppercase tracking-wider text-white">No drops match your criteria</h3>
+                    <p className="text-xs text-[#737373] max-w-sm mx-auto">
+                        Try clearing search terms or selecting a different category to view available archive pieces.
+                    </p>
+                    <Button variant="orange" size="sm" onClick={clearFilters} className="rounded-full">
+                        Reset Filters
+                    </Button>
                 </div>
             ) : (
-                <EmptyState
-                    title="No products found"
-                    description={`We couldn't find any items matching "${search || selectedCategory}". Try checking your spelling or clearing your active filters.`}
-                    actionLabel="Reset All Filters"
-                    onAction={clearFilters}
-                />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                    {filteredProducts.map((p) => (
+                        <ProductCard key={p.id} product={p} />
+                    ))}
+                </div>
             )}
         </div>
     );

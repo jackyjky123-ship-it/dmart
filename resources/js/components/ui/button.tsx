@@ -13,7 +13,9 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 hover:shadow-sm",
         emerald:
-          "bg-emerald-600 text-white shadow-xs shadow-emerald-950/10 hover:bg-emerald-500 hover:shadow-md hover:shadow-emerald-600/20 active:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:active:bg-emerald-600",
+          "bg-[#F25623] text-white shadow-xs hover:bg-[#e04818] hover:shadow-md hover:shadow-[#F25623]/25 active:bg-[#c93c10]",
+        orange:
+          "bg-[#F25623] text-white shadow-xs hover:bg-[#e04818] hover:shadow-md hover:shadow-[#F25623]/25 active:bg-[#c93c10]",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 hover:shadow-sm focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:

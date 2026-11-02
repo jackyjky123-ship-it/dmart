@@ -1,307 +1,452 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { SalesChart } from '@/components/sales-chart';
-import { StatusBadge } from '@/components/status-badge';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { formatMoney } from '@/lib/money';
 import {
-    DollarSign,
-    ShoppingBag,
-    AlertTriangle,
-    Boxes,
-    ArrowUpRight,
     TrendingUp,
+    TrendingDown,
+    ArrowUpRight,
+    ArrowDownRight,
     ChevronRight,
-    Clock,
-    Plus,
+    Search,
+    Calendar,
+    Eye,
+    Star,
+    Layers,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface DaySales {
-    day: string;
-    sales_cents: number;
-    orders: number;
+// Heatmap scale
+const HEATMAP_HOURS = ['9 am', '10 am', '11 am', '12 pm', '1 pm', '2 pm', '3 pm'];
+const HEATMAP_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+// 7x7 heatmap data replicating admin_dashboard_ref.png pattern (cross in center with heavy density)
+const HEATMAP_MATRIX = [
+    // 9 am
+    [150, 180, 240, 420, 220, 190, 120],
+    // 10 am
+    [190, 260, 680, 1250, 620, 310, 160],
+    // 11 am
+    [240, 520, 1420, 2380, 1310, 480, 210],
+    // 12 pm
+    [310, 950, 2150, 2890, 2240, 890, 290],
+    // 1 pm
+    [260, 580, 1530, 2460, 1410, 510, 240],
+    // 2 pm
+    [180, 290, 710, 1310, 690, 340, 170],
+    // 3 pm
+    [140, 170, 230, 410, 210, 180, 110],
+];
+
+function getCellColor(val: number) {
+    if (val >= 2000) {
+        return 'bg-[#F25623] text-white shadow-xs'; // Bright signature orange
+    }
+    if (val >= 1000) {
+        return 'bg-[#d9481a] text-white'; // Medium-high orange
+    }
+    if (val >= 500) {
+        return 'bg-[#7c2d12] text-white/80'; // Dark reddish/brown
+    }
+    if (val >= 200) {
+        return 'bg-[#431407] text-white/60'; // Deep dark burnt
+    }
+    return 'bg-[#222222] text-white/30'; // Base idle
 }
 
-interface TopProduct {
-    name: string;
-    sku: string;
-    sold_qty: number;
-    revenue_cents: number;
-}
+const TOP_PRODUCTS = [
+    {
+        name: 'MagStand Pro 1',
+        revenue: '$24,500',
+        sales: 846,
+        growth: '+32%',
+        growthPositive: true,
+        reviews: 570,
+        views: 978,
+    },
+    {
+        name: 'MagStand Pro 2',
+        revenue: '$16,300',
+        sales: 598,
+        growth: '+26%',
+        growthPositive: true,
+        reviews: 385,
+        views: 945,
+    },
+    {
+        name: 'MagStand Pro 3',
+        revenue: '$12,980',
+        sales: 389,
+        growth: '+13%',
+        growthPositive: true,
+        reviews: 127,
+        views: 437,
+    },
+    {
+        name: 'MagStand Pro 4',
+        revenue: '$10,984',
+        sales: 265,
+        growth: '-11%',
+        growthPositive: false,
+        reviews: 190,
+        views: 265,
+    },
+];
 
-interface LowStockProduct {
-    id: number;
-    name: string;
-    sku: string;
-    stock: number;
-    low_stock_threshold: number;
-}
+const SALES_BY_COUNTRY = [
+    { name: 'United Kingdom', flag: '🇬🇧', products: '6.3K Products' },
+    { name: 'Indonesia', flag: '🇮🇩', products: '5.2K Products' },
+    { name: 'Malaysia', flag: '🇲🇾', products: '4.7K Products' },
+    { name: 'China', flag: '🇨🇳', products: '4.5K Products' },
+    { name: 'Thailand', flag: '🇹🇭', products: '3.2K Products' },
+    { name: 'Philippines', flag: '🇵🇭', products: '2.9K Products' },
+];
 
-interface DashboardProps {
-    stats?: {
-        today_sales_cents: number;
-        today_sales_delta_pct: number;
-        orders_today_count: number;
-        orders_pending_count: number;
-        low_stock_count: number;
-        active_products_count: number;
-        sales_7d: DaySales[];
-        top_products: TopProduct[];
-        low_stock_products: LowStockProduct[];
-    };
-    recentOrders?: any[];
-}
-
-export default function AdminDashboard({ stats: initialStats, recentOrders = [] }: DashboardProps) {
-    const stats = initialStats || {
-        today_sales_cents: 48250,
-        today_sales_delta_pct: 14.8,
-        orders_today_count: 18,
-        orders_pending_count: 4,
-        low_stock_count: 3,
-        active_products_count: 21,
-        sales_7d: [
-            { day: 'Mon', sales_cents: 32000, orders: 12 },
-            { day: 'Tue', sales_cents: 41500, orders: 16 },
-            { day: 'Wed', sales_cents: 38000, orders: 15 },
-            { day: 'Thu', sales_cents: 46000, orders: 19 },
-            { day: 'Fri', sales_cents: 59000, orders: 24 },
-            { day: 'Sat', sales_cents: 64500, orders: 28 },
-            { day: 'Sun', sales_cents: 48250, orders: 18 },
-        ],
-        top_products: [
-            { name: 'Organic Cavendish Bananas', sku: 'PROD-BAN-001', sold_qty: 68, revenue_cents: 10132 },
-            { name: 'Whole Organic Milk 1L', sku: 'DAIR-MLK-001', sold_qty: 54, revenue_cents: 12960 },
-            { name: 'Artisan Sourdough Loaf', sku: 'BAKE-SOU-001', sold_qty: 38, revenue_cents: 16150 },
-            { name: 'Roasted Salted Cashews', sku: 'SNAK-CSH-002', sold_qty: 26, revenue_cents: 15080 },
-        ],
-        low_stock_products: [
-            { id: 4, name: 'Hass Avocados (Pack of 3)', sku: 'PROD-AVO-004', stock: 3, low_stock_threshold: 5 },
-            { id: 8, name: 'Greek Plain Yogurt 500g', sku: 'DAIR-YOG-003', stock: 2, low_stock_threshold: 5 },
-            { id: 15, name: 'Pure Coconut Water 1L', sku: 'BEV-COC-003', stock: 4, low_stock_threshold: 6 },
-        ],
-    };
+export default function AdminDashboard() {
+    const [hoveredCell, setHoveredCell] = useState<{ hour: string; day: string; val: number } | null>(null);
 
     return (
-        <div className="space-y-8">
-            <Head title="Admin Dashboard — DMart Back Office" />
+        <div className="space-y-6 text-white pb-12">
+            <Head title="Metric Flow — Analytics Dashboard" />
 
-            {/* Dashboard Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Store Overview
-                    </h1>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Daily KPIs, sales trends, and inventory alerts for DMart Mini-Mart
-                    </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <Button asChild size="sm" className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs gap-1.5 shadow-sm">
-                        <Link href="/admin/products/create">
-                            <Plus className="w-3.5 h-3.5" />
-                            <span>Add Product</span>
-                        </Link>
-                    </Button>
-                </div>
-            </div>
-
-            {/* 4 KPI Cards */}
+            {/* 1. TOP KPI METRIC CARDS ROW (From admin_dashboard_ref.png) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* KPI 1: Today's Revenue */}
-                <div className="p-5 rounded-2xl bg-card border shadow-xs space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="font-medium">Today's Revenue</span>
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center">
-                            <DollarSign className="w-4 h-4" />
-                        </div>
+                {/* Total Revenue */}
+                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-[#a3a3a3] font-medium">Total Revenue</span>
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
+                            <ArrowUpRight className="w-3 h-3" /> +12.5%
+                        </span>
                     </div>
-                    <div className="text-2xl font-black text-foreground">
-                        {formatMoney(stats.today_sales_cents)}
+                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-1.5 font-sans">
+                        <span className="text-[#F25623]">$</span> 24,500
                     </div>
-                    <div className="flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        <span>+{stats.today_sales_delta_pct}% from yesterday</span>
-                    </div>
-                </div>
-
-                {/* KPI 2: Total Orders Today */}
-                <div className="p-5 rounded-2xl bg-card border shadow-xs space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="font-medium">Orders Today</span>
-                        <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center">
-                            <ShoppingBag className="w-4 h-4" />
-                        </div>
-                    </div>
-                    <div className="text-2xl font-black text-foreground">
-                        {stats.orders_today_count}
-                    </div>
-                    <div className="text-[11px] text-muted-foreground">
-                        <span className="text-amber-600 font-semibold">{stats.orders_pending_count} pending</span> fulfillment
+                    <div className="text-[10px] text-[#737373] font-mono">
+                        From Jun 01,2024 To Jun 29, 2024
                     </div>
                 </div>
 
-                {/* KPI 3: Low Stock Alerts */}
-                <div className="p-5 rounded-2xl bg-card border shadow-xs space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="font-medium">Low Stock Alerts</span>
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
-                            <AlertTriangle className="w-4 h-4" />
-                        </div>
+                {/* Total Order */}
+                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-[#a3a3a3] font-medium">Total Order</span>
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
+                            <ArrowUpRight className="w-3 h-3" /> +8.2%
+                        </span>
                     </div>
-                    <div className="text-2xl font-black text-foreground">
-                        {stats.low_stock_count}
+                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                        1,240
                     </div>
-                    <div className="text-[11px] text-amber-600 font-medium">
-                        Requires reorder attention
+                    <div className="text-[10px] text-[#737373] font-mono">
+                        From Jun 01,2024 To Jun 29, 2024
                     </div>
                 </div>
 
-                {/* KPI 4: Active Catalog */}
-                <div className="p-5 rounded-2xl bg-card border shadow-xs space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="font-medium">Active Catalog</span>
-                        <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center">
-                            <Boxes className="w-4 h-4" />
-                        </div>
+                {/* New Customer */}
+                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-[#a3a3a3] font-medium">New customer</span>
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 bg-rose-500/15 px-2 py-0.5 rounded-full">
+                            <ArrowDownRight className="w-3 h-3" /> -4.3%
+                        </span>
                     </div>
-                    <div className="text-2xl font-black text-foreground">
-                        {stats.active_products_count} Items
+                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                        320
                     </div>
-                    <div className="text-[11px] text-muted-foreground">
-                        Across 8 categories
+                    <div className="text-[10px] text-[#737373] font-mono">
+                        From Jun 01,2024 To Jun 29, 2024
+                    </div>
+                </div>
+
+                {/* Conversion Rate */}
+                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                    <div className="flex items-center justify-between">
+                        <span className="text-xs text-[#a3a3a3] font-medium">Conversion rate</span>
+                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
+                            <ArrowUpRight className="w-3 h-3" /> +2.1%
+                        </span>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                        3.2 %
+                    </div>
+                    <div className="text-[10px] text-[#737373] font-mono">
+                        From Jun 01,2024 To Jun 29, 2024
                     </div>
                 </div>
             </div>
 
-            {/* 2 Cols: 7-Day Revenue SVG Chart & Low Stock Alerts */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                {/* SVG Revenue Chart (2 cols) */}
-                <div className="lg:col-span-2 p-6 rounded-3xl bg-card border shadow-xs space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b">
-                        <div className="space-y-0.5">
-                            <h2 className="font-bold text-base tracking-tight text-foreground">
-                                7-Day Sales Performance
-                            </h2>
-                            <p className="text-xs text-muted-foreground">
-                                Combined Online Storefront & POS sales
-                            </p>
+            {/* 2. MID ANALYTICS ROW: ORDERS BY TIME HEATMAP + MONTHLY SALES CHART */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left: Orders by time (5 cols) */}
+                <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-bold text-white tracking-tight">
+                            Orders by time
+                        </h3>
+
+                        {/* Legend */}
+                        <div className="flex items-center gap-2 text-[10px] text-[#888] font-mono">
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-[#431407]" />
+                                <span>200&gt;</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-[#7c2d12]" />
+                                <span>500&gt;</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-[#d9481a]" />
+                                <span>1,000&gt;</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-[#F25623]" />
+                                <span>2,000&gt;</span>
+                            </div>
                         </div>
-                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 font-mono">
-                            Asia/Phnom_Penh
-                        </Badge>
                     </div>
 
-                    <SalesChart data={stats.sales_7d} />
+                    {/* Heatmap Matrix Table */}
+                    <div className="pt-2">
+                        <div className="grid grid-cols-8 gap-1.5 text-center items-center">
+                            {/* Empty top-left cell */}
+                            <div className="text-[10px] font-mono text-[#666]" />
+
+                            {/* Column Days Header */}
+                            {HEATMAP_DAYS.map((day) => (
+                                <div key={day} className="text-[10px] font-mono text-[#888]">
+                                    {day}
+                                </div>
+                            ))}
+
+                            {/* Row per hour */}
+                            {HEATMAP_HOURS.map((hr, rIdx) => (
+                                <React.Fragment key={hr}>
+                                    <div className="text-[10px] font-mono text-[#888] text-right pr-1">
+                                        {hr}
+                                    </div>
+
+                                    {HEATMAP_DAYS.map((day, cIdx) => {
+                                        const val = HEATMAP_MATRIX[rIdx][cIdx];
+                                        return (
+                                            <div
+                                                key={`${hr}-${day}`}
+                                                onMouseEnter={() => setHoveredCell({ hour: hr, day, val })}
+                                                onMouseLeave={() => setHoveredCell(null)}
+                                                className={cn(
+                                                    'aspect-square rounded-md transition-transform duration-150 cursor-pointer flex items-center justify-center text-[9px] font-mono',
+                                                    getCellColor(val),
+                                                    hoveredCell?.hour === hr && hoveredCell?.day === day
+                                                        ? 'scale-115 ring-2 ring-white z-10'
+                                                        : 'hover:scale-105'
+                                                )}
+                                                title={`${day} at ${hr}: ${val} orders`}
+                                            />
+                                        );
+                                    })}
+                                </React.Fragment>
+                            ))}
+                        </div>
+
+                        {/* Interactive Status Footer */}
+                        <div className="mt-3 text-[11px] text-[#737373] font-mono flex items-center justify-between">
+                            <span>Peak Rush: 11 am – 1 pm</span>
+                            {hoveredCell ? (
+                                <span className="text-[#F25623] font-bold">
+                                    {hoveredCell.day} {hoveredCell.hour}: {hoveredCell.val} orders
+                                </span>
+                            ) : (
+                                <span>Hover cell for exact count</span>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Low Stock Warning Card (1 col) */}
-                <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b">
-                        <h2 className="font-bold text-sm tracking-tight text-foreground flex items-center gap-1.5">
-                            <AlertTriangle className="w-4 h-4 text-amber-500" />
-                            <span>Low Stock Watchlist</span>
-                        </h2>
-                        <Link href="/admin/stock" className="text-xs text-purple-600 hover:underline">
+                {/* Right: Monthly Sales performance Chart (7 cols) */}
+                <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-bold text-white tracking-tight">
+                            Monthly Sales performance
+                        </h3>
+
+                        {/* Chart Legend */}
+                        <div className="flex items-center gap-4 text-xs font-mono">
+                            <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
+                                <span className="w-3 h-0.5 bg-[#F25623]" /> Sales
+                            </span>
+                            <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
+                                <span className="w-3 h-0.5 bg-[#818cf8]" /> Target
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* SVG Chart Graphic */}
+                    <div className="relative w-full h-56 pt-2">
+                        {/* Grid lines & Y-axis labels */}
+                        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] font-mono text-[#666]">
+                            {['6000', '4500', '3000', '1500', '0'].map((val) => (
+                                <div key={val} className="w-full flex items-center gap-3">
+                                    <span className="w-7 text-right">{val}</span>
+                                    <div className="flex-1 border-b border-[#262626]" />
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* SVG Dual Curves */}
+                        <svg className="absolute inset-0 w-full h-full pl-10 pr-4 pb-6 overflow-visible" viewBox="0 0 600 200" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="#F25623" stopOpacity="0.25" />
+                                    <stop offset="100%" stopColor="#F25623" stopOpacity="0" />
+                                </linearGradient>
+                            </defs>
+
+                            {/* Target Curve (Lavender / Blue) */}
+                            <path
+                                d="M 0 160 C 100 120, 160 170, 250 140 C 340 110, 420 160, 500 130 C 550 110, 580 90, 600 80"
+                                fill="none"
+                                stroke="#818cf8"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                            />
+
+                            {/* Sales Area Fill */}
+                            <path
+                                d="M 0 140 C 100 90, 180 130, 270 120 C 360 110, 430 40, 520 60 C 560 70, 585 45, 600 30 L 600 200 L 0 200 Z"
+                                fill="url(#salesGrad)"
+                            />
+
+                            {/* Sales Curve (Fiery Orange) */}
+                            <path
+                                d="M 0 140 C 100 90, 180 130, 270 120 C 360 110, 430 40, 520 60 C 560 70, 585 45, 600 30"
+                                fill="none"
+                                stroke="#F25623"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                            />
+
+                            {/* Vertical Dotted Tooltip Guide on April */}
+                            <line
+                                x1="390"
+                                y1="10"
+                                x2="390"
+                                y2="190"
+                                stroke="#444"
+                                strokeWidth="1"
+                                strokeDasharray="3 3"
+                            />
+
+                            {/* Points on April guide */}
+                            <circle cx="390" cy="50" r="4" fill="#F25623" stroke="#fff" strokeWidth="2" />
+                            <circle cx="390" cy="120" r="4" fill="#818cf8" stroke="#fff" strokeWidth="2" />
+                        </svg>
+
+                        {/* Interactive Tooltip Card on April (replicating design_ref) */}
+                        <div className="absolute top-14 right-20 sm:right-28 bg-[#111111]/95 border border-[#333] rounded-xl p-3 shadow-xl backdrop-blur-md text-[11px] space-y-1 z-20 pointer-events-none">
+                            <div className="font-mono text-[#a3a3a3] font-bold">April 1, 2025</div>
+                            <div className="flex items-center justify-between gap-4">
+                                <span className="flex items-center gap-1.5 text-white">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F25623]" /> Total sales
+                                </span>
+                                <span className="font-mono font-bold text-white">4790</span>
+                            </div>
+                            <div className="flex items-center justify-between gap-4">
+                                <span className="flex items-center gap-1.5 text-[#a3a3a3]">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" /> Target sales
+                                </span>
+                                <span className="font-mono font-bold text-[#818cf8]">3830</span>
+                            </div>
+                        </div>
+
+                        {/* X-axis months */}
+                        <div className="absolute bottom-0 left-10 right-4 flex justify-between text-[10px] font-mono text-[#888]">
+                            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m) => (
+                                <span key={m}>{m}</span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3. BOTTOM ROW: SALES BY COUNTRY + TOP PRODUCT SALES */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left: Sales by Country (5 cols) */}
+                <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-bold text-white tracking-tight">
+                            Sales by Country
+                        </h3>
+                        <button type="button" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
+                            View All
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-3 pt-1">
+                        {SALES_BY_COUNTRY.map((country) => (
+                            <div
+                                key={country.name}
+                                className="p-3 rounded-xl bg-[#222222] border border-[#2d2d2d] hover:border-[#F25623]/60 transition-colors space-y-1"
+                            >
+                                <div className="text-xl leading-none">{country.flag}</div>
+                                <div className="text-xs font-bold text-white truncate">{country.name}</div>
+                                <div className="text-[10px] font-mono text-[#888]">{country.products}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right: Top Product Sales (7 cols) */}
+                <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-bold text-white tracking-tight">
+                            Top Product Sales
+                        </h3>
+                        <Link href="/admin/products" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
                             View All
                         </Link>
                     </div>
 
-                    <div className="space-y-3">
-                        {stats.low_stock_products.map((item) => (
-                            <div key={item.id} className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between text-xs gap-3">
-                                <div className="min-w-0">
-                                    <div className="font-semibold text-foreground truncate">{item.name}</div>
-                                    <div className="text-[10px] font-mono text-muted-foreground">{item.sku}</div>
-                                </div>
-                                <Badge className="bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300 shrink-0">
-                                    {item.stock} in stock
-                                </Badge>
-                            </div>
-                        ))}
-                    </div>
-
-                    <Button asChild variant="outline" size="sm" className="w-full text-xs rounded-xl">
-                        <Link href="/admin/stock">
-                            Adjust Stock & Inventory
-                        </Link>
-                    </Button>
-                </div>
-            </div>
-
-            {/* Top Selling Products & Recent Orders */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                {/* Top Selling Products */}
-                <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b">
-                        <h2 className="font-bold text-base tracking-tight text-foreground">
-                            Top Selling Groceries
-                        </h2>
-                        <span className="text-xs text-muted-foreground">Past 30 Days</span>
-                    </div>
-
-                    <div className="divide-y text-xs">
-                        {stats.top_products.map((p, idx) => (
-                            <div key={idx} className="py-3 first:pt-0 flex items-center justify-between gap-4">
-                                <div className="flex items-center gap-3">
-                                    <span className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-bold text-xs shrink-0">
-                                        {idx + 1}
-                                    </span>
-                                    <div>
-                                        <div className="font-semibold text-foreground">{p.name}</div>
-                                        <div className="text-[10px] font-mono text-muted-foreground">{p.sku}</div>
-                                    </div>
-                                </div>
-                                <div className="text-right shrink-0">
-                                    <div className="font-bold text-foreground">{formatMoney(p.revenue_cents)}</div>
-                                    <div className="text-[10px] text-muted-foreground">{p.sold_qty} units sold</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Recent Orders Overview */}
-                <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b">
-                        <h2 className="font-bold text-base tracking-tight text-foreground">
-                            Recent Storefront & POS Orders
-                        </h2>
-                        <Link href="/admin/orders" className="text-xs text-purple-600 hover:underline">
-                            View All Orders &rarr;
-                        </Link>
-                    </div>
-
-                    <div className="space-y-3">
-                        {recentOrders.slice(0, 4).map((order: any) => (
-                            <Link
-                                key={order.id}
-                                href={`/admin/orders/${order.id}`}
-                                className="p-3.5 rounded-xl border bg-card hover:bg-muted/40 transition-colors flex items-center justify-between text-xs gap-3 block"
-                            >
-                                <div className="space-y-0.5">
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-mono font-bold text-foreground">{order.order_number}</span>
-                                        <Badge variant="outline" className="text-[9px] uppercase py-0">
-                                            {order.channel}
-                                        </Badge>
-                                    </div>
-                                    <div className="text-muted-foreground text-[11px]">
-                                        {order.customer_name} &bull; {order.created_at}
-                                    </div>
-                                </div>
-
-                                <div className="text-right flex items-center gap-3">
-                                    <div>
-                                        <div className="font-bold text-foreground">{formatMoney(order.total_cents)}</div>
-                                        <StatusBadge status={order.status} className="mt-0.5" />
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                                </div>
-                            </Link>
-                        ))}
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr className="border-b border-[#262626] text-[10px] font-mono uppercase tracking-wider text-[#737373]">
+                                    <th className="pb-3 font-semibold">PRODUCT</th>
+                                    <th className="pb-3 font-semibold">REVENUE</th>
+                                    <th className="pb-3 font-semibold">SALES</th>
+                                    <th className="pb-3 font-semibold">GROWTH</th>
+                                    <th className="pb-3 font-semibold">REVIEWS</th>
+                                    <th className="pb-3 font-semibold">VIEWS</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[#242424]">
+                                {TOP_PRODUCTS.map((prod) => (
+                                    <tr key={prod.name} className="hover:bg-[#222222]/60 transition-colors">
+                                        <td className="py-3.5 font-semibold text-white">
+                                            {prod.name}
+                                        </td>
+                                        <td className="py-3.5 font-mono text-white font-medium">
+                                            {prod.revenue}
+                                        </td>
+                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                            {prod.sales}
+                                        </td>
+                                        <td className="py-3.5 font-mono font-bold">
+                                            <span className={cn(
+                                                'inline-flex items-center gap-0.5',
+                                                prod.growthPositive ? 'text-[#818cf8]' : 'text-rose-400'
+                                            )}>
+                                                {prod.growthPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                                                {prod.growth}
+                                            </span>
+                                        </td>
+                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                            {prod.reviews}
+                                        </td>
+                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                            {prod.views}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ import {
     Truck,
     ShieldCheck,
     Store,
+    Sparkles,
 } from 'lucide-react';
 
 export default function CartView() {
@@ -32,16 +33,16 @@ export default function CartView() {
     const centsNeededForFreeShipping = Math.max(0, freeShippingThresholdCents - subtotalCents);
 
     return (
-        <div className="space-y-8">
-            <Head title="Your Shopping Cart — DMart Groceries" />
+        <div className="space-y-8 text-white pb-12">
+            <Head title="Shopping Bag — DMART Exclusive Drops" />
 
-            <div className="flex items-center justify-between pb-4 border-b">
+            <div className="flex items-center justify-between pb-4 border-b border-[#282828]">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Shopping Cart
+                    <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white font-sans">
+                        Shopping Bag
                     </h1>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        {items.length} unique item{items.length === 1 ? '' : 's'} in your cart
+                    <p className="text-xs text-[#737373] font-mono mt-0.5">
+                        {items.length} UNIQUE PIECE{items.length === 1 ? '' : 'S'} IN YOUR BAG
                     </p>
                 </div>
 
@@ -51,10 +52,10 @@ export default function CartView() {
                         variant="ghost"
                         size="sm"
                         onClick={clearCart}
-                        className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 gap-1.5"
+                        className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 gap-1.5"
                     >
                         <Trash2 className="w-3.5 h-3.5" />
-                        <span>Clear Cart</span>
+                        <span>Clear Bag</span>
                     </Button>
                 )}
             </div>
@@ -63,56 +64,64 @@ export default function CartView() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     {/* Left: Cart Items List */}
                     <div className="lg:col-span-2 space-y-4">
-                        {/* Free Shipping Progress Card */}
-                        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 space-y-2">
-                            <div className="flex items-center justify-between text-xs font-semibold text-emerald-900 dark:text-emerald-200">
-                                <span className="flex items-center gap-1.5">
-                                    <Truck className="w-4 h-4 text-emerald-600" />
-                                    {centsNeededForFreeShipping > 0
-                                        ? `Add ${formatMoney(centsNeededForFreeShipping)} more to get FREE Delivery!`
-                                        : '🎉 You have unlocked FREE Delivery!'}
+                        {/* Free Shipping Progress */}
+                        <div className="p-4 rounded-xl border border-[#2d2d2d] bg-[#1a1a1a] space-y-2">
+                            <div className="flex items-center justify-between text-xs">
+                                <span className="flex items-center gap-1.5 font-bold text-white uppercase tracking-wider font-mono">
+                                    <Truck className="w-4 h-4 text-[#F25623]" />
+                                    {centsNeededForFreeShipping === 0
+                                        ? 'Free Express Shipping unlocked!'
+                                        : `Add ${formatMoney(centsNeededForFreeShipping)} more for FREE Global Shipping`}
                                 </span>
-                                <span>{progressToFreeShipping}%</span>
+                                <span className="text-xs font-mono text-[#F25623] font-bold">
+                                    {Math.round(progressToFreeShipping)}%
+                                </span>
                             </div>
-                            <div className="w-full bg-emerald-200/60 dark:bg-emerald-900 h-2 rounded-full overflow-hidden">
+                            <div className="w-full h-1.5 bg-[#252525] rounded-full overflow-hidden">
                                 <div
-                                    className="bg-emerald-600 h-full rounded-full transition-all duration-300"
+                                    className="h-full bg-[#F25623] transition-all duration-300"
                                     style={{ width: `${progressToFreeShipping}%` }}
                                 />
                             </div>
                         </div>
 
-                        {/* Items Rows */}
-                        <div className="border rounded-2xl bg-card divide-y overflow-hidden shadow-xs">
-                            {items.map(({ id, product, quantity }) => (
-                                <div key={id} className="p-4 sm:p-5 flex gap-4 items-center justify-between">
-                                    <div className="flex items-center gap-3.5 min-w-0">
-                                        <Link href={`/products/${product.slug}`} className="shrink-0">
-                                            <ProductThumb
-                                                name={product.name}
-                                                imageUrl={product.image_url}
-                                                size="md"
-                                                className="rounded-xl"
-                                            />
-                                        </Link>
-                                        <div className="min-w-0 space-y-0.5">
-                                            <div className="text-[10px] font-mono text-muted-foreground uppercase">
+                        {/* Items Table */}
+                        <div className="border border-[#282828] rounded-xl bg-[#1a1a1a] divide-y divide-[#242424] overflow-hidden">
+                            {items.map(({ product, quantity }) => (
+                                <div
+                                    key={product.id}
+                                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#202020] transition-colors"
+                                >
+                                    <div className="flex items-center gap-4 min-w-0">
+                                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#242424] shrink-0 border border-[#333]">
+                                            {product.image_url ? (
+                                                <img
+                                                    src={product.image_url}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <ProductThumb name={product.name} size="full" />
+                                            )}
+                                        </div>
+
+                                        <div className="min-w-0 space-y-1">
+                                            <div className="text-[10px] font-mono text-[#737373] uppercase">
                                                 {product.sku}
                                             </div>
                                             <Link
                                                 href={`/products/${product.slug}`}
-                                                className="font-semibold text-sm hover:text-emerald-600 transition-colors block truncate max-w-[200px] sm:max-w-[320px]"
+                                                className="text-sm font-bold text-white hover:text-[#F25623] transition-colors line-clamp-1"
                                             >
                                                 {product.name}
                                             </Link>
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-xs text-[#a3a3a3] font-mono">
                                                 {formatMoney(product.price_cents)} &bull; {product.unit}
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Quantity Stepper & Line Total */}
-                                    <div className="flex items-center gap-3 sm:gap-6 shrink-0">
+                                    <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
                                         <QuantityStepper
                                             value={quantity}
                                             onChange={(qty) => updateQuantity(product.id, qty)}
@@ -122,7 +131,7 @@ export default function CartView() {
                                         />
 
                                         <div className="text-right min-w-[70px]">
-                                            <div className="text-sm font-bold text-foreground">
+                                            <div className="text-sm font-bold text-white font-mono">
                                                 {formatMoney(product.price_cents * quantity)}
                                             </div>
                                         </div>
@@ -132,7 +141,7 @@ export default function CartView() {
                                             variant="ghost"
                                             size="icon"
                                             onClick={() => removeFromCart(product.id)}
-                                            className="h-8 w-8 text-muted-foreground hover:text-rose-600"
+                                            className="h-8 w-8 text-[#737373] hover:text-rose-400"
                                             aria-label="Remove item"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -143,66 +152,66 @@ export default function CartView() {
                         </div>
 
                         <div className="pt-2">
-                            <Button asChild variant="outline" size="sm" className="text-xs">
+                            <Button asChild variant="outline" size="sm" className="text-xs border-[#333] bg-[#1a1a1a] text-white hover:border-[#F25623]">
                                 <Link href="/products">
-                                    &larr; Continue Shopping
+                                    &larr; Continue Exploring Drops
                                 </Link>
                             </Button>
                         </div>
                     </div>
 
                     {/* Right: Order Summary Sidebar */}
-                    <div className="border rounded-2xl bg-card p-6 space-y-5 shadow-xs sticky top-24">
-                        <h2 className="font-bold text-base tracking-tight text-foreground">
+                    <div className="border border-[#282828] rounded-xl bg-[#1a1a1a] p-6 space-y-5 shadow-lg sticky top-24">
+                        <h2 className="font-black text-sm uppercase tracking-wider text-white font-mono">
                             Order Summary
                         </h2>
 
                         <div className="space-y-3 text-xs">
-                            <div className="flex justify-between text-muted-foreground">
+                            <div className="flex justify-between text-[#a3a3a3] font-mono">
                                 <span>Subtotal</span>
-                                <span className="font-medium text-foreground">{formatMoney(subtotalCents)}</span>
+                                <span className="font-medium text-white">{formatMoney(subtotalCents)}</span>
                             </div>
-                            <div className="flex justify-between text-muted-foreground">
-                                <span>Local Delivery (Phnom Penh)</span>
-                                <span className="font-medium text-foreground">
+                            <div className="flex justify-between text-[#a3a3a3] font-mono">
+                                <span>Express Courier Shipping</span>
+                                <span className="font-medium text-white">
                                     {shippingFeeCents === 0 ? (
-                                        <span className="text-emerald-600 font-bold">FREE</span>
+                                        <span className="text-[#F25623] font-bold">FREE</span>
                                     ) : (
                                         formatMoney(shippingFeeCents)
                                     )}
                                 </span>
                             </div>
-                            <div className="pt-3 border-t flex justify-between text-base font-bold text-foreground">
+                            <div className="pt-3 border-t border-[#262626] flex justify-between text-base font-bold text-white font-mono">
                                 <span>Estimated Total</span>
-                                <span className="text-emerald-700 dark:text-emerald-400">
+                                <span className="text-[#F25623]">
                                     {formatMoney(totalCents)}
                                 </span>
                             </div>
                         </div>
 
-                        <Button asChild size="xl" variant="emerald" className="w-full font-bold shadow-md gap-2">
+                        <Button asChild size="lg" variant="orange" className="w-full font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-[#F25623]/25 gap-2">
                             <Link href="/checkout">
                                 <span>Proceed to Checkout</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
                         </Button>
 
-                        <div className="p-3 bg-muted/40 rounded-xl space-y-1.5 text-[11px] text-muted-foreground">
-                            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                                <span>Safe Mock KHQR Checkout</span>
+                        <div className="p-3 bg-[#141414] rounded-xl space-y-1.5 text-[11px] text-[#737373] border border-[#242424]">
+                            <div className="flex items-center gap-1.5 font-semibold text-white">
+                                <ShieldCheck className="w-3.5 h-3.5 text-[#F25623]" />
+                                <span>100% Authentic Release</span>
                             </div>
                             <p>
-                                Simulated Bakong payment. No real credit card or bank account required for this demo.
+                                Worldwide express delivery. Free size exchanges and returns within 30 days.
                             </p>
                         </div>
                     </div>
                 </div>
             ) : (
                 <EmptyState
-                    title="Your cart is empty"
-                    description="Looks like you haven't added any fresh groceries to your cart yet. Explore our pantry and farm-fresh items."
-                    actionLabel="Explore Products"
+                    title="Your shopping bag is empty"
+                    description="Looks like you haven't added any pieces to your bag yet. Explore our capsule drops and limited editions."
+                    actionLabel="Explore Capsule Drops"
                     actionHref="/products"
                     icon={ShoppingBag}
                 />

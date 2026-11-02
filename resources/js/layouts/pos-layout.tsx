@@ -43,43 +43,49 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-slate-100 dark:bg-slate-950 text-foreground font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
+        <div className="min-h-screen flex flex-col bg-[#141414] text-white font-sans antialiased selection:bg-[#F25623] selection:text-white">
             {/* Top Bar for POS */}
-            <header className="h-14 bg-slate-900 text-white px-4 flex items-center justify-between border-b border-slate-800 shadow-sm shrink-0">
+            <header className="h-14 bg-[#1a1a1a] text-white px-4 flex items-center justify-between border-b border-[#282828] shadow-sm shrink-0">
                 <div className="flex items-center gap-4">
                     <Link href="/pos" className="flex items-center gap-2.5 group">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center font-bold text-sm shadow-xs group-hover:scale-105 transition-transform">
+                        <div className="w-8 h-8 rounded-lg bg-[#F25623] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-[#F25623]/25 group-hover:scale-105 transition-transform">
                             <Terminal className="w-4 h-4" />
                         </div>
-                        <div className="flex items-baseline gap-1.5">
-                            <span className="font-extrabold tracking-tight text-white text-base">DMart POS</span>
-                            <span className="text-xs text-slate-400 font-mono">Reg #01</span>
+                        <div className="flex items-baseline gap-2">
+                            <span className="font-black tracking-widest uppercase text-white text-base">
+                                DMART <span className="text-[#F25623]">POS</span>
+                            </span>
+                            <span className="text-[11px] text-[#737373] font-mono">Reg #01 &bull; Terminal</span>
                         </div>
                     </Link>
 
-                    <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800 text-[11px] text-emerald-400 font-mono">
+                    <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#242424] border border-[#333] text-[11px] text-white font-mono">
                         <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F25623] opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F25623]" />
                         </span>
-                        <span>Online &bull; SQLite Sync</span>
+                        <span>Online &bull; Instant Sync</span>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2 sm:gap-3 text-xs">
                     {/* Live Clock */}
-                    <div className="hidden md:flex items-center gap-1.5 text-slate-300 font-mono bg-slate-800/90 border border-slate-700/80 px-2.5 py-1 rounded-lg shadow-2xs">
-                        <Clock className="w-3.5 h-3.5 text-blue-400" />
+                    <div className="hidden md:flex items-center gap-1.5 text-[#a3a3a3] font-mono bg-[#222] border border-[#333] px-3 py-1 rounded-full shadow-inner">
+                        <Clock className="w-3.5 h-3.5 text-[#F25623]" />
                         <span>{currentTime || '00:00:00'}</span>
                     </div>
 
                     {/* Navigation Tabs */}
-                    <div className="flex items-center gap-1 bg-slate-800/60 p-0.5 rounded-xl border border-slate-700/60">
+                    <div className="flex items-center gap-1 bg-[#222] p-0.5 rounded-full border border-[#333]">
                         <Button
                             asChild
                             variant={url === '/pos' ? 'default' : 'ghost'}
                             size="xs"
-                            className={`rounded-lg ${url === '/pos' ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-700/60'}`}
+                            className={`rounded-full px-3 text-xs font-semibold ${
+                                url === '/pos'
+                                    ? 'bg-[#F25623] hover:bg-[#d9481a] text-white shadow-xs'
+                                    : 'text-[#888] hover:text-white hover:bg-[#2c2c2c]'
+                            }`}
                         >
                             <Link href="/pos">
                                 <Terminal className="w-3.5 h-3.5 mr-1" />
@@ -90,7 +96,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             asChild
                             variant={url.startsWith('/pos/sales') ? 'default' : 'ghost'}
                             size="xs"
-                            className={`rounded-lg ${url.startsWith('/pos/sales') ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-700/60'}`}
+                            className={`rounded-full px-3 text-xs font-semibold ${
+                                url.startsWith('/pos/sales')
+                                    ? 'bg-[#F25623] hover:bg-[#d9481a] text-white shadow-xs'
+                                    : 'text-[#888] hover:text-white hover:bg-[#2c2c2c]'
+                            }`}
                         >
                             <Link href="/pos/sales">
                                 <History className="w-3.5 h-3.5 mr-1" />
@@ -99,49 +109,41 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                         </Button>
                     </div>
 
-                    {/* Quick Portal Jump */}
-                    <Button asChild variant="ghost" size="xs" className="hidden lg:inline-flex text-slate-400 hover:text-white text-xs">
-                        <Link href="/">
-                            <Store className="w-3.5 h-3.5 mr-1 text-emerald-400" />
-                            Store
-                        </Link>
-                    </Button>
-                    <Button asChild variant="ghost" size="xs" className="hidden lg:inline-flex text-slate-400 hover:text-white text-xs">
-                        <Link href="/admin">
-                            <Shield className="w-3.5 h-3.5 mr-1 text-purple-400" />
-                            Admin
-                        </Link>
-                    </Button>
-
-                    {/* Cashier Info */}
-                    <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-700 text-slate-300">
-                        <div className="w-6 h-6 rounded-full bg-blue-900 text-blue-200 flex items-center justify-center font-bold text-[10px]">
-                            DC
-                        </div>
-                        <span className="font-medium text-xs text-slate-300">Cashier #1</span>
+                    {/* Portal Switchers */}
+                    <div className="hidden lg:flex items-center gap-1.5 pl-2 border-l border-[#333]">
+                        <Button asChild variant="outline" size="xs" className="rounded-full border-[#333] bg-[#222] text-[#a3a3a3] hover:text-white hover:border-[#F25623]">
+                            <Link href="/">
+                                <Store className="w-3 h-3 text-[#F25623] mr-1" />
+                                Storefront
+                            </Link>
+                        </Button>
+                        <Button asChild variant="outline" size="xs" className="rounded-full border-[#333] bg-[#222] text-[#a3a3a3] hover:text-white hover:border-purple-400">
+                            <Link href="/admin">
+                                <Shield className="w-3 h-3 text-purple-400 mr-1" />
+                                Admin
+                            </Link>
+                        </Button>
                     </div>
 
-                    {/* Dark Mode Toggle */}
+                    {/* Theme Toggle */}
                     <Button
                         variant="ghost"
                         size="icon-xs"
                         onClick={toggleTheme}
-                        className="text-slate-300 hover:text-white hover:bg-slate-800"
+                        className="rounded-full text-[#a3a3a3] hover:text-white hover:bg-[#222]"
                         aria-label="Toggle theme"
                     >
                         {resolvedAppearance === 'dark' ? (
-                            <Sun className="h-3.5 w-3.5 text-amber-400" />
+                            <Sun className="h-4 w-4 text-amber-400" />
                         ) : (
-                            <Moon className="h-3.5 w-3.5" />
+                            <Moon className="h-4 w-4 text-[#a3a3a3]" />
                         )}
                     </Button>
                 </div>
             </header>
 
-            {/* Main Terminal Body */}
-            <main className="flex-1 flex flex-col min-h-0">
-                {children}
-            </main>
+            {/* Main content fills viewport */}
+            <main className="flex-1 flex overflow-hidden">{children}</main>
         </div>
     );
 }

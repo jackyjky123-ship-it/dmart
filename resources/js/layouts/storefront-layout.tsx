@@ -14,16 +14,15 @@ import {
     Shield,
     Terminal,
     ShoppingBag,
-    Phone,
-    MapPin,
-    Clock,
-    Sparkles,
     User as UserIcon,
     LogOut,
-    CheckCircle2,
     ChevronDown,
     Truck,
-    CreditCard,
+    ArrowRight,
+    Sparkles,
+    Flame,
+    RotateCcw,
+    ShieldCheck,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -77,178 +76,163 @@ function StorefrontHeader() {
     };
 
     return (
-        <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/85 backdrop-blur-xl supports-backdrop-filter:bg-background/70 shadow-xs transition-colors">
+        <header className="sticky top-0 z-40 w-full border-b border-[#262626] bg-[#171717]/95 backdrop-blur-xl text-white shadow-md">
             {/* Top Announcement Bar */}
-            <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white text-xs py-1.5 px-4 font-medium tracking-tight">
+            <div className="bg-black text-[#a3a3a3] text-[11px] uppercase tracking-widest py-2 px-4 border-b border-white/10 font-mono">
                 <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2 truncate">
-                        <span className="relative flex h-2 w-2 shrink-0">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75" />
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                        </span>
-                        <span className="truncate">
-                            <strong className="font-semibold text-emerald-100">Express Delivery in Phnom Penh:</strong> Free delivery on orders over $35.00
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#F25623] animate-pulse" />
+                        <span className="text-white font-medium tracking-wider">
+                            Limited Releases. Exclusive Drops. Elegance is now live.
                         </span>
                     </div>
 
-                    <div className="hidden sm:flex items-center gap-4 text-emerald-100 text-[11px] shrink-0 font-sans">
+                    <div className="hidden sm:flex items-center gap-6 text-[11px] text-[#a3a3a3]">
                         <span className="flex items-center gap-1.5">
-                            <Clock className="w-3 h-3 text-emerald-300" /> 7:00 AM – 10:00 PM Daily
+                            <Truck className="w-3.5 h-3.5 text-[#F25623]" />
+                            Free worldwide shipping over $99
                         </span>
-                        <span className="flex items-center gap-1.5">
-                            <Phone className="w-3 h-3 text-emerald-300" /> +855 23 888 999
-                        </span>
-                        <span className="bg-white/15 px-2 py-0.5 rounded-full text-[10px] text-white font-medium">
-                            Phnom Penh Mini-Mart
-                        </span>
+                        <span className="text-white/40">|</span>
+                        <span className="text-white font-semibold tracking-wider">USD $</span>
                     </div>
                 </div>
             </div>
 
             {/* Main Navbar */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3 sm:gap-6">
-                {/* Brand */}
-                <div className="flex items-center gap-6 shrink-0">
-                    <Link href="/" className="flex items-center gap-2.5 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center justify-center font-black text-xl shadow-md shadow-emerald-700/20 group-hover:scale-105 group-hover:shadow-emerald-600/30 transition-all duration-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+                {/* Left Navigation */}
+                <nav className="hidden md:flex items-center gap-6 text-xs uppercase tracking-widest font-semibold text-[#a3a3a3]">
+                    <Link
+                        href="/"
+                        className={`transition-colors hover:text-white ${isCurrent('/', true) ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        href="/products"
+                        className={`transition-colors hover:text-white ${isCurrent('/products') ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                    >
+                        Catalog
+                    </Link>
+                    <Link
+                        href="/products?filter=drops"
+                        className="transition-colors hover:text-[#F25623] flex items-center gap-1"
+                    >
+                        <Flame className="w-3.5 h-3.5 text-[#F25623]" />
+                        Drops
+                    </Link>
+                    <Link
+                        href="/orders"
+                        className={`transition-colors hover:text-white ${isCurrent('/orders') ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                    >
+                        Orders
+                    </Link>
+                </nav>
+
+                {/* Center Brand Logo */}
+                <div className="flex items-center justify-center">
+                    <Link href="/" className="flex items-center gap-2 group">
+                        <div className="w-8 h-8 rounded-lg bg-[#F25623] text-white flex items-center justify-center font-black text-lg tracking-tighter group-hover:scale-105 transition-transform shadow-md shadow-[#F25623]/20">
                             D
                         </div>
-                        <div className="flex flex-col leading-none">
-                            <span className="text-xl font-black tracking-tight text-foreground flex items-center gap-1">
-                                D<span className="text-emerald-600 dark:text-emerald-400">Mart</span>
-                                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            </span>
-                            <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">
-                                Grocery &bull; Mini-Mart
+                        <div className="flex flex-col">
+                            <span className="text-2xl font-black tracking-widest uppercase text-white font-sans">
+                                D<span className="text-[#F25623]">MART</span>
                             </span>
                         </div>
                     </Link>
-
-                    {/* Nav Links Desktop */}
-                    <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
-                        <Link
-                            href="/"
-                            className={`px-3.5 py-1.5 rounded-lg transition-all duration-150 ${
-                                isCurrent('/', true)
-                                    ? 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50 dark:bg-emerald-950/60 shadow-2xs'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                            }`}
-                        >
-                            Home
-                        </Link>
-                        <Link
-                            href="/products"
-                            className={`px-3.5 py-1.5 rounded-lg transition-all duration-150 ${
-                                isCurrent('/products')
-                                    ? 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50 dark:bg-emerald-950/60 shadow-2xs'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                            }`}
-                        >
-                            Products Catalog
-                        </Link>
-                        <Link
-                            href="/orders"
-                            className={`px-3.5 py-1.5 rounded-lg transition-all duration-150 ${
-                                isCurrent('/orders')
-                                    ? 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50 dark:bg-emerald-950/60 shadow-2xs'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                            }`}
-                        >
-                            My Orders
-                        </Link>
-                    </nav>
                 </div>
 
-                {/* Integrated Instant Search (Desktop / Tablet) */}
-                <form
-                    onSubmit={handleSearchSubmit}
-                    className="hidden md:flex flex-1 max-w-xs lg:max-w-sm relative items-center"
-                >
-                    <Search className="w-4 h-4 absolute left-3 text-muted-foreground pointer-events-none" />
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search groceries, bakery, drinks..."
-                        className="w-full h-9.5 pl-9 pr-3 rounded-xl border border-input/80 bg-muted/40 hover:bg-muted/60 focus:bg-background text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 placeholder:text-muted-foreground/80"
-                    />
-                </form>
-
                 {/* Right Actions */}
-                <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-                    {/* Portal Switcher Dropdown */}
+                <div className="flex items-center gap-3">
+                    {/* Search bar Desktop */}
+                    <form
+                        onSubmit={handleSearchSubmit}
+                        className="hidden lg:flex relative items-center"
+                    >
+                        <Search className="w-3.5 h-3.5 absolute left-3 text-[#737373] pointer-events-none" />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="SEARCH CATALOG..."
+                            className="w-48 xl:w-56 h-8.5 pl-8 pr-3 rounded-full border border-[#2e2e2e] bg-[#222222] text-[11px] text-white placeholder:text-[#737373] placeholder:tracking-wider uppercase focus:outline-none focus:border-[#F25623] transition-all"
+                        />
+                    </form>
+
+                    {/* Portal Switcher */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="outline"
                                 size="sm"
-                                className="hidden sm:inline-flex items-center gap-1.5 text-xs h-9 border-dashed rounded-xl px-2.5 text-muted-foreground hover:text-foreground"
+                                className="hidden sm:inline-flex items-center gap-1.5 text-xs h-8.5 rounded-full border-[#333333] bg-[#222222] text-[#d4d4d4] hover:text-white hover:bg-[#2c2c2c] hover:border-[#F25623]/60"
                             >
-                                <Store className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <Store className="w-3.5 h-3.5 text-[#F25623]" />
                                 <span className="hidden xl:inline">Portals</span>
-                                <ChevronDown className="w-3 h-3 text-muted-foreground/70" />
+                                <ChevronDown className="w-3 h-3 text-white/50" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-52 rounded-xl p-1.5 shadow-lg border">
-                            <DropdownMenuLabel className="text-xs font-semibold px-2 py-1.5 text-muted-foreground">
-                                Switch Demo Workspace
+                        <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 shadow-xl border border-[#333] bg-[#1a1a1a] text-white">
+                            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider font-mono text-[#a3a3a3] px-2 py-1.5">
+                                Switch Workspace
                             </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                            <DropdownMenuSeparator className="bg-[#2e2e2e]" />
+                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
                                 <Link href="/" className="flex items-center py-2 px-2.5">
-                                    <ShoppingBag className="w-4 h-4 mr-2.5 text-emerald-600 shrink-0" />
+                                    <ShoppingBag className="w-4 h-4 mr-2.5 text-[#F25623] shrink-0" />
                                     <div>
-                                        <div className="font-semibold text-xs">Customer Storefront</div>
-                                        <div className="text-[10px] text-muted-foreground">Browse, cart, checkout</div>
+                                        <div className="font-semibold text-xs text-white">Storefront</div>
+                                        <div className="text-[10px] text-[#a3a3a3]">Streetwear drops & catalog</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
                                 <Link href="/pos" className="flex items-center py-2 px-2.5">
-                                    <Terminal className="w-4 h-4 mr-2.5 text-blue-600 shrink-0" />
+                                    <Terminal className="w-4 h-4 mr-2.5 text-blue-400 shrink-0" />
                                     <div>
-                                        <div className="font-semibold text-xs">POS Cashier Terminal</div>
-                                        <div className="text-[10px] text-muted-foreground">Quick sell & receipt print</div>
+                                        <div className="font-semibold text-xs text-white">POS Cashier Terminal</div>
+                                        <div className="text-[10px] text-[#a3a3a3]">High-speed in-store register</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
                                 <Link href="/admin" className="flex items-center py-2 px-2.5">
-                                    <Shield className="w-4 h-4 mr-2.5 text-purple-600 shrink-0" />
+                                    <Shield className="w-4 h-4 mr-2.5 text-purple-400 shrink-0" />
                                     <div>
-                                        <div className="font-semibold text-xs">Admin Back Office</div>
-                                        <div className="text-[10px] text-muted-foreground">Catalog, stock & orders</div>
+                                        <div className="font-semibold text-xs text-white">Admin Dashboard</div>
+                                        <div className="text-[10px] text-[#a3a3a3]">Analytics & management</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    {/* Dark / Light Mode Toggle */}
+                    {/* Theme Toggle */}
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={toggleTheme}
-                        className="h-9.5 w-9.5 rounded-xl hover:bg-muted/80"
+                        className="h-8.5 w-8.5 rounded-full text-[#a3a3a3] hover:text-white hover:bg-[#262626]"
                         aria-label="Toggle theme"
                     >
                         {resolvedAppearance === 'dark' ? (
-                            <Sun className="h-4 w-4 text-amber-400 transition-transform hover:rotate-45" />
+                            <Sun className="h-4 w-4 text-amber-400" />
                         ) : (
-                            <Moon className="h-4 w-4 text-muted-foreground transition-transform hover:-rotate-12" />
+                            <Moon className="h-4 w-4 text-[#a3a3a3]" />
                         )}
                     </Button>
 
-                    {/* User Profile / Login */}
+                    {/* User Profile */}
                     {user ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-9.5 rounded-xl px-2 gap-2 text-xs hover:bg-muted/80"
+                                    className="h-8.5 rounded-full px-2 gap-2 text-xs text-white hover:bg-[#262626]"
                                 >
-                                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold text-[11px] flex items-center justify-center">
+                                    <div className="w-6 h-6 rounded-full bg-[#F25623] text-white font-bold text-[11px] flex items-center justify-center">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
                                     <span className="hidden sm:inline font-medium max-w-[90px] truncate">
@@ -256,36 +240,36 @@ function StorefrontHeader() {
                                     </span>
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-48 rounded-xl p-1.5 shadow-lg border">
+                            <DropdownMenuContent align="end" className="w-48 rounded-xl p-1.5 shadow-xl border border-[#333] bg-[#1a1a1a] text-white">
                                 <DropdownMenuLabel className="text-xs px-2 py-1">
-                                    <div className="font-semibold truncate">{user.name}</div>
-                                    <div className="text-[10px] text-muted-foreground font-normal truncate">{user.email}</div>
+                                    <div className="font-semibold truncate text-white">{user.name}</div>
+                                    <div className="text-[10px] text-[#a3a3a3] font-normal truncate">{user.email}</div>
                                 </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                                    <Link href="/orders" className="flex items-center text-xs">
-                                        <ShoppingBag className="w-3.5 h-3.5 mr-2 text-muted-foreground" />
+                                <DropdownMenuSeparator className="bg-[#2e2e2e]" />
+                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
+                                    <Link href="/orders" className="flex items-center text-xs text-[#d4d4d4]">
+                                        <ShoppingBag className="w-3.5 h-3.5 mr-2 text-[#a3a3a3]" />
                                         My Orders
                                     </Link>
                                 </DropdownMenuItem>
                                 {user.role === 'admin' && (
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                                        <Link href="/admin" className="flex items-center text-xs text-purple-600 font-medium">
+                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
+                                        <Link href="/admin" className="flex items-center text-xs text-[#F25623] font-medium">
                                             <Shield className="w-3.5 h-3.5 mr-2" />
                                             Admin Portal
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
                                 {(user.role === 'cashier' || user.role === 'admin') && (
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                                        <Link href="/pos" className="flex items-center text-xs text-blue-600 font-medium">
+                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
+                                        <Link href="/pos" className="flex items-center text-xs text-blue-400 font-medium">
                                             <Terminal className="w-3.5 h-3.5 mr-2" />
                                             POS Terminal
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-destructive focus:text-destructive">
+                                <DropdownMenuSeparator className="bg-[#2e2e2e]" />
+                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-destructive focus:text-destructive hover:bg-rose-950/30">
                                     <Link href="/logout" method="post" as="button" className="w-full flex items-center text-xs">
                                         <LogOut className="w-3.5 h-3.5 mr-2" />
                                         Log Out
@@ -298,36 +282,36 @@ function StorefrontHeader() {
                             asChild
                             variant="ghost"
                             size="sm"
-                            className="hidden sm:inline-flex text-xs h-9.5 rounded-xl font-medium"
+                            className="hidden sm:inline-flex text-xs h-8.5 rounded-full font-medium text-[#d4d4d4] hover:text-white hover:bg-[#262626]"
                         >
                             <Link href="/login">
-                                <UserIcon className="w-3.5 h-3.5 mr-1.5 text-muted-foreground" />
-                                Sign In
+                                <UserIcon className="w-3.5 h-3.5 mr-1.5 text-[#a3a3a3]" />
+                                Account
                             </Link>
                         </Button>
                     )}
 
-                    {/* Cart Button */}
+                    {/* Cart Button with Signature Orange Badge */}
                     <Button
                         asChild
-                        variant="emerald"
+                        variant="orange"
                         size="sm"
-                        className="h-9.5 px-3.5 rounded-xl gap-2 font-semibold shadow-xs"
+                        className="h-8.5 px-3.5 rounded-full gap-2 font-semibold shadow-md shadow-[#F25623]/25"
                     >
                         <Link href="/cart" className="flex items-center">
-                            <ShoppingCart className="w-4 h-4 shrink-0" />
-                            <span className="hidden sm:inline text-xs font-semibold">Cart</span>
-                            <span className="ml-1 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-emerald-950/20 text-white text-[11px] font-bold">
+                            <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+                            <span className="hidden sm:inline text-xs font-semibold">BAG</span>
+                            <span className="ml-1 inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 rounded-full bg-white text-[#171717] text-[10px] font-black">
                                 {itemCount}
                             </span>
                         </Link>
                     </Button>
 
-                    {/* Mobile Hamburger Button */}
+                    {/* Mobile Menu Toggle */}
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="lg:hidden h-9.5 w-9.5 rounded-xl"
+                        className="md:hidden h-8.5 w-8.5 rounded-full text-white hover:bg-[#262626]"
                         onClick={() => setMobileOpen(!mobileOpen)}
                         aria-label="Toggle mobile menu"
                     >
@@ -336,82 +320,65 @@ function StorefrontHeader() {
                 </div>
             </div>
 
-            {/* Mobile Dropdown / Drawer */}
+            {/* Mobile Drawer */}
             {mobileOpen && (
-                <div className="lg:hidden border-b border-border/60 bg-background/95 backdrop-blur-xl px-4 py-4 space-y-4 shadow-xl">
+                <div className="md:hidden border-b border-[#2d2d2d] bg-[#171717] px-4 py-4 space-y-4 shadow-2xl">
                     <form onSubmit={handleSearchSubmit} className="relative">
-                        <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground pointer-events-none" />
+                        <Search className="w-4 h-4 absolute left-3 top-3 text-[#737373] pointer-events-none" />
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search fresh groceries..."
-                            className="w-full h-10 pl-9 pr-3 rounded-xl border border-input bg-muted/30 text-xs focus:ring-2 focus:ring-emerald-500/30 focus:outline-none"
+                            placeholder="Search drops & apparel..."
+                            className="w-full h-10 pl-9 pr-3 rounded-full border border-[#2d2d2d] bg-[#222] text-xs text-white focus:ring-1 focus:ring-[#F25623] focus:outline-none"
                         />
                     </form>
 
-                    <nav className="flex flex-col space-y-1">
+                    <nav className="flex flex-col space-y-1 uppercase text-xs tracking-wider font-semibold text-[#a3a3a3]">
                         <Link
                             href="/"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl text-sm font-medium hover:bg-muted transition-colors flex items-center justify-between"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
                         >
                             <span>Home</span>
                         </Link>
                         <Link
                             href="/products"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl text-sm font-medium hover:bg-muted transition-colors flex items-center justify-between"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
                         >
-                            <span>Products Catalog</span>
+                            <span>Catalog</span>
                         </Link>
                         <Link
                             href="/cart"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl text-sm font-medium hover:bg-muted transition-colors flex items-center justify-between"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
                         >
-                            <span>Cart</span>
-                            <Badge className="bg-emerald-600 text-white text-xs">{itemCount}</Badge>
+                            <span>Shopping Bag</span>
+                            <Badge className="bg-[#F25623] text-white text-xs">{itemCount}</Badge>
                         </Link>
                         <Link
                             href="/orders"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl text-sm font-medium hover:bg-muted transition-colors"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white"
                         >
-                            My Orders
+                            <span>Orders</span>
                         </Link>
-                    </nav>
-
-                    <div className="pt-3 border-t flex flex-col gap-1.5">
-                        <div className="text-[11px] font-semibold text-muted-foreground px-3 uppercase tracking-wider">
-                            Demo Portals
-                        </div>
                         <Link
                             href="/pos"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3 py-2 rounded-lg text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 flex items-center gap-2 font-medium"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-blue-400"
                         >
-                            <Terminal className="w-4 h-4" /> POS Cashier Terminal
+                            <span>POS Terminal</span>
                         </Link>
                         <Link
                             href="/admin"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3 py-2 rounded-lg text-xs text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 flex items-center gap-2 font-medium"
+                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-purple-400"
                         >
-                            <Shield className="w-4 h-4" /> Admin Back Office
+                            <span>Admin Portal</span>
                         </Link>
-                    </div>
-
-                    {!user && (
-                        <div className="pt-3 border-t">
-                            <Button asChild variant="outline" className="w-full justify-center text-xs h-9.5 rounded-xl">
-                                <Link href="/login" onClick={() => setMobileOpen(false)}>
-                                    <UserIcon className="w-3.5 h-3.5 mr-2" />
-                                    Customer Login / Sign In
-                                </Link>
-                            </Button>
-                        </div>
-                    )}
+                    </nav>
                 </div>
             )}
         </header>
@@ -420,136 +387,138 @@ function StorefrontHeader() {
 
 function StorefrontFooter() {
     return (
-        <footer className="border-t border-border/60 bg-muted/20 mt-20">
-            {/* Trust and Values Strip */}
-            <div className="border-b border-border/40 bg-muted/40 py-6">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <footer className="border-t border-[#262626] bg-[#111111] text-[#a3a3a3] transition-colors">
+            {/* Value Propositions Strip */}
+            <div className="border-b border-[#222222] py-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                            <Truck className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
+                            <Truck className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-foreground">30-Min Fast Delivery</div>
-                            <div className="text-[11px] text-muted-foreground">Phnom Penh City dispatch</div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider">Free Global Shipping</div>
+                            <div className="text-[11px] text-[#737373]">On all orders over $99</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                            <CreditCard className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
+                            <RotateCcw className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-foreground">Mock KHQR & Cash</div>
-                            <div className="text-[11px] text-muted-foreground">Bakong simulation & COD</div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider">Easy 30-Day Returns</div>
+                            <div className="text-[11px] text-[#737373]">Hassle-free exchanges</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
-                            <Sparkles className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
+                            <ShieldCheck className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-foreground">100% Fresh Guaranteed</div>
-                            <div className="text-[11px] text-muted-foreground">Direct daily local farm supply</div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider">100% Authentic Drop</div>
+                            <div className="text-[11px] text-[#737373]">Verified original streetwear</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                            <Clock className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
+                            <Sparkles className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-foreground">Open 7 Days a Week</div>
-                            <div className="text-[11px] text-muted-foreground">7:00 AM – 10:00 PM Daily</div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider">Limited Releases</div>
+                            <div className="text-[11px] text-[#737373]">Exclusive capsule drops</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Main Footer Links */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div className="space-y-3.5 md:col-span-1">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center justify-center font-black text-base shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+                    <div className="space-y-4 md:col-span-1">
+                        <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-md bg-[#F25623] text-white flex items-center justify-center font-black text-sm">
                                 D
                             </div>
-                            <span className="text-lg font-black tracking-tight">
-                                D<span className="text-emerald-600 dark:text-emerald-400">Mart</span>
+                            <span className="text-xl font-black tracking-widest uppercase text-white font-sans">
+                                D<span className="text-[#F25623]">MART</span>
                             </span>
                         </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                            Your neighborhood grocery and mini-mart in Phnom Penh. Fresh produce, everyday pantry staples, and lightning-fast local fulfillment.
+                        <p className="text-xs text-[#737373] leading-relaxed">
+                            Luxury staples for the modern disruptor. Precision-tailored pieces that break convention and redefine presence. This isn't just fashion—it's a statement.
                         </p>
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-[11px] font-medium border border-emerald-200 dark:border-emerald-800/50">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                            <span>Locally Operated &bull; Phnom Penh</span>
+                        <div className="pt-2">
+                            <span className="text-[11px] font-mono tracking-widest text-[#F25623] uppercase">
+                                #DESIGNED-TO-DISRUPT
+                            </span>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3.5">
-                            Shop Categories
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4 font-mono">
+                            Capsule Drops
                         </h4>
-                        <ul className="space-y-2 text-xs text-muted-foreground">
-                            <li><Link href="/products?category=produce" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Fresh Produce</Link></li>
-                            <li><Link href="/products?category=dairy-eggs" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Dairy & Eggs</Link></li>
-                            <li><Link href="/products?category=bakery" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Daily Bakery</Link></li>
-                            <li><Link href="/products?category=beverages" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Beverages & Coffee</Link></li>
-                            <li><Link href="/products?category=snacks" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Snacks & Confections</Link></li>
+                        <ul className="space-y-2.5 text-xs text-[#a3a3a3]">
+                            <li><Link href="/products?category=hoodies" className="hover:text-[#F25623] transition-colors">Essential Oversized Hoodies</Link></li>
+                            <li><Link href="/products?category=tees" className="hover:text-[#F25623] transition-colors">Acid-Wash Graphic Tees</Link></li>
+                            <li><Link href="/products?category=outerwear" className="hover:text-[#F25623] transition-colors">Technical Outerwear & Bomber</Link></li>
+                            <li><Link href="/products?category=bottoms" className="hover:text-[#F25623] transition-colors">Distressed Denim & Cargo</Link></li>
+                            <li><Link href="/products?category=accessories" className="hover:text-[#F25623] transition-colors">Caps, Bags & Accessories</Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3.5">
-                            Demo Portals
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4 font-mono">
+                            Workspaces
                         </h4>
-                        <ul className="space-y-2 text-xs text-muted-foreground">
+                        <ul className="space-y-2.5 text-xs text-[#a3a3a3]">
                             <li>
-                                <Link href="/" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors flex items-center gap-1.5">
-                                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-600" /> Customer Storefront
+                                <Link href="/" className="hover:text-[#F25623] font-medium transition-colors flex items-center gap-2">
+                                    <ShoppingBag className="w-3.5 h-3.5 text-[#F25623]" /> Storefront Showcase
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/pos" className="hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors flex items-center gap-1.5">
-                                    <Terminal className="w-3.5 h-3.5 text-blue-600" /> Cashier POS Terminal
+                                <Link href="/pos" className="hover:text-blue-400 font-medium transition-colors flex items-center gap-2">
+                                    <Terminal className="w-3.5 h-3.5 text-blue-400" /> POS Cashier Register
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin" className="hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors flex items-center gap-1.5">
-                                    <Shield className="w-3.5 h-3.5 text-purple-600" /> Admin Back Office
+                                <Link href="/admin" className="hover:text-purple-400 font-medium transition-colors flex items-center gap-2">
+                                    <Shield className="w-3.5 h-3.5 text-purple-400" /> Admin Analytics Portal
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/cart" className="hover:text-foreground transition-colors flex items-center gap-1.5">
-                                    <ShoppingCart className="w-3.5 h-3.5 text-muted-foreground" /> Cart & Checkout Flow
+                                <Link href="/cart" className="hover:text-white transition-colors flex items-center gap-2">
+                                    <ShoppingCart className="w-3.5 h-3.5 text-[#a3a3a3]" /> Checkout & Payment
                                 </Link>
                             </li>
                         </ul>
                     </div>
 
-                    <div className="space-y-2.5 text-xs text-muted-foreground">
-                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3.5">
-                            Store Location & Hours
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-white font-mono">
+                            Join The Drop Club
                         </h4>
-                        <div className="flex items-start gap-2">
-                            <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
-                            <span>#24 Samdach Penn Nouth St (214), Phnom Penh</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                            <span>+855 23 888 999</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Clock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                            <span>Mon - Sun: 7:00 AM - 10:00 PM</span>
-                        </div>
+                        <p className="text-xs text-[#737373]">
+                            Be the first to know about private drops, limited releases, and exclusive archive sales.
+                        </p>
+                        <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-2">
+                            <input
+                                type="email"
+                                placeholder="ENTER YOUR EMAIL..."
+                                className="w-full h-9 px-3 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] text-xs text-white placeholder:text-[#666] placeholder:text-[10px] focus:outline-none focus:border-[#F25623]"
+                            />
+                            <Button type="submit" variant="orange" size="sm" className="h-9 px-3 shrink-0 rounded-lg">
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </Button>
+                        </form>
                     </div>
                 </div>
 
-                <div className="mt-10 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-3">
-                    <p>&copy; {new Date().getFullYear()} DMart Mini-Mart. Built with Laravel 12 & Inertia React.</p>
-                    <div className="flex items-center gap-2">
-                        <span className="text-[11px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2.5 py-1 rounded-full font-medium">
-                            Demo Mode &bull; Simulated KHQR Payments
-                        </span>
+                <div className="mt-12 pt-8 border-t border-[#222222] flex flex-col sm:flex-row items-center justify-between text-xs text-[#737373] gap-4">
+                    <p>&copy; {new Date().getFullYear()} DMART STUDIO. ALL RIGHTS RESERVED.</p>
+                    <div className="flex items-center gap-4 text-[11px] font-mono">
+                        <span className="text-[#F25623]">STYLE • VIBE • REFLECT</span>
+                        <span>|</span>
+                        <span>GLOBAL SHIPPING</span>
                     </div>
                 </div>
             </div>
@@ -560,7 +529,7 @@ function StorefrontFooter() {
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
     return (
         <CartProvider>
-            <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-emerald-100 selection:text-emerald-900 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.06),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.12),transparent)] transition-colors">
+            <div className="min-h-screen flex flex-col bg-[#171717] text-white selection:bg-[#F25623] selection:text-white transition-colors">
                 <StorefrontHeader />
                 <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {children}
