@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Enums\StockMovementType;
+use App\Enums\UserRole;
 use App\Exceptions\InsufficientStockException;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -157,7 +158,7 @@ class SaleController extends Controller
                     'total_cents' => $totalCents,
                     'cash_tendered_cents' => $cashTenderedCents,
                     'change_cents' => $changeCents,
-                    'shipping_name' => $validated['customer_name'] ?: null,
+                    'shipping_name' => $validated['customer_name'] ?? null,
                     'paid_at' => now(),
                     'delivered_at' => now(),
                 ]);
@@ -236,10 +237,14 @@ class SaleController extends Controller
     /**
      * Display completed POS sales with their receipts.
      */
-    public function sales(): Response
+    public function sales(Request $request): Response
     {
         $sales = Order::query()
             ->where('channel', OrderChannel::Pos)
+            ->when(
+                $request->user()->role === UserRole::Cashier,
+                fn (Builder $query) => $query->where('cashier_id', $request->user()->id)
+            )
             ->with(['items', 'cashier', 'payments'])
             ->latest()
             ->get()
