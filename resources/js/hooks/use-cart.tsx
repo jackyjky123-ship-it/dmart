@@ -37,59 +37,26 @@ interface CartContextType {
 const FREE_SHIPPING_THRESHOLD = 3500; // $35.00
 const FLAT_SHIPPING_FEE = 200; // $2.00
 
-const INITIAL_ITEMS: CartItem[] = [
-    {
-        id: 1,
-        product: {
-            id: 1,
-            name: 'Organic Cavendish Bananas',
-            slug: 'organic-cavendish-bananas',
-            sku: 'PROD-BAN-001',
-            category_name: 'Produce',
-            price_cents: 149,
-            compare_at_price_cents: 199,
-            stock: 45,
-            image_url: null,
-            unit: 'bunch',
-        },
-        quantity: 2,
-    },
-    {
-        id: 6,
-        product: {
-            id: 6,
-            name: 'Whole Organic Milk 1L',
-            slug: 'whole-organic-milk-1l',
-            sku: 'DAIR-MLK-001',
-            category_name: 'Dairy & Eggs',
-            price_cents: 240,
-            compare_at_price_cents: null,
-            stock: 32,
-            image_url: null,
-            unit: '1L carton',
-        },
-        quantity: 1,
-    },
-];
+const CART_STORAGE_KEY = 'dmart_cart_v2';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>(() => {
-        if (typeof window === 'undefined') return INITIAL_ITEMS;
+        if (typeof window === 'undefined') return [];
         try {
-            const saved = localStorage.getItem('dmart_cart');
-            return saved ? JSON.parse(saved) : INITIAL_ITEMS;
+            const saved = localStorage.getItem(CART_STORAGE_KEY);
+            return saved ? JSON.parse(saved) : [];
         } catch {
-            return INITIAL_ITEMS;
+            return [];
         }
     });
 
     useEffect(() => {
         try {
-            localStorage.setItem('dmart_cart', JSON.stringify(items));
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
         } catch {
-            // ignore
+            // Storage can be unavailable in private browsing; the cart still works in memory.
         }
     }, [items]);
 

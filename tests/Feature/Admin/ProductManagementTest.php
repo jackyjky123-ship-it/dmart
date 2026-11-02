@@ -178,6 +178,80 @@ test('admin can update a product', function () {
         ->and($fresh->is_active)->toBeFalse();
 });
 
+test('admin cannot create a product with more than two decimal places', function () {
+    $admin = User::factory()->admin()->create();
+    $category = Category::factory()->create();
+
+    $this->actingAs($admin)->post('/admin/products', [
+        'name' => 'Misplaced Decimal',
+        'sku' => 'DEC-001',
+        'category_id' => $category->id,
+        'price' => '3.555',
+        'compare_at_price' => '4.555',
+    ])->assertSessionHasErrors(['price', 'compare_at_price']);
+
+    expect(Product::where('sku', 'DEC-001')->exists())->toBeFalse();
+});
+
+test('admin can update a product without changing its active status', function () {
+    $admin = User::factory()->admin()->create();
+    $category = Category::factory()->create();
+    $product = Product::factory()->create([
+        'category_id' => $category->id,
+        'is_active' => false,
+    ]);
+
+    $this->actingAs($admin)->patch("/admin/products/{$product->id}", [
+        'name' => 'Inactive Product',
+        'sku' => $product->sku,
+        'category_id' => $category->id,
+        'price' => '4.75',
+    ])->assertRedirect('/admin/products');
+
+    expect($product->fresh()->is_active)->toBeFalse();
+});
+
+test('updating a product name generates a unique slug when the name matches another slug', function () {
+    $admin = User::factory()->admin()->create();
+    $category = Category::factory()->create();
+    Product::factory()->create([
+        'category_id' => $category->id,
+        'name' => 'Classic Tee',
+        'slug' => 'classic-tee',
+    ]);
+    $product = Product::factory()->create([
+        'category_id' => $category->id,
+        'name' => 'Other Product',
+        'slug' => 'other-product',
+    ]);
+
+    $this->actingAs($admin)->patch("/admin/products/{$product->id}", [
+        'name' => 'Classic Tee',
+        'sku' => $product->sku,
+        'category_id' => $category->id,
+        'price' => '10.00',
+    ])->assertRedirect('/admin/products');
+
+    expect($product->fresh()->slug)->toBe('classic-tee-1');
+});
+
+test('admin cannot exceed the five image limit across uploads', function () {
+    Storage::fake('public');
+    $admin = User::factory()->admin()->create();
+    $category = Category::factory()->create();
+    $product = Product::factory()->create(['category_id' => $category->id]);
+    ProductImage::factory()->count(4)->create(['product_id' => $product->id]);
+
+    $this->actingAs($admin)->post("/admin/products/{$product->id}/images", [
+        'images' => [
+            UploadedFile::fake()->image('extra1.jpg'),
+            UploadedFile::fake()->image('extra2.jpg'),
+        ],
+    ])->assertSessionHasErrors('images');
+
+    expect($product->fresh()->images)->toHaveCount(4);
+});
+
 test('admin can soft delete a product', function () {
     $admin = User::factory()->admin()->create();
     $category = Category::factory()->create();

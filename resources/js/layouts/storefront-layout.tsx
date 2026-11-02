@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { CartProvider, useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
-import { useAppearance } from '@/hooks/use-appearance';
+import { toast } from 'sonner';
 import {
     ShoppingCart,
     Search,
-    Sun,
-    Moon,
     Menu,
     X,
     Store,
@@ -48,15 +46,12 @@ interface PageAuthProps {
 
 function StorefrontHeader() {
     const { itemCount } = useCart();
-    const { resolvedAppearance, updateAppearance } = useAppearance();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const { url, props } = usePage<PageAuthProps>();
     const user = props.auth?.user;
-
-    const toggleTheme = () => {
-        updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
-    };
+    const canUsePos = user?.role === 'cashier' || user?.role === 'admin';
+    const canUseAdmin = user?.role === 'admin';
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -83,14 +78,14 @@ function StorefrontHeader() {
                     <div className="flex items-center gap-2 truncate">
                         <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#F25623] animate-pulse" />
                         <span className="text-white font-medium tracking-wider">
-                            Limited Releases. Exclusive Drops. Elegance is now live.
+                            Limited Releases. Exclusive Drops. Demo storefront.
                         </span>
                     </div>
 
                     <div className="hidden sm:flex items-center gap-6 text-[11px] text-[#a3a3a3]">
                         <span className="flex items-center gap-1.5">
                             <Truck className="w-3.5 h-3.5 text-[#F25623]" />
-                            Free worldwide shipping over $99
+                            Free shipping over $35
                         </span>
                         <span className="text-white/40">|</span>
                         <span className="text-white font-semibold tracking-wider">USD $</span>
@@ -115,11 +110,11 @@ function StorefrontHeader() {
                         Catalog
                     </Link>
                     <Link
-                        href="/products?filter=drops"
+                        href="/products"
                         className="transition-colors hover:text-[#F25623] flex items-center gap-1"
                     >
                         <Flame className="w-3.5 h-3.5 text-[#F25623]" />
-                        Drops
+                        New Drops
                     </Link>
                     <Link
                         href="/orders"
@@ -161,6 +156,7 @@ function StorefrontHeader() {
                     </form>
 
                     {/* Portal Switcher */}
+                    {canUsePos && (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
@@ -192,36 +188,24 @@ function StorefrontHeader() {
                                     <Terminal className="w-4 h-4 mr-2.5 text-blue-400 shrink-0" />
                                     <div>
                                         <div className="font-semibold text-xs text-white">POS Cashier Terminal</div>
-                                        <div className="text-[10px] text-[#a3a3a3]">High-speed in-store register</div>
+                                        <div className="text-[10px] text-[#a3a3a3]">In-store register</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
-                                <Link href="/admin" className="flex items-center py-2 px-2.5">
-                                    <Shield className="w-4 h-4 mr-2.5 text-purple-400 shrink-0" />
-                                    <div>
-                                        <div className="font-semibold text-xs text-white">Admin Dashboard</div>
-                                        <div className="text-[10px] text-[#a3a3a3]">Analytics & management</div>
-                                    </div>
-                                </Link>
-                            </DropdownMenuItem>
+                            {canUseAdmin && (
+                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
+                                    <Link href="/admin" className="flex items-center py-2 px-2.5">
+                                        <Shield className="w-4 h-4 mr-2.5 text-purple-400 shrink-0" />
+                                        <div>
+                                            <div className="font-semibold text-xs text-white">Admin Dashboard</div>
+                                            <div className="text-[10px] text-[#a3a3a3]">Catalog & order management</div>
+                                        </div>
+                                    </Link>
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
-
-                    {/* Theme Toggle */}
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={toggleTheme}
-                        className="h-8.5 w-8.5 rounded-full text-[#a3a3a3] hover:text-white hover:bg-[#262626]"
-                        aria-label="Toggle theme"
-                    >
-                        {resolvedAppearance === 'dark' ? (
-                            <Sun className="h-4 w-4 text-amber-400" />
-                        ) : (
-                            <Moon className="h-4 w-4 text-[#a3a3a3]" />
-                        )}
-                    </Button>
+                    )}
 
                     {/* User Profile */}
                     {user ? (
@@ -364,20 +348,24 @@ function StorefrontHeader() {
                         >
                             <span>Orders</span>
                         </Link>
-                        <Link
-                            href="/pos"
-                            onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-blue-400"
-                        >
-                            <span>POS Terminal</span>
-                        </Link>
-                        <Link
-                            href="/admin"
-                            onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-purple-400"
-                        >
-                            <span>Admin Portal</span>
-                        </Link>
+                        {canUsePos && (
+                            <Link
+                                href="/pos"
+                                onClick={() => setMobileOpen(false)}
+                                className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-blue-400"
+                            >
+                                <span>POS Terminal</span>
+                            </Link>
+                        )}
+                        {canUseAdmin && (
+                            <Link
+                                href="/admin"
+                                onClick={() => setMobileOpen(false)}
+                                className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-purple-400"
+                            >
+                                <span>Admin Portal</span>
+                            </Link>
+                        )}
                     </nav>
                 </div>
             )}
@@ -386,6 +374,11 @@ function StorefrontHeader() {
 }
 
 function StorefrontFooter() {
+    const { props } = usePage<PageAuthProps>();
+    const user = props.auth?.user;
+    const canUsePos = user?.role === 'cashier' || user?.role === 'admin';
+    const canUseAdmin = user?.role === 'admin';
+
     return (
         <footer className="border-t border-[#262626] bg-[#111111] text-[#a3a3a3] transition-colors">
             {/* Value Propositions Strip */}
@@ -396,8 +389,8 @@ function StorefrontFooter() {
                             <Truck className="w-5 h-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-white uppercase tracking-wider">Free Global Shipping</div>
-                            <div className="text-[11px] text-[#737373]">On all orders over $99</div>
+                            <div className="text-xs font-bold text-white uppercase tracking-wider">Free Shipping</div>
+                            <div className="text-[11px] text-[#737373]">On all orders over $35</div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -475,16 +468,20 @@ function StorefrontFooter() {
                                     <ShoppingBag className="w-3.5 h-3.5 text-[#F25623]" /> Storefront Showcase
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/pos" className="hover:text-blue-400 font-medium transition-colors flex items-center gap-2">
-                                    <Terminal className="w-3.5 h-3.5 text-blue-400" /> POS Cashier Register
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/admin" className="hover:text-purple-400 font-medium transition-colors flex items-center gap-2">
-                                    <Shield className="w-3.5 h-3.5 text-purple-400" /> Admin Analytics Portal
-                                </Link>
-                            </li>
+                            {canUsePos && (
+                                <li>
+                                    <Link href="/pos" className="hover:text-blue-400 font-medium transition-colors flex items-center gap-2">
+                                        <Terminal className="w-3.5 h-3.5 text-blue-400" /> POS Cashier Register
+                                    </Link>
+                                </li>
+                            )}
+                            {canUseAdmin && (
+                                <li>
+                                    <Link href="/admin" className="hover:text-purple-400 font-medium transition-colors flex items-center gap-2">
+                                        <Shield className="w-3.5 h-3.5 text-purple-400" /> Admin Analytics Portal
+                                    </Link>
+                                </li>
+                            )}
                             <li>
                                 <Link href="/cart" className="hover:text-white transition-colors flex items-center gap-2">
                                     <ShoppingCart className="w-3.5 h-3.5 text-[#a3a3a3]" /> Checkout & Payment
@@ -498,9 +495,15 @@ function StorefrontFooter() {
                             Join The Drop Club
                         </h4>
                         <p className="text-xs text-[#737373]">
-                            Be the first to know about private drops, limited releases, and exclusive archive sales.
+                            Newsletter signup is not connected in this demo build. Follow the catalog for new seeded drops.
                         </p>
-                        <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-2">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                toast.info('Newsletter signup is not available in this demo.');
+                            }}
+                            className="flex items-center gap-2"
+                        >
                             <input
                                 type="email"
                                 placeholder="ENTER YOUR EMAIL..."
@@ -529,7 +532,7 @@ function StorefrontFooter() {
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
     return (
         <CartProvider>
-            <div className="min-h-screen flex flex-col bg-[#171717] text-white selection:bg-[#F25623] selection:text-white transition-colors">
+            <div className="dark min-h-screen flex flex-col bg-[#171717] text-white selection:bg-[#F25623] selection:text-white">
                 <StorefrontHeader />
                 <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {children}

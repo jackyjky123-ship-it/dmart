@@ -52,5 +52,8 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // 4. Demo streetwear catalog
+        $this->call(DemoCatalogSeeder::class);
     }
 }

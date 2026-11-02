@@ -14,7 +14,6 @@ use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -62,7 +61,7 @@ class ProductController extends Controller
                 'stock' => $product->stock,
                 'low_stock_threshold' => $product->low_stock_threshold,
                 'is_active' => $product->is_active,
-                'image_url' => $product->primaryImage ? Storage::disk('public')->url($product->primaryImage->path) : null,
+                'image_url' => $product->primaryImage?->url,
             ]);
 
         $categories = Category::orderBy('name')->get(['id', 'name', 'slug']);
@@ -94,14 +93,7 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         if (empty($validated['slug'])) {
-            $baseSlug = Str::slug($validated['name']);
-            $slug = $baseSlug;
-            $counter = 1;
-            while (Product::withTrashed()->where('slug', $slug)->exists()) {
-                $slug = "{$baseSlug}-{$counter}";
-                $counter++;
-            }
-            $validated['slug'] = $slug;
+            $validated['slug'] = $this->generateUniqueSlug($validated['name']);
         }
 
         $priceCents = Money::parse((string) $validated['price']);
@@ -119,7 +111,7 @@ class ProductController extends Controller
             'compare_at_price_cents' => $compareAtCents,
             'stock' => 0,
             'low_stock_threshold' => $validated['low_stock_threshold'] ?? 5,
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $validated['is_active'] ?? true,
         ]);
 
         $initialStock = (int) ($validated['initial_stock'] ?? 0);
@@ -179,7 +171,7 @@ class ProductController extends Controller
             'images' => $product->images->map(fn (ProductImage $img) => [
                 'id' => $img->id,
                 'path' => $img->path,
-                'url' => Storage::disk('public')->url($img->path),
+                'url' => $img->url,
                 'is_primary' => $img->is_primary,
                 'sort_order' => $img->sort_order,
             ]),
@@ -199,7 +191,7 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['name']);
+            $validated['slug'] = $this->generateUniqueSlug($validated['name'], $product->id);
         }
 
         $priceCents = Money::parse((string) $validated['price']);
@@ -216,7 +208,7 @@ class ProductController extends Controller
             'price_cents' => $priceCents,
             'compare_at_price_cents' => $compareAtCents,
             'low_stock_threshold' => $validated['low_stock_threshold'] ?? $product->low_stock_threshold,
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $validated['is_active'] ?? $product->is_active,
         ]);
 
         return redirect()->route('admin.products.index')
@@ -232,5 +224,26 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('status', 'Product deleted successfully.');
+    }
+
+    /**
+     * Build a unique product slug, including soft-deleted products.
+     */
+    private function generateUniqueSlug(string $name, ?int $ignoreProductId = null): string
+    {
+        $baseSlug = Str::slug($name) ?: 'product';
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Product::withTrashed()
+            ->where('slug', $slug)
+            ->when($ignoreProductId, fn ($query) => $query->whereKeyNot($ignoreProductId))
+            ->exists()
+        ) {
+            $slug = "{$baseSlug}-{$counter}";
+            $counter++;
+        }
+
+        return $slug;
     }
 }

@@ -97,7 +97,7 @@ class Product extends Model
      */
     protected function scopeLowStock(Builder $query): void
     {
-        $query->whereColumn('stock', '<', 'low_stock_threshold');
+        $query->whereColumn('stock', '<=', 'low_stock_threshold');
     }
 
     /**
@@ -105,6 +105,6 @@ class Product extends Model
      */
     public function getIsLowStockAttribute(): bool
     {
-        return $this->stock < $this->low_stock_threshold;
+        return $this->stock <= $this->low_stock_threshold;
     }
 }

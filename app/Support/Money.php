@@ -21,7 +21,9 @@ final class Money
             throw new InvalidArgumentException("Invalid monetary value: {$decimal}. Use up to 2 decimal places.");
         }
 
-        return (int) round((float) $decimal * 100);
+        [$whole, $fraction] = array_pad(explode('.', $decimal, 2), 2, '');
+
+        return (int) $whole * 100 + (int) str_pad($fraction, 2, '0');
     }
 
     /**

@@ -90,3 +90,59 @@ test('it throws InsufficientStockException when adjustment reduces stock below z
 
     expect($product->fresh()->stock)->toBe(2);
 });
+
+test('it rejects non-positive increment and decrement quantities', function () {
+    $category = Category::factory()->create();
+    $product = Product::factory()->create([
+        'category_id' => $category->id,
+        'stock' => 10,
+    ]);
+
+    $service = new StockService;
+
+    expect(fn () => $service->increment($product, 0, StockMovementType::Restock))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->increment($product, -1, StockMovementType::Restock))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->decrement($product, 0, StockMovementType::Sale))
+        ->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $service->decrement($product, -1, StockMovementType::Sale))
+        ->toThrow(InvalidArgumentException::class);
+
+    expect($product->fresh()->stock)->toBe(10)
+        ->and($product->movements()->count())->toBe(0);
+});
+
+test('it rejects a zero stock adjustment', function () {
+    $category = Category::factory()->create();
+    $product = Product::factory()->create([
+        'category_id' => $category->id,
+        'stock' => 10,
+    ]);
+
+    $service = new StockService;
+
+    expect(fn () => $service->adjust($product, 0, 'No change'))
+        ->toThrow(InvalidArgumentException::class);
+
+    expect($product->fresh()->stock)->toBe(10)
+        ->and($product->movements()->count())->toBe(0);
+});
+
+test('decrement uses the database stock rather than a stale model value', function () {
+    $category = Category::factory()->create();
+    $product = Product::factory()->create([
+        'category_id' => $category->id,
+        'stock' => 10,
+    ]);
+
+    Product::query()->whereKey($product->id)->update(['stock' => 2]);
+
+    $service = new StockService;
+
+    expect(fn () => $service->decrement($product, 5, StockMovementType::Sale))
+        ->toThrow(InsufficientStockException::class);
+
+    expect($product->fresh()->stock)->toBe(2)
+        ->and($product->movements()->count())->toBe(0);
+});

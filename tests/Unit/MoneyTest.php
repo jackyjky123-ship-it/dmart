@@ -14,6 +14,13 @@ test('parses decimal string to cents', function () {
         ->and(Money::parse('0.99'))->toBe(99);
 });
 
+test('parses decimals without floating point rounding', function () {
+    expect(Money::parse('0.07'))->toBe(7)
+        ->and(Money::parse('1.15'))->toBe(115)
+        ->and(Money::parse('19.99'))->toBe(1999)
+        ->and(Money::parse('999999.99'))->toBe(99999999);
+});
+
 test('rejects more than 2 decimal places or non-numeric values', function () {
     expect(fn () => Money::parse('12.555'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => Money::parse('abc'))->toThrow(InvalidArgumentException::class)

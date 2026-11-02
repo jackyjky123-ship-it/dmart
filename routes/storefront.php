@@ -1,83 +1,28 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Http\Controllers\Storefront\HomeController;
+use App\Http\Controllers\Storefront\OrderController;
+use App\Http\Controllers\Storefront\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    $categories = Category::withCount('products')
-        ->orderBy('name')
-        ->get()
-        ->map(fn ($cat) => [
-            'id' => $cat->id,
-            'name' => $cat->name,
-            'slug' => $cat->slug,
-            'description' => $cat->description ?? '',
-            'product_count' => $cat->products_count,
-        ]);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    $featuredProducts = Product::with(['category', 'primaryImage'])
-        ->where('is_active', true)
-        ->take(8)
-        ->get()
-        ->map(fn ($product) => [
-            'id' => $product->id,
-            'name' => $product->name,
-            'slug' => $product->slug,
-            'sku' => $product->sku,
-            'price_cents' => $product->price_cents,
-            'compare_at_price_cents' => $product->compare_at_price_cents,
-            'stock' => $product->stock,
-            'unit' => 'unit',
-            'category_name' => $product->category?->name ?? 'Grocery',
-            'image_url' => $product->primaryImage?->path ? asset('storage/'.$product->primaryImage->path) : null,
-        ]);
-
-    return Inertia::render('storefront/home', [
-        'categories' => $categories,
-        'featuredProducts' => $featuredProducts,
-    ]);
-})->name('home');
-
-Route::get('/products', function () {
-    return Inertia::render('storefront/products/index', [
-        'products' => [],
-        'categories' => [],
-        'initialCategory' => 'all',
-        'initialSearch' => '',
-    ]);
-})->name('products.index');
-
-Route::get('/products/{slug}', function (string $slug) {
-    return Inertia::render('storefront/products/show', [
-        'product' => null,
-        'relatedProducts' => [],
-    ]);
-})->name('products.show');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/cart', function () {
     return Inertia::render('storefront/cart');
 })->name('cart.index');
 
-Route::get('/checkout', function () {
-    return Inertia::render('storefront/checkout');
-})->name('checkout.index');
+Route::middleware(['auth', 'active'])->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
+    Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 
-Route::get('/payment/{order}', function (string $orderId) {
-    return Inertia::render('storefront/payment', [
-        'order' => null,
-    ]);
-})->name('payment.show');
+    Route::get('/payment/{order}', [OrderController::class, 'payment'])->name('payment.show');
+    Route::post('/payment/{order}/simulate', [OrderController::class, 'simulatePayment'])->name('payment.simulate');
 
-Route::get('/orders', function () {
-    return Inertia::render('storefront/orders/index', [
-        'orders' => [],
-    ]);
-})->name('orders.index');
-
-Route::get('/orders/{order}', function (string $orderId) {
-    return Inertia::render('storefront/orders/show', [
-        'order' => null,
-    ]);
-})->name('orders.show');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+});

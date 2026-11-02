@@ -35,8 +35,8 @@ class UpdateProductRequest extends FormRequest
             ],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'compare_at_price' => ['nullable', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'decimal:0,2', 'min:0'],
+            'compare_at_price' => ['nullable', 'numeric', 'decimal:0,2', 'min:0'],
             'low_stock_threshold' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['boolean'],
         ];

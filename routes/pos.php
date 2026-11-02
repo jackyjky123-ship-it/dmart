@@ -1,21 +1,13 @@
 <?php
 
+use App\Http\Controllers\Pos\SaleController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::prefix('pos')
-    ->middleware(['auth', 'active', 'role:cashier'])
+    ->name('pos.')
+    ->middleware(['auth', 'active', 'role:cashier,admin'])
     ->group(function () {
-        Route::get('/', function () {
-            return Inertia::render('pos/index', [
-                'products' => [],
-                'categories' => [],
-            ]);
-        })->name('pos.index');
-
-        Route::get('/sales', function () {
-            return Inertia::render('pos/sales/index', [
-                'sales' => [],
-            ]);
-        })->name('pos.sales.index');
+        Route::get('/', [SaleController::class, 'index'])->name('index');
+        Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+        Route::get('/sales', [SaleController::class, 'sales'])->name('sales.index');
     });

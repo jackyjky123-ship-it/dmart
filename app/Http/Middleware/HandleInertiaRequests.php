@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                     : null,
             ],
             'cartCount' => 0,
+            'today' => now()->format('D, M d Y'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
