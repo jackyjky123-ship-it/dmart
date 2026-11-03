@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ArrowLeft,
     CheckCircle2,
@@ -46,6 +47,7 @@ interface OrderDetailProps {
 }
 
 export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
+    const { t } = useTranslation();
     const order = initialOrder || {
         id: 102,
         order_number: 'DM-00102',
@@ -72,16 +74,16 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
     const [status, setStatus] = useState(order.status);
 
     const steps = [
-        { key: 'placed', label: 'Order Placed', time: order.created_at, done: true },
-        { key: 'paid', label: 'Payment Confirmed', time: 'Mock KHQR verified', done: ['paid', 'processing', 'shipped', 'delivered', 'completed'].includes(status) },
-        { key: 'processing', label: 'Packed & Ready', time: 'DMart Fulfillment', done: ['processing', 'shipped', 'delivered', 'completed'].includes(status) },
-        { key: 'shipped', label: 'Out for Delivery', time: order.carrier ? `${order.carrier} (${order.tracking_number})` : 'Dispatched', done: ['shipped', 'delivered', 'completed'].includes(status) },
-        { key: 'delivered', label: 'Delivered', time: 'Delivered to Door', done: ['delivered', 'completed'].includes(status) },
+        { key: 'placed', label: t('Order Placed'), time: order.created_at, done: true },
+        { key: 'paid', label: t('Payment Confirmed'), time: t('Mock KHQR verified'), done: ['paid', 'processing', 'shipped', 'delivered', 'completed'].includes(status) },
+        { key: 'processing', label: t('Packed & Ready'), time: t('DMart Fulfillment'), done: ['processing', 'shipped', 'delivered', 'completed'].includes(status) },
+        { key: 'shipped', label: t('Out for Delivery'), time: order.carrier ? `${order.carrier} (${order.tracking_number})` : t('Dispatched'), done: ['shipped', 'delivered', 'completed'].includes(status) },
+        { key: 'delivered', label: t('Delivered'), time: t('Delivered to Door'), done: ['delivered', 'completed'].includes(status) },
     ];
 
     const handleCancel = () => {
         setStatus('cancelled');
-        toast.info(`Order ${order.order_number} cancelled.`);
+        toast.info(t('Order :number cancelled.', { number: order.order_number }));
     };
 
     return (
@@ -94,12 +96,12 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                     <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">
                         <Link href="/orders">
                             <ArrowLeft className="w-4 h-4 mr-1" />
-                            All Orders
+                            {t('All Orders')}
                         </Link>
                     </Button>
                     <div className="h-4 w-px bg-border" />
                     <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-                        Order #{order.order_number}
+                        {t('Order')} #{order.order_number}
                     </h1>
                 </div>
 
@@ -112,7 +114,7 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                             onClick={handleCancel}
                             className="text-xs text-rose-600 hover:text-rose-700"
                         >
-                            Cancel Order
+                            {t('Cancel Order')}
                         </Button>
                     )}
                 </div>
@@ -121,7 +123,7 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
             {/* Step Timeline */}
             <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                 <h2 className="text-sm font-bold tracking-tight text-foreground">
-                    Fulfillment Progress
+                    {t('Fulfillment Progress')}
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 relative">
@@ -152,10 +154,10 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                     <div className="mt-4 pt-4 border-t flex flex-wrap items-center justify-between text-xs text-muted-foreground gap-2">
                         <span className="flex items-center gap-1.5">
                             <Truck className="w-4 h-4 text-emerald-600" />
-                            Shipped via <strong>{order.carrier}</strong>
+                            {t('Shipped via')} <strong>{order.carrier}</strong>
                         </span>
                         <span className="font-mono bg-muted px-2 py-0.5 rounded-md">
-                            Tracking: {order.tracking_number}
+                            {t('Tracking:')} {order.tracking_number}
                         </span>
                     </div>
                 )}
@@ -166,7 +168,7 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                 {/* Line Items Table */}
                 <div className="md:col-span-2 border rounded-3xl bg-card overflow-hidden shadow-xs">
                     <div className="p-5 border-b font-bold text-sm">
-                        Items Purchased ({order.items.length})
+                        {t('Items Purchased')} ({order.items.length})
                     </div>
                     <div className="divide-y text-xs">
                         {order.items.map((item, idx) => (
@@ -188,17 +190,17 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                     {/* Totals */}
                     <div className="p-5 bg-muted/20 border-t space-y-2 text-xs">
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Subtotal</span>
+                            <span>{t('Subtotal')}</span>
                             <span className="font-medium text-foreground">{formatMoney(order.subtotal_cents)}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Delivery Fee</span>
+                            <span>{t('Delivery Fee')}</span>
                             <span className="font-medium text-foreground">
-                                {order.shipping_fee_cents === 0 ? 'FREE' : formatMoney(order.shipping_fee_cents)}
+                                {order.shipping_fee_cents === 0 ? t('Free Shipping') : formatMoney(order.shipping_fee_cents)}
                             </span>
                         </div>
                         <div className="pt-2 border-t flex justify-between text-base font-bold text-foreground">
-                            <span>Grand Total</span>
+                            <span>{t('Grand Total')}</span>
                             <span className="text-emerald-700 dark:text-emerald-400">
                                 {formatMoney(order.total_cents)}
                             </span>
@@ -209,7 +211,7 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                 {/* Right: Shipping Address & Customer Info */}
                 <div className="border rounded-3xl bg-card p-6 space-y-5 shadow-xs text-xs">
                     <h2 className="font-bold text-sm tracking-tight text-foreground">
-                        Delivery Destination
+                        {t('Delivery Destination')}
                     </h2>
 
                     <div className="space-y-3">
@@ -229,17 +231,17 @@ export default function OrderShow({ order: initialOrder }: OrderDetailProps) {
                     </div>
 
                     <div className="pt-4 border-t space-y-2">
-                        <div className="text-muted-foreground">Payment Method:</div>
+                        <div className="text-muted-foreground">{t('Payment Method')}:</div>
                         <div className="font-medium capitalize flex items-center gap-1.5 text-foreground">
                             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                            <span>Mock KHQR Payment (Bakong)</span>
+                            <span>{t('Mock KHQR Payment (Bakong)')}</span>
                         </div>
                     </div>
 
                     <div className="pt-2">
                         <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md">
                             <Link href="/products">
-                                Shop More Groceries
+                                {t('Shop More Groceries')}
                             </Link>
                         </Button>
                     </div>

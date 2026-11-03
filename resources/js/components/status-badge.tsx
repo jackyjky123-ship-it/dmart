@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 
 interface StatusBadgeProps {
@@ -62,6 +63,7 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
 };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
+    const { t } = useTranslation();
     const key = status?.toLowerCase().replace(/\s+/g, '_');
     const config = STATUS_CONFIG[key] || {
         label: status.replace(/_/g, ' '),
@@ -74,7 +76,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
             className={cn('capitalize text-xs font-medium px-2 py-0.5 rounded-full border', config.className, className)}
         >
             <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 mr-1.5 inline-block" />
-            {config.label}
+            {t(config.label)}
         </Badge>
     );
 }

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/empty-state';
 import { CartProduct } from '@/hooks/use-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import { Search, SlidersHorizontal, X, ArrowUpDown, Flame, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -133,6 +134,7 @@ export default function ProductsIndex({
     initialCategory,
     initialSearch = '',
 }: ProductsIndexProps) {
+    const { t } = useTranslation();
     const rawProducts = initialProducts.length > 0 ? initialProducts : DEFAULT_STREETWEAR_PRODUCTS;
     const categories = initialCategories.length > 0 ? initialCategories : DEFAULT_CATEGORIES;
 
@@ -193,13 +195,13 @@ export default function ProductsIndex({
                 <div className="space-y-1">
                     <div className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-[#F25623]">
                         <Flame className="w-3.5 h-3.5" />
-                        <span>COLLECTION CATALOG</span>
+                        <span>{t('COLLECTION CATALOG')}</span>
                     </div>
                     <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
-                        All Capsule Drops
+                        {t('All Capsule Drops')}
                     </h1>
                     <p className="text-xs text-[#737373] font-mono">
-                        SHOWING {filteredProducts.length} OF {rawProducts.length} PIECES
+                        {t('SHOWING :current OF :total PIECES', { current: filteredProducts.length, total: rawProducts.length })}
                     </p>
                 </div>
 
@@ -208,7 +210,7 @@ export default function ProductsIndex({
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737373] pointer-events-none" />
                     <Input
                         type="text"
-                        placeholder="SEARCH HOODIES, TEES, SKU..."
+                        placeholder={t('SEARCH HOODIES, TEES, SKU...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="pl-10 pr-9 h-10 rounded-full bg-[#1e1e1e] border-[#333] text-xs text-white placeholder:text-[#666] placeholder:text-[11px] focus:border-[#F25623]"
@@ -238,7 +240,7 @@ export default function ProductsIndex({
                             : 'bg-[#222] text-[#888] hover:text-white hover:bg-[#2c2c2c]'
                     )}
                 >
-                    All Items ({rawProducts.length})
+                    {t('All Items (:count)', { count: rawProducts.length })}
                 </button>
                 {categories.map((cat) => (
                     <button
@@ -252,7 +254,7 @@ export default function ProductsIndex({
                                 : 'bg-[#222] text-[#888] hover:text-white hover:bg-[#2c2c2c]'
                         )}
                     >
-                        {cat.name}
+                        {t(cat.name)}
                     </button>
                 ))}
             </div>
@@ -261,7 +263,7 @@ export default function ProductsIndex({
             <div className="flex flex-wrap items-center justify-between gap-4 bg-[#1a1a1a] p-3.5 rounded-xl border border-[#282828] text-xs text-[#a3a3a3]">
                 <div className="flex items-center gap-3">
                     <span className="font-semibold text-white flex items-center gap-1.5 uppercase tracking-wider font-mono text-[11px]">
-                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#F25623]" /> Filter:
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#F25623]" /> {t('Filter by')}:
                     </span>
                     <label className="flex items-center gap-2 cursor-pointer select-none text-xs hover:text-white">
                         <input
@@ -270,21 +272,21 @@ export default function ProductsIndex({
                             onChange={(e) => setInStockOnly(e.target.checked)}
                             className="rounded border-[#444] bg-[#222] text-[#F25623] focus:ring-[#F25623]"
                         />
-                        <span>In Stock Only</span>
+                        <span>{t('In Stock Only')}</span>
                     </label>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-[#737373]">Sort:</span>
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-[#737373]">{t('Sort by')}:</span>
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
                         className="bg-[#222] border border-[#333] text-white text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[#F25623]"
                     >
-                        <option value="featured">Featured Drops</option>
-                        <option value="price-asc">Price: Low to High</option>
-                        <option value="price-desc">Price: High to Low</option>
-                        <option value="name">Product Name (A-Z)</option>
+                        <option value="featured">{t('Featured Drops')}</option>
+                        <option value="price-asc">{t('Price: Low to High')}</option>
+                        <option value="price-desc">{t('Price: High to Low')}</option>
+                        <option value="name">{t('Product Name (A-Z)')}</option>
                     </select>
 
                     {(search || selectedCategory !== 'all' || inStockOnly || sortBy !== 'featured') && (
@@ -292,7 +294,7 @@ export default function ProductsIndex({
                             onClick={clearFilters}
                             className="text-[#F25623] hover:underline text-xs font-mono uppercase"
                         >
-                            Reset
+                            {t('Reset')}
                         </button>
                     )}
                 </div>
@@ -302,12 +304,12 @@ export default function ProductsIndex({
             {filteredProducts.length === 0 ? (
                 <div className="text-center py-20 border border-[#282828] bg-[#1a1a1a] rounded-2xl p-8 space-y-4">
                     <Sparkles className="w-10 h-10 mx-auto text-[#F25623]" />
-                    <h3 className="text-lg font-bold uppercase tracking-wider text-white">No drops match your criteria</h3>
+                    <h3 className="text-lg font-bold uppercase tracking-wider text-white">{t('No drops match your criteria')}</h3>
                     <p className="text-xs text-[#737373] max-w-sm mx-auto">
-                        Try clearing search terms or selecting a different category to view available archive pieces.
+                        {t('Try clearing search terms or selecting a different category to view available archive pieces.')}
                     </p>
                     <Button variant="orange" size="sm" onClick={clearFilters} className="rounded-full">
-                        Reset Filters
+                        {t('Reset Filters')}
                     </Button>
                 </div>
             ) : (

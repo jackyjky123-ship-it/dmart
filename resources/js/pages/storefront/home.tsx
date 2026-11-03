@@ -4,6 +4,7 @@ import { ProductCard } from '@/components/product-card';
 import { Button } from '@/components/ui/button';
 import { HeroBanner } from '@/components/hero-banner';
 import { CartProduct, useCart } from '@/hooks/use-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ArrowRight,
     Truck,
@@ -143,6 +144,7 @@ export default function Home({
     categories = DEFAULT_CATEGORIES,
     featuredProducts = DEFAULT_PRODUCTS,
 }: HomeProps) {
+    const { t } = useTranslation();
     const products = featuredProducts.length > 0 ? featuredProducts : DEFAULT_PRODUCTS;
     const [activeCategory, setActiveCategory] = useState<string>('all');
 
@@ -163,14 +165,14 @@ export default function Home({
             {/* 1. HERO SECTION (Recreated from banner_herosection_ref.png with bg_girlshopping.png) */}
             <HeroBanner
                 storeName="Store"
-                offerText="FOR ONLINE ORDER"
-                discountPercent="30% OFF"
-                headlineSmall="NEW ARRIVALS"
-                headlineMain="JUST FOR"
-                headlineScript="you"
+                offerText={t('FOR ONLINE ORDER')}
+                discountPercent={t('30% OFF')}
+                headlineSmall={t('NEW ARRIVALS')}
+                headlineMain={t('JUST FOR')}
+                headlineScript={t('you')}
                 locationTitle="BUILDING NAME"
                 locationSubtitle="MAIN ROAD, COUNTRY, 45612"
-                ctaText="WWW.YOURSITE.COM"
+                ctaText={t('Shop Now')}
                 ctaHref="/products"
                 backgroundImageUrl="/images/bg_girlshopping.png"
             />
@@ -179,7 +181,7 @@ export default function Home({
             <section className="text-center py-12 px-4 border-y border-[#262626] bg-[#141414]/50 rounded-2xl">
                 <div className="max-w-3xl mx-auto space-y-3">
                     <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-white font-sans">
-                        DESIGNED TO DISRUPT
+                        {t('DESIGNED TO DISRUPT')}
                     </h2>
                     <p className="text-xs sm:text-sm text-[#888888] uppercase tracking-wider leading-relaxed font-mono font-medium max-w-2xl mx-auto">
                         LUXURY STAPLES FOR THE MODERN DISRUPTOR. PRECISION-TAILORED PIECES THAT BREAK CONVENTION AND REDEFINE PRESENCE. THIS ISN'T JUST FASHION—IT'S A STATEMENT.
@@ -193,10 +195,10 @@ export default function Home({
                     <div>
                         <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#F25623] tracking-widest mb-1">
                             <Sparkles className="w-3.5 h-3.5" />
-                            <span>ARCHIVE & CURRENT RELEASES</span>
+                            <span>{t('ARCHIVE & CURRENT RELEASES')}</span>
                         </div>
                         <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-                            Signature Drops
+                            {t('Signature Drops')}
                         </h2>
                     </div>
 
@@ -213,7 +215,7 @@ export default function Home({
                                         : 'bg-[#222222] text-[#888888] hover:text-white hover:bg-[#2c2c2c]'
                                 )}
                             >
-                                {cat === 'all' ? 'All Pieces' : cat}
+                                {cat === 'all' ? t('All Pieces') : t(cat)}
                             </button>
                         ))}
                     </div>
@@ -234,7 +236,7 @@ export default function Home({
                         className="rounded-full px-8 border-[#333] bg-[#1a1a1a] text-white hover:border-[#F25623] hover:text-[#F25623] text-xs uppercase tracking-widest font-bold"
                     >
                         <Link href="/products">
-                            Explore Full Collection <ArrowRight className="w-4 h-4 ml-2" />
+                            {t('Explore Full Collection')} <ArrowRight className="w-4 h-4 ml-2" />
                         </Link>
                     </Button>
                 </div>
@@ -244,53 +246,53 @@ export default function Home({
             <section className="relative overflow-hidden bg-black border-y border-[#282828] py-4 -mx-4 sm:-mx-6 lg:-mx-8">
                 <div className="animate-marquee whitespace-nowrap flex items-center gap-8 text-xs font-mono uppercase tracking-[0.25em] text-[#d4d4d4]">
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> LIMITED EDITION
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> NEW ARRIVAL
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> EXCLUSIVE DROP
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> HIGH DENSITY COTTON
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('HIGH DENSITY COTTON')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> LIMITED EDITION
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> NEW ARRIVAL
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> EXCLUSIVE DROP
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> STREET LUXURY
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('STREET LUXURY')}
                     </span>
                     {/* Duplicate for seamless infinite loop */}
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> LIMITED EDITION
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> NEW ARRIVAL
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> EXCLUSIVE DROP
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> HIGH DENSITY COTTON
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('HIGH DENSITY COTTON')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> LIMITED EDITION
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> NEW ARRIVAL
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> EXCLUSIVE DROP
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> STREET LUXURY
+                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('STREET LUXURY')}
                     </span>
                 </div>
             </section>
@@ -304,7 +306,7 @@ export default function Home({
                             #01 ETHOS
                         </div>
                         <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
-                            Our Mission
+                            {t('Our Mission')}
                         </h3>
                         <p className="text-sm text-[#888888] leading-relaxed">
                             Pair text with an image to focus on your chosen product, collection, or drop. Add details on availability, style, or silhouette construction. Engineered to bridge elevated runway design with gritty street culture.
@@ -315,7 +317,7 @@ export default function Home({
                                 variant="outline"
                                 className="rounded-full px-6 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 text-xs font-bold uppercase tracking-wider"
                             >
-                                <Link href="/products">Learn More</Link>
+                                <Link href="/products">{t('Learn More')}</Link>
                             </Button>
                         </div>
                     </div>
@@ -323,7 +325,7 @@ export default function Home({
                     <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-br from-[#1f1f1f] to-[#121212] border border-[#333] flex flex-col justify-between p-8">
                         <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / MISSION / 01</div>
                         <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
-                            BUILT FOR<br />THE STREETS
+                            {t('BUILT FOR THE STREETS')}
                         </div>
                         <div className="text-xs text-[#F25623] font-mono uppercase">EST. 2026 &bull; PHNOM PENH</div>
                     </div>
@@ -334,7 +336,7 @@ export default function Home({
                     <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-tr from-[#1a1a1a] via-[#222] to-[#161616] border border-[#333] order-2 md:order-1 flex flex-col justify-between p-8">
                         <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / ARCHIVE / 02</div>
                         <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
-                            TIMELESS<br />HEAVYWEIGHT
+                            {t('TIMELESS HEAVYWEIGHT')}
                         </div>
                         <div className="text-xs text-[#888] font-mono uppercase">PRE-SHRUNK &bull; 460 GSM FLEECE</div>
                     </div>
@@ -344,7 +346,7 @@ export default function Home({
                             #02 DIRECTION
                         </div>
                         <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
-                            Our Vision
+                            {t('Our Vision')}
                         </h3>
                         <p className="text-sm text-[#888888] leading-relaxed">
                             Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or craftsmanship. Our pieces are crafted with timeless cuts that outlast passing hype.
@@ -355,7 +357,7 @@ export default function Home({
                                 variant="outline"
                                 className="rounded-full px-6 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 text-xs font-bold uppercase tracking-wider"
                             >
-                                <Link href="/products">Learn More</Link>
+                                <Link href="/products">{t('Learn More')}</Link>
                             </Button>
                         </div>
                     </div>

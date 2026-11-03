@@ -4,6 +4,7 @@ import { ProductThumb } from '@/components/product-thumb';
 import { Price } from '@/components/price';
 import { Button } from '@/components/ui/button';
 import { CartProduct, useCart } from '@/hooks/use-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import { Plus, Check, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -13,6 +14,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className }: ProductCardProps) {
+    const { t } = useTranslation();
     const { addToCart, items } = useCart();
     const isLowStock = product.stock > 0 && product.stock <= 5;
     const isOutOfStock = product.stock <= 0;
@@ -42,22 +44,22 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     {/* Sale / Drop Badge */}
                     {hasDiscount && (
                         <span className="absolute top-2 left-2 bg-[#F25623] text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
-                            Sale
+                            {t('Sale')}
                         </span>
                     )}
 
                     {/* Stock status indicator */}
                     {isOutOfStock ? (
                         <span className="absolute top-2 right-2 bg-neutral-900/90 text-neutral-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-neutral-700">
-                            Sold Out
+                            {t('Sold Out')}
                         </span>
                     ) : isLowStock ? (
                         <span className="absolute top-2 right-2 bg-amber-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                            Few Left
+                            {t('Few Left')}
                         </span>
                     ) : (
                         <span className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 backdrop-blur-xs text-[10px] font-mono text-white/90 px-2 py-0.5 rounded">
-                            QUICK VIEW
+                            {t('QUICK VIEW')}
                         </span>
                     )}
                 </Link>
@@ -65,7 +67,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                 {/* Title & SKU */}
                 <div className="space-y-1">
                     <div className="flex items-center justify-between text-[11px] text-[#737373] font-mono">
-                        <span className="uppercase">{product.category_name || 'Apparel'}</span>
+                        <span className="uppercase">{product.category_name ? t(product.category_name) : t('Apparel')}</span>
                         <span>{product.sku}</span>
                     </div>
 
@@ -105,7 +107,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     ) : (
                         <>
                             <Plus className="w-3.5 h-3.5 mr-1" />
-                            <span>Add</span>
+                            <span>{t('Add')}</span>
                         </>
                     )}
                 </Button>

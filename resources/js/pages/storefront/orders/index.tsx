@@ -4,6 +4,7 @@ import { StatusBadge } from '@/components/status-badge';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/empty-state';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import { ShoppingBag, ChevronRight, PackageCheck, Clock } from 'lucide-react';
 
 interface OrderItem {
@@ -34,6 +35,7 @@ interface OrdersIndexProps {
 }
 
 export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
+    const { t } = useTranslation();
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     const filteredOrders = orders.filter((o) => {
@@ -53,10 +55,10 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        My Orders
+                        {t('My Orders')}
                     </h1>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Track your deliveries and review past grocery purchases
+                        {t('Track your deliveries and review past grocery purchases')}
                     </p>
                 </div>
 
@@ -68,7 +70,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                         onClick={() => setFilter('all')}
                         className={`h-7 px-3 text-xs rounded-lg ${filter === 'all' ? 'bg-emerald-600 text-white' : ''}`}
                     >
-                        All ({orders.length})
+                        {t('All')} ({orders.length})
                     </Button>
                     <Button
                         type="button"
@@ -77,7 +79,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                         onClick={() => setFilter('active')}
                         className={`h-7 px-3 text-xs rounded-lg ${filter === 'active' ? 'bg-emerald-600 text-white' : ''}`}
                     >
-                        Active
+                        {t('Active')}
                     </Button>
                     <Button
                         type="button"
@@ -86,7 +88,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                         onClick={() => setFilter('completed')}
                         className={`h-7 px-3 text-xs rounded-lg ${filter === 'completed' ? 'bg-emerald-600 text-white' : ''}`}
                     >
-                        Completed
+                        {t('Completed')}
                     </Button>
                 </div>
             </div>
@@ -108,7 +110,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                                     </div>
                                     <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                                         <Clock className="w-3.5 h-3.5" />
-                                        <span>Ordered {order.created_at}</span>
+                                        <span>{t('Ordered :date', { date: order.created_at })}</span>
                                         <span>&bull;</span>
                                         <span className="capitalize">{order.payment_method.toUpperCase()}</span>
                                     </div>
@@ -119,7 +121,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                                         {formatMoney(order.total_cents)}
                                     </div>
                                     <div className="text-[11px] text-muted-foreground">
-                                        {order.items.length} items
+                                        {t(':count items', { count: order.items.length })}
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +136,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                                 ))}
                                 {order.items.length > 3 && (
                                     <div className="text-[11px] text-muted-foreground/80 italic">
-                                        + {order.items.length - 3} more items...
+                                        {t('+ :count more items...', { count: order.items.length - 3 })}
                                     </div>
                                 )}
                             </div>
@@ -142,7 +144,7 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                             <div className="pt-2 flex justify-end">
                                 <Button asChild variant="outline" size="sm" className="rounded-xl text-xs gap-1.5">
                                     <Link href={`/orders/${order.id}`}>
-                                        <span>View Details & Timeline</span>
+                                        <span>{t('View Details & Timeline')}</span>
                                         <ChevronRight className="w-3.5 h-3.5" />
                                     </Link>
                                 </Button>
@@ -152,9 +154,9 @@ export default function OrdersIndex({ orders = [] }: OrdersIndexProps) {
                 </div>
             ) : (
                 <EmptyState
-                    title="No orders found"
-                    description="You have no grocery orders matching this filter."
-                    actionLabel="Shop Groceries"
+                    title={t('No orders found')}
+                    description={t('You have not placed any orders yet.')}
+                    actionLabel={t('Shop Groceries')}
                     actionHref="/products"
                     icon={ShoppingBag}
                 />

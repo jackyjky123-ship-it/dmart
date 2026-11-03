@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '@/components/status-badge';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     QrCode,
     ShieldAlert,
@@ -29,6 +30,7 @@ interface PaymentPageProps {
 }
 
 export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
+    const { t } = useTranslation();
     const order = initialOrder || {
         id: 105,
         order_number: 'DM-00105',
@@ -49,7 +51,7 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
     const handleCopyRef = () => {
         navigator.clipboard.writeText(order.order_number);
         setCopied(true);
-        toast.info('Order reference copied to clipboard');
+        toast.info(t('Order reference copied to clipboard'));
         setTimeout(() => setCopied(false), 2000);
     };
 
@@ -58,7 +60,7 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
         setTimeout(() => {
             setIsSimulating(false);
             setStatus('paid');
-            toast.success('Mock KHQR payment confirmed! Order transitioned to Paid.');
+            toast.success(t('Mock KHQR payment confirmed! Order transitioned to Paid.'));
         }, 500);
     };
 
@@ -67,21 +69,21 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
         setTimeout(() => {
             setIsSimulating(false);
             setStatus('failed');
-            toast.error('Simulated payment failed (insufficient funds or bank timeout).');
+            toast.error(t('Simulated payment failed (insufficient funds or bank timeout).'));
         }, 500);
     };
 
     return (
         <div className="max-w-3xl mx-auto space-y-6">
-            <Head title={`Mock KHQR Payment — ${order.order_number}`} />
+            <Head title={`${t('Mock KHQR Payment')} — ${order.order_number}`} />
 
             {/* Prominent Demo Notice */}
             <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-start gap-3 shadow-xs">
                 <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="text-xs space-y-1">
-                    <div className="font-bold text-sm">Demo Payment Simulator — No Real Money Involved</div>
+                    <div className="font-bold text-sm">{t('Demo Payment Simulator — No Real Money Involved')}</div>
                     <p className="text-amber-800 dark:text-amber-300">
-                        This screen simulates a Cambodian Bakong KHQR checkout. You can trigger simulated payment success or failure using the buttons below to test the order lifecycle.
+                        {t('This screen simulates a Cambodian Bakong KHQR checkout. You can trigger simulated payment success or failure using the buttons below to test the order lifecycle.')}
                     </p>
                 </div>
             </div>
@@ -92,7 +94,7 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                 <div className="p-6 bg-muted/40 border-b flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-muted-foreground">Order Ref:</span>
+                            <span className="font-mono text-xs text-muted-foreground">{t('Order Ref:')}</span>
                             <span className="font-mono font-bold text-sm text-foreground">{order.order_number}</span>
                             <button
                                 type="button"
@@ -120,22 +122,22 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                             <CheckCircle2 className="w-9 h-9" />
                         </div>
                         <div className="space-y-1">
-                            <h2 className="text-2xl font-black text-foreground">Payment Confirmed!</h2>
+                            <h2 className="text-2xl font-black text-foreground">{t('Payment Confirmed!')}</h2>
                             <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto">
-                                Thank you! Your mock KHQR transaction was successful. The DMart team is preparing your grocery bag for delivery.
+                                {t('Thank you! Your mock KHQR transaction was successful. The DMart team is preparing your grocery bag for delivery.')}
                             </p>
                         </div>
 
                         <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
                             <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md">
                                 <Link href="/orders/105">
-                                    <span>Track Order & View Timeline</span>
+                                    <span>{t('Track Order & View Timeline')}</span>
                                     <ArrowRight className="w-4 h-4 ml-1.5" />
                                 </Link>
                             </Button>
                             <Button asChild variant="outline" size="lg" className="rounded-xl">
                                 <Link href="/products">
-                                    Continue Shopping
+                                    {t('Continue Shopping')}
                                 </Link>
                             </Button>
                         </div>
@@ -147,18 +149,18 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                             <XCircle className="w-9 h-9" />
                         </div>
                         <div className="space-y-1">
-                            <h2 className="text-2xl font-black text-foreground">Simulation Failed</h2>
+                            <h2 className="text-2xl font-black text-foreground">{t('Simulation Failed')}</h2>
                             <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto">
-                                The simulated KHQR transaction timed out or was rejected. You can retry the simulation below.
+                                {t('The simulated KHQR transaction timed out or was rejected. You can retry the simulation below.')}
                             </p>
                         </div>
 
                         <div className="pt-2 flex justify-center gap-3">
                             <Button onClick={() => setStatus('pending_payment')} className="rounded-xl">
-                                Retry Payment
+                                {t('Retry Payment')}
                             </Button>
                             <Button asChild variant="outline" className="rounded-xl">
-                                <Link href="/cart">Back to Cart</Link>
+                                <Link href="/cart">{t('Back to Cart')}</Link>
                             </Button>
                         </div>
                     </div>
@@ -170,11 +172,11 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                             <div className="w-64 border-2 border-red-600 rounded-2xl p-4 bg-white text-slate-900 shadow-lg text-center space-y-3">
                                 {/* KHQR Header */}
                                 <div className="bg-red-600 text-white font-black text-sm tracking-widest py-1 px-3 rounded-md uppercase">
-                                    KHQR &bull; BAKONG
+                                    {t('KHQR • BAKONG')}
                                 </div>
 
                                 <div className="text-xs font-bold text-slate-800">
-                                    DMart Grocery Phnom Penh
+                                    {t('DMart Grocery Phnom Penh')}
                                 </div>
 
                                 {/* QR Code Decorative Box */}
@@ -184,7 +186,7 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                                         <div className="w-8 h-8 border-4 border-slate-900 rounded-sm" />
                                     </div>
                                     <div className="text-center font-mono text-[9px] text-slate-400 font-bold">
-                                        DEMO KHQR PAYLOAD
+                                        {t('DEMO KHQR PAYLOAD')}
                                     </div>
                                     <div className="w-full flex justify-between items-end">
                                         <div className="w-8 h-8 border-4 border-slate-900 rounded-sm" />
@@ -196,7 +198,7 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                                     {formatMoney(order.total_cents)} USD
                                 </div>
                                 <div className="text-[10px] text-slate-400 font-mono">
-                                    SCAN TO TEST SIMULATION
+                                    {t('SCAN TO TEST SIMULATION')}
                                 </div>
                             </div>
                         </div>
@@ -204,9 +206,9 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                         {/* Interactive Simulation Controls */}
                         <div className="space-y-4">
                             <div className="space-y-1">
-                                <h3 className="font-bold text-base text-foreground">Interactive Simulation Controls</h3>
+                                <h3 className="font-bold text-base text-foreground">{t('Interactive Simulation Controls')}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed">
-                                    Since this is a student/portfolio project without live bank credentials, use these action buttons to simulate backend gateway responses.
+                                    {t('Since this is a student/portfolio project without live bank credentials, use these action buttons to simulate backend gateway responses.')}
                                 </p>
                             </div>
 
@@ -215,13 +217,13 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                                     type="button"
                                     onClick={handleSimulateSuccess}
                                     loading={isSimulating}
-                                    loadingText="Confirming Mock KHQR..."
+                                    loadingText={t('Confirming Mock KHQR...')}
                                     size="lg"
                                     variant="emerald"
                                     className="w-full font-bold shadow-md gap-2"
                                 >
                                     <CheckCircle2 className="w-4 h-4" />
-                                    <span>Simulate Payment Success</span>
+                                    <span>{t('Simulate Payment Success')}</span>
                                 </Button>
 
                                 <Button
@@ -233,16 +235,16 @@ export default function PaymentView({ order: initialOrder }: PaymentPageProps) {
                                     className="w-full border-rose-300 text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-semibold h-11 rounded-xl gap-2"
                                 >
                                     <XCircle className="w-4 h-4" />
-                                    <span>Simulate Payment Failure</span>
+                                    <span>{t('Simulate Payment Failure')}</span>
                                 </Button>
                             </div>
 
                             <div className="pt-3 border-t text-xs text-muted-foreground flex items-center justify-between">
                                 <span className="flex items-center gap-1">
-                                    <Clock className="w-3.5 h-3.5" /> Awaiting payment...
+                                    <Clock className="w-3.5 h-3.5" /> {t('Awaiting payment...')}
                                 </span>
                                 <Link href="/cart" className="text-rose-600 hover:underline">
-                                    Cancel Order
+                                    {t('Cancel Order')}
                                 </Link>
                             </div>
                         </div>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ShieldCheck,
     CreditCard,
@@ -18,6 +19,7 @@ import {
 import { toast } from 'sonner';
 
 export default function CheckoutView() {
+    const { t } = useTranslation();
     const { items, subtotalCents, shippingFeeCents, totalCents } = useCart();
 
     const [form, setForm] = useState({
@@ -34,7 +36,7 @@ export default function CheckoutView() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        toast.info('Generating your simulated order and mock KHQR payload...');
+        toast.info(t('Generating your simulated order and mock KHQR payload...'));
         setTimeout(() => {
             setLoading(false);
             router.visit('/payment/105');
@@ -49,12 +51,12 @@ export default function CheckoutView() {
                 <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">
                     <Link href="/cart">
                         <ArrowLeft className="w-4 h-4 mr-1" />
-                        Back to Cart
+                        {t('Back to Cart')}
                     </Link>
                 </Button>
                 <div className="h-4 w-px bg-border mx-1" />
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-                    Checkout & Delivery
+                    {t('Checkout & Delivery')}
                 </h1>
             </div>
 
@@ -68,13 +70,13 @@ export default function CheckoutView() {
                                 1
                             </div>
                             <h2 className="font-bold text-base tracking-tight text-foreground">
-                                Delivery Details
+                                {t('Delivery Details')}
                             </h2>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="name" className="text-xs">Full Name</Label>
+                                <Label htmlFor="name" className="text-xs">{t('Full Name')}</Label>
                                 <Input
                                     id="name"
                                     required
@@ -84,7 +86,7 @@ export default function CheckoutView() {
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="phone" className="text-xs">Phone Number</Label>
+                                <Label htmlFor="phone" className="text-xs">{t('Phone Number')}</Label>
                                 <Input
                                     id="phone"
                                     required
@@ -94,7 +96,7 @@ export default function CheckoutView() {
                                 />
                             </div>
                             <div className="sm:col-span-2 space-y-1.5">
-                                <Label htmlFor="address" className="text-xs">Street Address / House / Condo</Label>
+                                <Label htmlFor="address" className="text-xs">{t('Street Address / House / Condo')}</Label>
                                 <Input
                                     id="address"
                                     required
@@ -104,7 +106,7 @@ export default function CheckoutView() {
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="city" className="text-xs">City / Province</Label>
+                                <Label htmlFor="city" className="text-xs">{t('City / Province')}</Label>
                                 <Input
                                     id="city"
                                     required
@@ -114,12 +116,12 @@ export default function CheckoutView() {
                                 />
                             </div>
                             <div className="sm:col-span-2 space-y-1.5">
-                                <Label htmlFor="notes" className="text-xs">Delivery Notes for Driver (Optional)</Label>
+                                <Label htmlFor="notes" className="text-xs">{t('Delivery Notes for Driver (Optional)')}</Label>
                                 <Input
                                     id="notes"
                                     value={form.notes}
                                     onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                                    placeholder="Gate code, landmark, drop-off spot..."
+                                    placeholder={t('Gate code, landmark, drop-off spot...')}
                                     className="h-10 text-xs rounded-xl"
                                 />
                             </div>
@@ -133,7 +135,7 @@ export default function CheckoutView() {
                                 2
                             </div>
                             <h2 className="font-bold text-base tracking-tight text-foreground">
-                                Payment Method
+                                {t('Payment Method')}
                             </h2>
                         </div>
 
@@ -151,11 +153,11 @@ export default function CheckoutView() {
                                 </div>
                                 <div className="space-y-0.5">
                                     <div className="font-bold text-xs flex items-center gap-1.5">
-                                        <span>Mock KHQR</span>
-                                        <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.2 rounded-full">Recommended</span>
+                                        <span>{t('Mock KHQR')}</span>
+                                        <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.2 rounded-full">{t('Recommended')}</span>
                                     </div>
                                     <div className="text-[11px] text-muted-foreground leading-snug">
-                                        Simulated Bakong / ABA PayWay QR. Instant simulation demo.
+                                        {t('Simulated Bakong / ABA PayWay QR. Instant simulation demo.')}
                                     </div>
                                 </div>
                             </div>
@@ -172,9 +174,9 @@ export default function CheckoutView() {
                                     <Banknote className="w-5 h-5" />
                                 </div>
                                 <div className="space-y-0.5">
-                                    <div className="font-bold text-xs">Cash on Delivery</div>
+                                    <div className="font-bold text-xs">{t('Cash on Delivery')}</div>
                                     <div className="text-[11px] text-muted-foreground leading-snug">
-                                        Pay driver in cash upon physical grocery arrival.
+                                        {t('Pay driver in cash upon physical grocery arrival.')}
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +185,7 @@ export default function CheckoutView() {
                         <div className="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2">
                             <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                             <div>
-                                <strong>Portfolio Simulation Notice:</strong> This is a demo checkout. Clicking proceed generates a mock order reference with a simulated QR code.
+                                <strong>{t('Portfolio Simulation Notice:')}</strong> {t('This is a demo checkout. Clicking proceed generates a mock order reference with a simulated QR code.')}
                             </div>
                         </div>
                     </div>
@@ -192,7 +194,7 @@ export default function CheckoutView() {
                 {/* Right Col: Order Review & Submit */}
                 <div className="border rounded-2xl bg-card p-6 space-y-5 shadow-xs sticky top-24">
                     <h2 className="font-bold text-base tracking-tight text-foreground">
-                        Order Review ({items.length} items)
+                        {t('Order Review')} ({t(':count items', { count: items.length })})
                     </h2>
 
                     <div className="max-h-56 overflow-y-auto space-y-3 divide-y pr-1">
@@ -202,7 +204,7 @@ export default function CheckoutView() {
                                     <ProductThumb name={product.name} imageUrl={product.image_url} size="sm" />
                                     <div className="truncate">
                                         <div className="font-medium truncate">{product.name}</div>
-                                        <div className="text-[10px] text-muted-foreground">Qty: {quantity}</div>
+                                        <div className="text-[10px] text-muted-foreground">{t('Qty')}: {quantity}</div>
                                     </div>
                                 </div>
                                 <div className="font-semibold shrink-0">
@@ -214,17 +216,17 @@ export default function CheckoutView() {
 
                     <div className="space-y-2 pt-3 border-t text-xs">
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Subtotal</span>
+                            <span>{t('Subtotal')}</span>
                             <span className="font-medium text-foreground">{formatMoney(subtotalCents)}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Delivery Fee</span>
+                            <span>{t('Delivery Fee')}</span>
                             <span className="font-medium text-foreground">
-                                {shippingFeeCents === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : formatMoney(shippingFeeCents)}
+                                {shippingFeeCents === 0 ? <span className="text-emerald-600 font-bold">{t('Free Shipping')}</span> : formatMoney(shippingFeeCents)}
                             </span>
                         </div>
                         <div className="pt-2 border-t flex justify-between text-base font-bold text-foreground">
-                            <span>Total Due</span>
+                            <span>{t('Total Due')}</span>
                             <span className="text-emerald-700 dark:text-emerald-400">
                                 {formatMoney(totalCents)}
                             </span>
@@ -235,12 +237,12 @@ export default function CheckoutView() {
                         type="submit"
                         disabled={items.length === 0}
                         loading={loading}
-                        loadingText="Generating Payment..."
+                        loadingText={t('Generating Payment...')}
                         size="xl"
                         variant="emerald"
                         className="w-full font-bold shadow-md"
                     >
-                        Place Order ({formatMoney(totalCents)})
+                        {t('Place Order (:amount)', { amount: formatMoney(totalCents) })}
                     </Button>
                 </div>
             </form>

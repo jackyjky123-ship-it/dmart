@@ -5,6 +5,7 @@ import { ProductThumb } from '@/components/product-thumb';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CartProduct, useCart } from '@/hooks/use-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ShoppingCart,
     Heart,
@@ -111,6 +112,7 @@ const DEFAULT_RELATED: CartProduct[] = [
 ];
 
 export default function ProductShow({ product: propProduct, relatedProducts = [] }: ProductDetailProps) {
+    const { t } = useTranslation();
     const product = propProduct || DEFAULT_STREETWEAR_PRODUCT;
     const { addToCart, items } = useCart();
 
@@ -136,7 +138,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
             ...product,
             unit: `${selectedColor.name} / ${selectedSize}`,
         });
-        toast.success(`Added ${product.name} (${selectedSize}) to bag`);
+        toast.success(t('Added :name (:size) to bag', { name: product.name, size: selectedSize }));
     };
 
     const related = relatedProducts.length > 0 ? relatedProducts : DEFAULT_RELATED;
@@ -147,9 +149,9 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
 
             {/* Breadcrumb Navigation */}
             <div className="flex items-center gap-2 text-xs text-[#a3a3a3] font-mono uppercase tracking-wider">
-                <Link href="/" className="hover:text-[#F25623] transition-colors">Home</Link>
+                <Link href="/" className="hover:text-[#F25623] transition-colors">{t('Home')}</Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#555]" />
-                <Link href="/products" className="hover:text-[#F25623] transition-colors">Shop</Link>
+                <Link href="/products" className="hover:text-[#F25623] transition-colors">{t('Catalog')}</Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#555]" />
                 <span className="text-white font-semibold truncate max-w-[280px]">{product.name}</span>
             </div>
@@ -211,7 +213,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                 <div className="lg:col-span-5 space-y-6">
                     {/* Category Tag */}
                     <div className="inline-block px-3 py-1 rounded-full bg-[#222222] border border-[#333] text-[10px] font-mono uppercase tracking-widest text-[#F25623]">
-                        New Arrival &bull; Limited Drop
+                        {t('New Arrival • Limited Drop')}
                     </div>
 
                     {/* Title & Reviews */}
@@ -229,7 +231,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                             </div>
                             <span className="font-semibold text-white">4.8</span>
-                            <span className="text-[#737373]">(128 reviews)</span>
+                            <span className="text-[#737373]">({t(':count reviews', { count: 128 })})</span>
                         </div>
                     </div>
 
@@ -244,7 +246,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                             </span>
                         )}
                         <span className="px-2 py-0.5 rounded bg-[#F25623]/20 border border-[#F25623]/40 text-[#F25623] text-xs font-bold uppercase tracking-wider">
-                            33% OFF
+                            {t('33% OFF')}
                         </span>
                     </div>
 
@@ -256,7 +258,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                     {/* Color Swatches */}
                     <div className="space-y-2 pt-2">
                         <div className="text-xs font-semibold uppercase tracking-wider text-[#a3a3a3]">
-                            Color: <span className="text-white font-bold">{selectedColor.name}</span>
+                            {t('Color')}: <span className="text-white font-bold">{selectedColor.name}</span>
                         </div>
                         <div className="flex items-center gap-3">
                             {COLOR_OPTIONS.map((c) => (
@@ -280,14 +282,14 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                     <div className="space-y-2 pt-2">
                         <div className="flex items-center justify-between text-xs">
                             <span className="font-semibold uppercase tracking-wider text-[#a3a3a3]">
-                                Size: <span className="text-white font-bold">{selectedSize}</span>
+                                {t('Size')}: <span className="text-white font-bold">{selectedSize}</span>
                             </span>
                             <button
                                 onClick={() => setSizeGuideOpen(true)}
                                 className="flex items-center gap-1 text-[11px] uppercase tracking-wider text-[#F25623] hover:underline"
                             >
                                 <Ruler className="w-3.5 h-3.5" />
-                                <span>Size Guide</span>
+                                <span>{t('Size Guide')}</span>
                             </button>
                         </div>
 
@@ -319,13 +321,13 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                             className="flex-1 h-12 rounded-xl text-xs font-black uppercase tracking-widest gap-2 shadow-lg shadow-[#F25623]/25"
                         >
                             <ShoppingCart className="w-4 h-4" />
-                            <span>Add to Cart</span>
+                            <span>{t('Add to Cart')}</span>
                         </Button>
 
                         <button
                             onClick={() => {
                                 setIsWishlisted(!isWishlisted);
-                                toast(isWishlisted ? 'Removed from wishlist' : 'Saved to wishlist');
+                                toast(isWishlisted ? t('Removed from wishlist') : t('Saved to wishlist'));
                             }}
                             className={cn(
                                 'w-12 h-12 rounded-xl border flex items-center justify-center transition-all',
@@ -333,7 +335,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                                     ? 'bg-[#F25623]/20 border-[#F25623] text-[#F25623]'
                                     : 'border-[#333] bg-[#1e1e1e] text-[#a3a3a3] hover:text-white hover:border-[#666]'
                             )}
-                            title="Add to Wishlist"
+                            title={t('Add to Wishlist')}
                         >
                             <Heart className={cn('w-5 h-5', isWishlisted ? 'fill-[#F25623]' : '')} />
                         </button>
@@ -343,18 +345,18 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                     <div className="grid grid-cols-3 gap-3 pt-4 border-t border-[#262626] text-center">
                         <div className="space-y-1">
                             <Truck className="w-4 h-4 mx-auto text-[#F25623]" />
-                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">Free Shipping</div>
-                            <div className="text-[10px] text-[#737373]">On orders over $99</div>
+                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">{t('Free Shipping')}</div>
+                            <div className="text-[10px] text-[#737373]">{t('On orders over $99')}</div>
                         </div>
                         <div className="space-y-1">
                             <RotateCcw className="w-4 h-4 mx-auto text-[#F25623]" />
-                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">Easy Returns</div>
-                            <div className="text-[10px] text-[#737373]">30-day return policy</div>
+                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">{t('Easy Returns')}</div>
+                            <div className="text-[10px] text-[#737373]">{t('30-day return policy')}</div>
                         </div>
                         <div className="space-y-1">
                             <ShieldCheck className="w-4 h-4 mx-auto text-[#F25623]" />
-                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">Secure Payment</div>
-                            <div className="text-[10px] text-[#737373]">100% secure checkout</div>
+                            <div className="text-[11px] font-bold text-white uppercase tracking-wider">{t('Secure Payment')}</div>
+                            <div className="text-[10px] text-[#737373]">{t('100% secure checkout')}</div>
                         </div>
                     </div>
                 </div>
@@ -365,10 +367,10 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
                 {/* Tab Triggers */}
                 <div className="flex items-center gap-8 border-b border-[#262626] pb-3 text-sm font-mono uppercase tracking-wider overflow-x-auto">
                     {[
-                        { key: 'details', label: 'Details' },
-                        { key: 'materials', label: 'Materials' },
-                        { key: 'fit', label: 'Size & Fit' },
-                        { key: 'shipping', label: 'Shipping & Returns' },
+                        { key: 'details', label: t('Details') },
+                        { key: 'materials', label: t('Materials') },
+                        { key: 'fit', label: t('Size & Fit') },
+                        { key: 'shipping', label: t('Shipping & Returns') },
                     ].map((tab) => (
                         <button
                             key={tab.key}
@@ -471,13 +473,13 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
             <section className="space-y-6 pt-6">
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-black uppercase tracking-tight text-white font-sans">
-                        You May Also Like
+                        {t('You May Also Like')}
                     </h2>
                     <Link
                         href="/products"
                         className="flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-[#F25623] hover:underline"
                     >
-                        <span>View All</span>
+                        <span>{t('View All')}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                 </div>

@@ -6,6 +6,7 @@ import { QuantityStepper } from '@/components/quantity-stepper';
 import { Price } from '@/components/price';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/empty-state';
+import { useTranslation } from '@/hooks/use-translation';
 import { formatMoney } from '@/lib/money';
 import {
     Trash2,
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function CartView() {
+    const { t } = useTranslation();
     const {
         items,
         updateQuantity,
@@ -39,10 +41,12 @@ export default function CartView() {
             <div className="flex items-center justify-between pb-4 border-b border-[#282828]">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white font-sans">
-                        Shopping Bag
+                        {t('Shopping Bag')}
                     </h1>
                     <p className="text-xs text-[#737373] font-mono mt-0.5">
-                        {items.length} UNIQUE PIECE{items.length === 1 ? '' : 'S'} IN YOUR BAG
+                        {items.length === 1
+                            ? t(':count UNIQUE PIECE IN YOUR BAG', { count: items.length })
+                            : t(':count UNIQUE PIECES IN YOUR BAG', { count: items.length })}
                     </p>
                 </div>
 
@@ -55,7 +59,7 @@ export default function CartView() {
                         className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 gap-1.5"
                     >
                         <Trash2 className="w-3.5 h-3.5" />
-                        <span>Clear Bag</span>
+                        <span>{t('Clear Bag')}</span>
                     </Button>
                 )}
             </div>
@@ -70,8 +74,8 @@ export default function CartView() {
                                 <span className="flex items-center gap-1.5 font-bold text-white uppercase tracking-wider font-mono">
                                     <Truck className="w-4 h-4 text-[#F25623]" />
                                     {centsNeededForFreeShipping === 0
-                                        ? 'Free Express Shipping unlocked!'
-                                        : `Add ${formatMoney(centsNeededForFreeShipping)} more for FREE Global Shipping`}
+                                        ? t('Free Express Shipping unlocked!')
+                                        : t('Add :amount more for FREE Global Shipping', { amount: formatMoney(centsNeededForFreeShipping) })}
                                 </span>
                                 <span className="text-xs font-mono text-[#F25623] font-bold">
                                     {Math.round(progressToFreeShipping)}%
@@ -154,7 +158,7 @@ export default function CartView() {
                         <div className="pt-2">
                             <Button asChild variant="outline" size="sm" className="text-xs border-[#333] bg-[#1a1a1a] text-white hover:border-[#F25623]">
                                 <Link href="/products">
-                                    &larr; Continue Exploring Drops
+                                    &larr; {t('Continue Exploring Drops')}
                                 </Link>
                             </Button>
                         </div>
@@ -163,26 +167,26 @@ export default function CartView() {
                     {/* Right: Order Summary Sidebar */}
                     <div className="border border-[#282828] rounded-xl bg-[#1a1a1a] p-6 space-y-5 shadow-lg sticky top-24">
                         <h2 className="font-black text-sm uppercase tracking-wider text-white font-mono">
-                            Order Summary
+                            {t('Order Summary')}
                         </h2>
 
                         <div className="space-y-3 text-xs">
                             <div className="flex justify-between text-[#a3a3a3] font-mono">
-                                <span>Subtotal</span>
+                                <span>{t('Subtotal')}</span>
                                 <span className="font-medium text-white">{formatMoney(subtotalCents)}</span>
                             </div>
                             <div className="flex justify-between text-[#a3a3a3] font-mono">
-                                <span>Express Courier Shipping</span>
+                                <span>{t('Express Courier Shipping')}</span>
                                 <span className="font-medium text-white">
                                     {shippingFeeCents === 0 ? (
-                                        <span className="text-[#F25623] font-bold">FREE</span>
+                                        <span className="text-[#F25623] font-bold">{t('Free Shipping')}</span>
                                     ) : (
                                         formatMoney(shippingFeeCents)
                                     )}
                                 </span>
                             </div>
                             <div className="pt-3 border-t border-[#262626] flex justify-between text-base font-bold text-white font-mono">
-                                <span>Estimated Total</span>
+                                <span>{t('Estimated Total')}</span>
                                 <span className="text-[#F25623]">
                                     {formatMoney(totalCents)}
                                 </span>
@@ -191,7 +195,7 @@ export default function CartView() {
 
                         <Button asChild size="lg" variant="orange" className="w-full font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-[#F25623]/25 gap-2">
                             <Link href="/checkout">
-                                <span>Proceed to Checkout</span>
+                                <span>{t('Proceed to Checkout')}</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
                         </Button>
@@ -199,19 +203,19 @@ export default function CartView() {
                         <div className="p-3 bg-[#141414] rounded-xl space-y-1.5 text-[11px] text-[#737373] border border-[#242424]">
                             <div className="flex items-center gap-1.5 font-semibold text-white">
                                 <ShieldCheck className="w-3.5 h-3.5 text-[#F25623]" />
-                                <span>100% Authentic Release</span>
+                                <span>{t('100% Authentic Release')}</span>
                             </div>
                             <p>
-                                Worldwide express delivery. Free size exchanges and returns within 30 days.
+                                {t('Worldwide express delivery. Free size exchanges and returns within 30 days.')}
                             </p>
                         </div>
                     </div>
                 </div>
             ) : (
                 <EmptyState
-                    title="Your shopping bag is empty"
-                    description="Looks like you haven't added any pieces to your bag yet. Explore our capsule drops and limited editions."
-                    actionLabel="Explore Capsule Drops"
+                    title={t('Your shopping bag is empty')}
+                    description={t("Looks like you haven't added any pieces to your bag yet. Explore our capsule drops and limited editions.")}
+                    actionLabel={t('Explore Capsule Drops')}
                     actionHref="/products"
                     icon={ShoppingBag}
                 />
