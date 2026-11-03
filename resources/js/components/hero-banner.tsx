@@ -74,12 +74,6 @@ export function HeroBanner({
 
             {/* 2. MAIN HERO CARD CONTAINER: LIGHT WARM CANVAS / DARK JET BLACK */}
             <div className="relative w-full overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-[#FFF7F0] via-[#FFFDFB] to-white p-6 shadow-[0_25px_60px_-25px_rgba(0,0,0,0.18),0_0_50px_rgba(242,86,35,0.10)] sm:rounded-[32px] sm:p-8 md:rounded-[36px] md:p-10 lg:p-12 xl:p-14 dark:border-[#2B2B2B] dark:from-[#1C1C1C] dark:via-[#141414] dark:to-[#0D0D0D] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_50px_rgba(242,86,35,0.12)]">
-                {/* Ambient Warm Radial Backlight Behind Product */}
-                <div
-                    className="pointer-events-none absolute top-1/2 right-1/4 h-80 w-80 -translate-y-1/2 rounded-full bg-[#F25623]/15 blur-3xl sm:h-[420px] sm:w-[420px]"
-                    aria-hidden="true"
-                />
-
                 {/* 3. INNER 2-COLUMN BALANCED COMPOSITION (Left: Brand Narrative & CTAs, Right: 3D DMart Mart Building) */}
                 <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
                     {/* --- LEFT COLUMN: TYPOGRAPHY, TRUST POINTS & BUTTONS --- */}
@@ -194,13 +188,9 @@ export function HeroBanner({
 
                     {/* --- RIGHT COLUMN: 3D DMART STOREFRONT WITH FLOATING FEATURE BADGES --- */}
                     <div className="relative flex min-h-[320px] items-center justify-center sm:min-h-[420px] lg:col-span-6 lg:min-h-[480px]">
-                        {/* Pedestal Ground Glow */}
+                        {/* Pedestal Ground Shadow */}
                         <div
                             className="pointer-events-none absolute bottom-4 left-1/2 h-24 w-[85%] -translate-x-1/2 rounded-full bg-black/15 blur-2xl dark:bg-black/60"
-                            aria-hidden="true"
-                        />
-                        <div
-                            className="pointer-events-none absolute top-1/2 left-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F25623]/10 blur-3xl"
                             aria-hidden="true"
                         />
 
@@ -232,7 +222,7 @@ export function HeroBanner({
                                 <img
                                     src="/images/dmart_3d.png"
                                     alt="DMart 24/7 Flagship 3D Storefront"
-                                    className="animate-hero-float h-auto w-full object-contain drop-shadow-[0_15px_40px_rgba(242,86,35,0.20)] drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] transition-all duration-700 ease-out group-hover:scale-105 dark:drop-shadow-[0_15px_40px_rgba(242,86,35,0.25)] dark:drop-shadow-[0_25px_35px_rgba(0,0,0,0.85)]"
+                                    className="animate-hero-float h-auto w-full object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] transition-all duration-700 ease-out group-hover:scale-105 dark:drop-shadow-[0_25px_35px_rgba(0,0,0,0.85)]"
                                     loading="eager"
                                 />
                             </picture>
