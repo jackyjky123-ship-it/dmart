@@ -222,17 +222,6 @@ export function HeroBanner({
                             </div>
                         </div>
 
-                        {/* Floating Micro-Badge 2: Top-Right (HYPERLOCAL & ONLINE) */}
-                        <div
-                            className="animate-title-reveal absolute top-4 right-0 z-20 hidden items-center gap-2 rounded-full border border-[#F25623]/30 bg-card/95 px-3 py-1.5 shadow-lg backdrop-blur-md select-none sm:top-8 sm:right-4 md:flex dark:bg-[#1A1A1A]/90"
-                            style={{ animationDelay: '650ms' }}
-                        >
-                            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-[#F25623]" />
-                            <span className="font-mono text-[10px] font-bold tracking-widest text-[#F25623] uppercase">
-                                {t('HYPERLOCAL & ONLINE')}
-                            </span>
-                        </div>
-
                         {/* The 3D DMart Mart Building Asset */}
                         <div className="group relative z-10 w-full max-w-[480px] select-none sm:max-w-[540px] lg:max-w-[580px] xl:max-w-[620px]">
                             <picture>
