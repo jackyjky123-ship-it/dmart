@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ArrowLeft,
     UploadCloud,
@@ -23,6 +24,7 @@ interface ProductCreateProps {
 }
 
 export default function ProductCreate({ categories = [], errors = {} }: ProductCreateProps) {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
     const [sku, setSku] = useState('');
@@ -75,11 +77,11 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
 
         router.post('/admin/products', formData, {
             onSuccess: () => {
-                toast.success(`Product "${name}" created successfully.`);
+                toast.success(t('Product ":name" created successfully.', { name }));
             },
             onError: (err) => {
                 const first = Object.values(err)[0];
-                toast.error(first || 'Failed to create product.');
+                toast.error(first || t('Failed to create product.'));
             },
             onFinish: () => setSubmitting(false),
         });
@@ -87,18 +89,18 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
-            <Head title="Create Grocery Item — DMart Admin" />
+            <Head title={t('Create Grocery Item — DMart Admin')} />
 
             <div className="flex items-center gap-3 pb-4 border-b">
                 <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">
                     <Link href="/admin/products">
                         <ArrowLeft className="w-4 h-4 mr-1" />
-                        Back to Products
+                        {t('Back to Products')}
                     </Link>
                 </Button>
                 <div className="h-4 w-px bg-border" />
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-                    Add New Product
+                    {t('Add New Product')}
                 </h1>
             </div>
 
@@ -106,18 +108,18 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                 {/* General Information Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Basic Information
+                        {t('Basic Information')}
                     </h2>
 
                     <div className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="name" className="text-xs">Product Name</Label>
+                            <Label htmlFor="name" className="text-xs">{t('Product Name')}</Label>
                             <Input
                                 id="name"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="e.g. Organic Red Apples 1kg"
+                                placeholder={t('e.g. Organic Red Apples 1kg')}
                                 className="h-10 text-xs rounded-xl"
                             />
                             {errors.name && <p className="text-xs text-rose-600">{errors.name}</p>}
@@ -125,20 +127,20 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="sku" className="text-xs">SKU / Code</Label>
+                                <Label htmlFor="sku" className="text-xs">{t('SKU / Code')}</Label>
                                 <Input
                                     id="sku"
                                     required
                                     value={sku}
                                     onChange={(e) => setSku(e.target.value)}
-                                    placeholder="e.g. FRU-APP-001"
+                                    placeholder={t('e.g. FRU-APP-001')}
                                     className="h-10 text-xs rounded-xl font-mono"
                                 />
                                 {errors.sku && <p className="text-xs text-rose-600">{errors.sku}</p>}
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="category" className="text-xs">Category</Label>
+                                <Label htmlFor="category" className="text-xs">{t('Category')}</Label>
                                 <select
                                     id="category"
                                     required
@@ -146,7 +148,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                                     onChange={(e) => setCategoryId(e.target.value)}
                                     className="w-full h-10 px-3 bg-background border rounded-xl text-xs font-medium focus:ring-1 focus:ring-purple-500"
                                 >
-                                    <option value="" disabled>Select Department</option>
+                                    <option value="" disabled>{t('Select Department')}</option>
                                     {categories.map((cat) => (
                                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                                     ))}
@@ -155,12 +157,12 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="slug" className="text-xs">Slug (Optional)</Label>
+                                <Label htmlFor="slug" className="text-xs">{t('Slug (Optional)')}</Label>
                                 <Input
                                     id="slug"
                                     value={slug}
                                     onChange={(e) => setSlug(e.target.value)}
-                                    placeholder="auto-generated"
+                                    placeholder={t('auto-generated')}
                                     className="h-10 text-xs rounded-xl font-mono"
                                 />
                                 {errors.slug && <p className="text-xs text-rose-600">{errors.slug}</p>}
@@ -168,13 +170,13 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="desc" className="text-xs">Description</Label>
+                            <Label htmlFor="desc" className="text-xs">{t('Description')}</Label>
                             <textarea
                                 id="desc"
                                 rows={3}
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Product details, origins, organic status..."
+                                placeholder={t('Product details, origins, organic status...')}
                                 className="w-full p-3 bg-background border rounded-xl text-xs focus:ring-1 focus:ring-purple-500"
                             />
                             {errors.description && <p className="text-xs text-rose-600">{errors.description}</p>}
@@ -185,12 +187,12 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                 {/* Pricing & Stock Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Pricing & Inventory
+                        {t('Pricing & Inventory')}
                     </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="price" className="text-xs">Selling Price (USD)</Label>
+                            <Label htmlFor="price" className="text-xs">{t('Selling Price (USD)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -208,7 +210,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="compareAt" className="text-xs">Compare-At Price (USD, Optional)</Label>
+                            <Label htmlFor="compareAt" className="text-xs">{t('Compare-At Price (USD, Optional)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -225,7 +227,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="stock" className="text-xs">Initial Stock (Recorded in Ledger)</Label>
+                            <Label htmlFor="stock" className="text-xs">{t('Initial Stock (Recorded in Ledger)')}</Label>
                             <Input
                                 id="stock"
                                 type="number"
@@ -237,7 +239,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="lowStock" className="text-xs">Low Stock Alert Threshold</Label>
+                            <Label htmlFor="lowStock" className="text-xs">{t('Low Stock Alert Threshold')}</Label>
                             <Input
                                 id="lowStock"
                                 type="number"
@@ -253,7 +255,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                 {/* Media Upload Dropzone Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Product Imagery (Up to 5 images)
+                        {t('Product Imagery (Up to 5 images)')}
                     </h2>
 
                     <label className="border-2 border-dashed rounded-2xl p-6 text-center space-y-3 bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer block">
@@ -269,8 +271,8 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                             <UploadCloud className="w-6 h-6" />
                         </div>
                         <div className="space-y-1">
-                            <div className="text-xs font-semibold text-foreground">Click or drag images to upload</div>
-                            <div className="text-[11px] text-muted-foreground">JPG, PNG, WebP up to 2MB (first image becomes primary)</div>
+                            <div className="text-xs font-semibold text-foreground">{t('Click or drag images to upload')}</div>
+                            <div className="text-[11px] text-muted-foreground">{t('JPG, PNG, WebP up to 2MB (first image becomes primary)')}</div>
                         </div>
                     </label>
 
@@ -288,7 +290,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                                     </button>
                                     {idx === 0 && (
                                         <div className="absolute bottom-1 left-1 bg-purple-600 text-white text-[9px] px-1.5 py-0.5 rounded-md font-bold">
-                                            Primary
+                                            {t('Primary')}
                                         </div>
                                     )}
                                 </div>
@@ -307,17 +309,17 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                         className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4"
                     />
                     <Label htmlFor="active" className="text-xs cursor-pointer">
-                        <span className="font-bold">Active in Catalog</span> &mdash; Customer storefront and POS can see and purchase this product.
+                        <span className="font-bold">{t('Active in Catalog')}</span> &mdash; {t('Customer storefront and POS can see and purchase this product.')}
                     </Label>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">
                     <Button asChild variant="outline" className="rounded-xl text-xs">
-                        <Link href="/admin/products">Cancel</Link>
+                        <Link href="/admin/products">{t('Cancel')}</Link>
                     </Button>
                     <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold gap-1.5 px-6 shadow-md">
                         <Save className="w-4 h-4" />
-                        <span>{submitting ? 'Saving...' : 'Save Product'}</span>
+                        <span>{submitting ? t('Saving...') : t('Save Product')}</span>
                     </Button>
                 </div>
             </form>

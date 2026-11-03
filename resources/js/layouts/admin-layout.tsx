@@ -3,6 +3,7 @@ import { Link, router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useAppearance } from '@/hooks/use-appearance';
+import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import {
     LayoutDashboard,
@@ -74,6 +75,8 @@ function getPageMeta(path: string) {
 }
 
 function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavProps) {
+    const { t } = useTranslation();
+
     return (
         <aside className="w-64 border-r border-[#242424] bg-[#141414] text-white flex flex-col h-full shrink-0 select-none">
             {/* Brand Header */}
@@ -90,7 +93,7 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                             </span>
                         </div>
                         <div className="text-[10px] text-zinc-400 font-mono tracking-wider">
-                            Back Office Console
+                            {t('Back Office Console')}
                         </div>
                     </div>
                 </Link>
@@ -101,8 +104,8 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                         size="icon-xs"
                         onClick={onToggleCollapse}
                         className="text-zinc-400 hover:text-white hover:bg-[#242424] border border-[#2d2d2d] rounded-lg h-7 w-7 hidden lg:flex items-center justify-center transition-colors"
-                        title="Close sidebar (⌘B)"
-                        aria-label="Close sidebar"
+                        title={t('Close sidebar (⌘B)')}
+                        aria-label={t('Close sidebar')}
                     >
                         <PanelLeftClose className="w-4 h-4" />
                     </Button>
@@ -128,7 +131,7 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                         >
                             <span className="flex items-center gap-3">
                                 <Icon className={`w-4 h-4 ${isActive ? 'text-[#F25623]' : 'text-zinc-500'}`} />
-                                <span>{item.label}</span>
+                                <span>{t(item.label)}</span>
                             </span>
                         </Link>
                     );
@@ -145,7 +148,7 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                         }`}
                     >
                         <Settings className="w-4 h-4 text-zinc-500" />
-                        <span>Settings</span>
+                        <span>{t('Settings')}</span>
                     </Link>
                 </div>
             </div>
@@ -154,12 +157,12 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
             <div className="p-4 border-t border-[#242424] bg-[#111111] space-y-2.5">
                 <div className="flex items-center justify-between pb-1">
                     <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
-                        Language
+                        {t('Language')}
                     </span>
                     <LanguageSwitcher variant="toggle" />
                 </div>
                 <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
-                    Quick Portals
+                    {t('Quick Portals')}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <Link
@@ -167,14 +170,14 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                         className="flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-semibold bg-[#1c1c1c] border border-[#2d2d2d] hover:border-[#F25623] hover:text-[#F25623] transition-colors text-white"
                     >
                         <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span>Storefront</span>
+                        <span>{t('Storefront')}</span>
                     </Link>
                     <Link
                         href="/pos"
                         className="flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-semibold bg-[#1c1c1c] border border-[#2d2d2d] hover:border-[#F25623] hover:text-[#F25623] transition-colors text-white"
                     >
                         <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 object-contain" />
-                        <span>POS Term</span>
+                        <span>{t('POS Term')}</span>
                     </Link>
                 </div>
             </div>
@@ -185,6 +188,7 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { url, props } = usePage<AdminPageProps>();
     const { resolvedAppearance, updateAppearance } = useAppearance();
+    const { t } = useTranslation();
 
     const initialOpen = typeof props.sidebarOpen === 'boolean' ? props.sidebarOpen : true;
     const [sidebarOpen, setSidebarOpen] = useState(initialOpen);
@@ -284,7 +288,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             size="icon-sm"
                             className="lg:hidden text-zinc-300 hover:text-white hover:bg-[#242424] rounded-lg h-8.5 w-8.5"
                             onClick={toggleSidebar}
-                            aria-label="Toggle sidebar"
+                            aria-label={t('Toggle sidebar')}
                         >
                             <Menu className="h-5 w-5" />
                         </Button>
@@ -300,8 +304,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <button
                                     type="button"
                                     onClick={toggleSidebar}
-                                    title="Open sidebar (⌘B)"
-                                    aria-label="Open sidebar"
+                                    title={t('Open sidebar (⌘B)')}
+                                    aria-label={t('Open sidebar')}
                                     className="group w-8 h-8 rounded-lg bg-[#222222] border border-[#2d2d2d] hover:border-[#F25623]/60 hover:bg-[#282828] flex items-center justify-center text-[#F25623] shadow-inner shrink-0 cursor-pointer transition-all"
                                 >
                                     <PageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -309,7 +313,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             </div>
 
                             <h1 className="text-xs sm:text-sm font-bold text-white tracking-tight">
-                                {pageMeta.title}
+                                {t(pageMeta.title)}
                             </h1>
                         </div>
                     </div>
@@ -322,7 +326,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Quick search orders..."
+                                placeholder={t('Quick search orders...')}
                                 className="w-full h-8.5 pl-8.5 pr-3 rounded-lg border border-[#2d2d2d] bg-[#202020] text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#F25623] transition-colors"
                             />
                         </form>
@@ -333,7 +337,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         {/* Live Date Pill */}
                         <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#202020] border border-[#2d2d2d] text-xs text-zinc-300 font-mono">
                             <Calendar className="w-3.5 h-3.5 text-[#F25623]" />
-                            <span>{props.today ?? 'Today'}</span>
+                            <span>{props.today ?? t('Today')}</span>
                         </div>
 
                         {/* Language Switcher */}
@@ -346,24 +350,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     variant="ghost"
                                     size="sm"
                                     className="h-8.5 px-2.5 rounded-lg border border-[#2d2d2d] bg-[#202020] text-zinc-300 hover:text-white hover:bg-[#282828] text-xs gap-1.5"
-                                    title="Switch workspace portal"
+                                    title={t('Switch workspace portal')}
                                 >
                                     <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                    <span className="hidden xl:inline">Portals</span>
+                                    <span className="hidden xl:inline">{t('Portals')}</span>
                                     <ChevronDown className="w-3 h-3 text-zinc-400" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
                                 <DropdownMenuLabel className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 px-2.5 py-1.5">
-                                    Switch Portal
+                                    {t('Switch Portal')}
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator className="bg-[#282828]" />
                                 <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                     <Link href="/" className="flex items-center gap-2.5 py-2 px-2.5">
                                         <Store className="w-4 h-4 text-[#F25623] shrink-0" />
                                         <div>
-                                            <div className="font-semibold text-xs text-white">Storefront</div>
-                                            <div className="text-[10px] text-zinc-400">Streetwear drops & catalog</div>
+                                            <div className="font-semibold text-xs text-white">{t('Storefront')}</div>
+                                            <div className="text-[10px] text-zinc-400">{t('Streetwear drops & catalog')}</div>
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
@@ -371,8 +375,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     <Link href="/pos" className="flex items-center gap-2.5 py-2 px-2.5">
                                         <img src="/images/pos_icon.png" alt="" className="w-4 h-4 object-contain shrink-0" />
                                         <div>
-                                            <div className="font-semibold text-xs text-white">POS Cashier Terminal</div>
-                                            <div className="text-[10px] text-zinc-400">Cashier register & checkout</div>
+                                            <div className="font-semibold text-xs text-white">{t('POS Cashier Terminal')}</div>
+                                            <div className="text-[10px] text-zinc-400">{t('Cashier register & checkout')}</div>
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
@@ -385,7 +389,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             size="icon-sm"
                             onClick={toggleTheme}
                             className="rounded-lg text-zinc-400 hover:text-white hover:bg-[#282828] border border-[#2d2d2d] bg-[#202020] h-8.5 w-8.5"
-                            aria-label="Toggle appearance"
+                            aria-label={t('Toggle appearance')}
                         >
                             {resolvedAppearance === 'dark' ? (
                                 <Sun className="h-4 w-4 text-amber-400" />
@@ -406,10 +410,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     </div>
                                     <div className="text-left hidden sm:block">
                                         <div className="text-xs font-semibold text-white leading-tight max-w-[100px] truncate">
-                                            {user?.name ?? 'Admin'}
+                                            {user?.name ?? t('Admin')}
                                         </div>
                                         <div className="text-[9px] text-[#F25623] font-mono leading-none">
-                                            ADMIN
+                                            {t('ADMIN')}
                                         </div>
                                     </div>
                                     <ChevronDown className="w-3 h-3 text-zinc-400 hidden sm:block" />
@@ -417,29 +421,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
                                 <div className="px-3 py-2 border-b border-[#282828]">
-                                    <p className="text-xs font-semibold text-white truncate">{user?.name ?? 'Admin User'}</p>
+                                    <p className="text-xs font-semibold text-white truncate">{user?.name ?? t('Admin User')}</p>
                                     <p className="text-[10px] text-zinc-400 truncate">{user?.email ?? 'admin@dmart.test'}</p>
                                     <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#F25623]/20 text-[#F25623] border border-[#F25623]/30">
-                                        SYSTEM ADMINISTRATOR
+                                        {t('SYSTEM ADMINISTRATOR')}
                                     </span>
                                 </div>
                                 <div className="py-1">
                                     <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                         <Link href="/admin/settings" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                             <Settings className="w-3.5 h-3.5 text-zinc-400" />
-                                            <span>Store Settings</span>
+                                            <span>{t('Store Settings')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                         <Link href="/pos" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                             <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 object-contain" />
-                                            <span>Launch POS Terminal</span>
+                                            <span>{t('Launch POS Terminal')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                         <Link href="/" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                             <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                            <span>View Storefront</span>
+                                            <span>{t('View Storefront')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 </div>
@@ -447,7 +451,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 focus:bg-rose-950/30">
                                     <Link href="/logout" method="post" as="button" className="w-full flex items-center gap-2 text-xs py-1.5 px-2.5">
                                         <LogOut className="w-3.5 h-3.5" />
-                                        <span>Sign Out</span>
+                                        <span>{t('Sign Out')}</span>
                                     </Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>

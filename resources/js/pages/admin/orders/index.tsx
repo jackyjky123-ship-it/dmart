@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ShoppingBag,
     Search,
@@ -44,6 +45,7 @@ interface OrdersIndexProps {
 }
 
 export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState('');
     const [channelFilter, setChannelFilter] = useState<'all' | 'online' | 'pos'>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -59,16 +61,16 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
 
     return (
         <div className="space-y-6">
-            <Head title="Orders & Fulfillment — DMart Admin" />
+            <Head title={t('Orders & Fulfillment — DMart Admin')} />
 
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Orders & Fulfillment
+                        {t('Orders & Fulfillment')}
                     </h1>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Track deliveries, manage status transitions, and audit POS counter sales
+                        {t('Track deliveries, manage status transitions, and audit POS counter sales')}
                     </p>
                 </div>
             </div>
@@ -79,7 +81,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                         type="text"
-                        placeholder="Search order # or customer..."
+                        placeholder={t('Search order # or customer...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="pl-9 h-9 text-xs rounded-xl"
@@ -95,7 +97,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                             onClick={() => setChannelFilter('all')}
                             className={`h-7 px-3 text-xs rounded-lg ${channelFilter === 'all' ? 'bg-purple-600 text-white' : ''}`}
                         >
-                            All Channels
+                            {t('All Channels')}
                         </Button>
                         <Button
                             type="button"
@@ -104,7 +106,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                             onClick={() => setChannelFilter('online')}
                             className={`h-7 px-3 text-xs rounded-lg ${channelFilter === 'online' ? 'bg-purple-600 text-white' : ''}`}
                         >
-                            Online Storefront
+                            {t('Online Storefront')}
                         </Button>
                         <Button
                             type="button"
@@ -113,7 +115,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                             onClick={() => setChannelFilter('pos')}
                             className={`h-7 px-3 text-xs rounded-lg ${channelFilter === 'pos' ? 'bg-purple-600 text-white' : ''}`}
                         >
-                            POS Register
+                            {t('POS Register')}
                         </Button>
                     </div>
                 </div>
@@ -125,14 +127,14 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                     <table className="w-full text-left text-xs">
                         <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
                             <tr>
-                                <th className="p-3.5">Order #</th>
-                                <th className="p-3.5">Channel</th>
-                                <th className="p-3.5">Customer</th>
-                                <th className="p-3.5">Items</th>
-                                <th className="p-3.5">Total</th>
-                                <th className="p-3.5">Status</th>
-                                <th className="p-3.5">Date</th>
-                                <th className="p-3.5 text-right">Actions</th>
+                                <th className="p-3.5">{t('Order #')}</th>
+                                <th className="p-3.5">{t('Channel')}</th>
+                                <th className="p-3.5">{t('Customer')}</th>
+                                <th className="p-3.5">{t('Items')}</th>
+                                <th className="p-3.5">{t('Total')}</th>
+                                <th className="p-3.5">{t('Status')}</th>
+                                <th className="p-3.5">{t('Date')}</th>
+                                <th className="p-3.5 text-right">{t('Actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y">
@@ -148,7 +150,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                                             ) : (
                                                 <Terminal className="w-3 h-3 text-blue-600" />
                                             )}
-                                            <span>{order.channel}</span>
+                                            <span>{t(order.channel)}</span>
                                         </Badge>
                                     </td>
                                     <td className="p-3.5">
@@ -156,7 +158,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                                         <div className="text-[10px] text-muted-foreground">{order.customer_phone}</div>
                                     </td>
                                     <td className="p-3.5 text-muted-foreground">
-                                        {order.items.length} items
+                                        {t(':count items', { count: order.items.length })}
                                     </td>
                                     <td className="p-3.5 font-bold text-foreground">
                                         {formatMoney(order.total_cents)}
@@ -175,7 +177,7 @@ export default function AdminOrdersIndex({ orders = [] }: OrdersIndexProps) {
                                             className="h-7 text-xs text-purple-600 hover:text-purple-700 gap-1"
                                         >
                                             <Link href={`/admin/orders/${order.id}`}>
-                                                <span>Fulfill</span>
+                                                <span>{t('Fulfill')}</span>
                                                 <ChevronRight className="w-3.5 h-3.5" />
                                             </Link>
                                         </Button>

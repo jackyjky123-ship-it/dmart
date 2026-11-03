@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     Boxes,
     Plus,
@@ -53,6 +54,7 @@ export default function StockIndex({
     filters = {},
     errors = {},
 }: StockIndexProps) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters.search || '');
     const [filterLowStock, setFilterLowStock] = useState(Boolean(filters.low_stock));
 
@@ -96,7 +98,7 @@ export default function StockIndex({
         e.preventDefault();
         const magnitude = parseInt(delta, 10);
         if (isNaN(magnitude) || magnitude <= 0) {
-            toast.error('Delta must be a positive integer.');
+            toast.error(t('Delta must be a positive integer.'));
             return;
         }
 
@@ -109,11 +111,11 @@ export default function StockIndex({
         }, {
             onSuccess: () => {
                 setModalOpen(false);
-                toast.success('Stock adjusted successfully.');
+                toast.success(t('Stock adjusted successfully.'));
             },
             onError: (err) => {
                 const first = Object.values(err)[0];
-                toast.error(first || 'Failed to adjust stock.');
+                toast.error(first || t('Failed to adjust stock.'));
             },
             onFinish: () => setSubmitting(false),
         });
@@ -121,16 +123,16 @@ export default function StockIndex({
 
     return (
         <div className="space-y-8">
-            <Head title="Inventory & Stock Ledger — DMart Admin" />
+            <Head title={t('Inventory & Stock Ledger — DMart Admin')} />
 
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Inventory & Stock Ledger
+                        {t('Inventory & Stock Ledger')}
                     </h1>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Track shared inventory levels, audit stock adjustments, and monitor threshold warnings
+                        {t('Track shared inventory levels, audit stock adjustments, and monitor threshold warnings')}
                     </p>
                 </div>
 
@@ -142,7 +144,7 @@ export default function StockIndex({
                     disabled={products.length === 0}
                 >
                     <Plus className="w-4 h-4" />
-                    <span>Adjust Stock</span>
+                    <span>{t('Adjust Stock')}</span>
                 </Button>
             </div>
 
@@ -152,7 +154,7 @@ export default function StockIndex({
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                         type="text"
-                        placeholder="Search product or SKU..."
+                        placeholder={t('Search product or SKU...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="pl-9 h-9 text-xs rounded-xl"
@@ -167,7 +169,7 @@ export default function StockIndex({
                         className="rounded text-purple-600 focus:ring-purple-500"
                     />
                     <span className="font-semibold text-amber-600 dark:text-amber-400">
-                        Show Low Stock Only (&le; threshold)
+                        {t('Show Low Stock Only (≤ threshold)')}
                     </span>
                 </label>
             </form>
@@ -175,7 +177,7 @@ export default function StockIndex({
             {/* Current Stock Levels */}
             <div className="space-y-4">
                 <h2 className="font-bold text-base tracking-tight text-foreground">
-                    Product Stock Balances
+                    {t('Product Stock Balances')}
                 </h2>
 
                 <div className="border rounded-2xl bg-card overflow-hidden shadow-xs">
@@ -183,20 +185,20 @@ export default function StockIndex({
                         <table className="w-full text-left text-xs">
                             <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
                                 <tr>
-                                    <th className="p-3.5">Product</th>
-                                    <th className="p-3.5">SKU</th>
-                                    <th className="p-3.5">Department</th>
-                                    <th className="p-3.5">Current Stock</th>
-                                    <th className="p-3.5">Low-Stock Alert Level</th>
-                                    <th className="p-3.5">Status</th>
-                                    <th className="p-3.5 text-right">Action</th>
+                                    <th className="p-3.5">{t('Product')}</th>
+                                    <th className="p-3.5">{t('SKU')}</th>
+                                    <th className="p-3.5">{t('Department')}</th>
+                                    <th className="p-3.5">{t('Current Stock')}</th>
+                                    <th className="p-3.5">{t('Low-Stock Alert Level')}</th>
+                                    <th className="p-3.5">{t('Status')}</th>
+                                    <th className="p-3.5 text-right">{t('Action')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y">
                                 {products.length === 0 ? (
                                     <tr>
                                         <td colSpan={7} className="p-8 text-center text-muted-foreground">
-                                            No products found matching criteria.
+                                            {t('No products found matching criteria.')}
                                         </td>
                                     </tr>
                                 ) : (
@@ -213,20 +215,20 @@ export default function StockIndex({
                                                     {p.category_name}
                                                 </td>
                                                 <td className="p-3.5 font-bold text-sm">
-                                                    {p.stock} units
+                                                    {t(':count units', { count: p.stock })}
                                                 </td>
                                                 <td className="p-3.5 text-muted-foreground">
-                                                    Alert at &le; {p.low_stock_threshold}
+                                                    {t('Alert at ≤ :count', { count: p.low_stock_threshold })}
                                                 </td>
                                                 <td className="p-3.5">
                                                     {p.is_low_stock ? (
                                                         <Badge className="bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950 dark:text-amber-300 gap-1 text-[10px]">
                                                             <AlertTriangle className="w-3 h-3 text-amber-600" />
-                                                            <span>Low Stock</span>
+                                                            <span>{t('Low Stock')}</span>
                                                         </Badge>
                                                     ) : (
                                                         <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 text-[10px]">
-                                                            Adequate
+                                                            {t('Adequate')}
                                                         </Badge>
                                                     )}
                                                 </td>
@@ -238,7 +240,7 @@ export default function StockIndex({
                                                         onClick={() => openAdjustModal(p.id)}
                                                         className="h-7 text-xs px-2.5 rounded-lg"
                                                     >
-                                                        Adjust
+                                                        {t('Adjust')}
                                                     </Button>
                                                 </td>
                                             </tr>
@@ -256,10 +258,10 @@ export default function StockIndex({
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="font-bold text-base tracking-tight text-foreground">
-                            Audit Ledger (Recent 50 Movements)
+                            {t('Audit Ledger (Recent 50 Movements)')}
                         </h2>
                         <p className="text-xs text-muted-foreground">
-                            Every restock, POS sale, online checkout, and manual adjustment is immutably recorded
+                            {t('Every restock, POS sale, online checkout, and manual adjustment is immutably recorded')}
                         </p>
                     </div>
                 </div>
@@ -269,20 +271,20 @@ export default function StockIndex({
                         <table className="w-full text-left text-xs">
                             <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
                                 <tr>
-                                    <th className="p-3.5">Date & Time</th>
-                                    <th className="p-3.5">Product</th>
-                                    <th className="p-3.5">SKU</th>
-                                    <th className="p-3.5">Type</th>
-                                    <th className="p-3.5">Quantity Change</th>
-                                    <th className="p-3.5">Reason / Reference</th>
-                                    <th className="p-3.5">Actor</th>
+                                    <th className="p-3.5">{t('Date & Time')}</th>
+                                    <th className="p-3.5">{t('Product')}</th>
+                                    <th className="p-3.5">{t('SKU')}</th>
+                                    <th className="p-3.5">{t('Type')}</th>
+                                    <th className="p-3.5">{t('Quantity Change')}</th>
+                                    <th className="p-3.5">{t('Reason / Reference')}</th>
+                                    <th className="p-3.5">{t('Actor')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y">
                                 {movements.length === 0 ? (
                                     <tr>
                                         <td colSpan={7} className="p-8 text-center text-muted-foreground">
-                                            No stock movement records yet.
+                                            {t('No stock movement records yet.')}
                                         </td>
                                     </tr>
                                 ) : (
@@ -301,7 +303,7 @@ export default function StockIndex({
                                                 </td>
                                                 <td className="p-3.5">
                                                     <Badge variant="outline" className="text-[10px] py-0 capitalize">
-                                                        {m.type}
+                                                        {t(m.type)}
                                                     </Badge>
                                                 </td>
                                                 <td className="p-3.5 font-bold">
@@ -334,13 +336,13 @@ export default function StockIndex({
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <Boxes className="w-5 h-5 text-purple-600" />
-                            <span>Adjust Inventory Balance</span>
+                            <span>{t('Adjust Inventory Balance')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <form onSubmit={handleAdjust} className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="productSelect" className="text-xs">Select Product</Label>
+                            <Label htmlFor="productSelect" className="text-xs">{t('Select Product')}</Label>
                             <select
                                 id="productSelect"
                                 value={selectedProductId}
@@ -349,7 +351,7 @@ export default function StockIndex({
                             >
                                 {products.map((p) => (
                                     <option key={p.id} value={p.id}>
-                                        {p.name} ({p.sku}) — Current: {p.stock} units
+                                        {p.name} ({p.sku}) — {t('Current:')} {p.stock} {t('units')}
                                     </option>
                                 ))}
                             </select>
@@ -357,7 +359,7 @@ export default function StockIndex({
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label className="text-xs">Adjustment Type</Label>
+                                <Label className="text-xs">{t('Adjustment Type')}</Label>
                                 <div className="grid grid-cols-2 gap-1.5 p-1 bg-muted rounded-xl">
                                     <button
                                         type="button"
@@ -368,7 +370,7 @@ export default function StockIndex({
                                                 : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                     >
-                                        + Add Stock
+                                        + {t('Add Stock')}
                                     </button>
                                     <button
                                         type="button"
@@ -379,13 +381,13 @@ export default function StockIndex({
                                                 : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                     >
-                                        - Deduct
+                                        - {t('Deduct')}
                                     </button>
                                 </div>
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="deltaQty" className="text-xs">Quantity</Label>
+                                <Label htmlFor="deltaQty" className="text-xs">{t('Quantity')}</Label>
                                 <Input
                                     id="deltaQty"
                                     type="number"
@@ -399,13 +401,13 @@ export default function StockIndex({
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="auditReason" className="text-xs">Audit Reason / Justification</Label>
+                            <Label htmlFor="auditReason" className="text-xs">{t('Audit Reason / Justification')}</Label>
                             <Input
                                 id="auditReason"
                                 required
                                 value={reason}
                                 onChange={(e) => setReason(e.target.value)}
-                                placeholder="e.g. Supplier delivery, breakage, shrinkage write-off"
+                                placeholder={t('e.g. Supplier delivery, breakage, shrinkage write-off')}
                                 className="h-10 text-xs rounded-xl"
                             />
                             {errors.reason && <p className="text-xs text-rose-600">{errors.reason}</p>}
@@ -414,10 +416,10 @@ export default function StockIndex({
 
                         <DialogFooter className="pt-2">
                             <Button type="button" variant="outline" onClick={() => setModalOpen(false)} disabled={submitting}>
-                                Cancel
+                                {t('Cancel')}
                             </Button>
                             <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white font-bold">
-                                {submitting ? 'Applying...' : 'Apply Stock Movement'}
+                                {submitting ? t('Applying...') : t('Apply Stock Movement')}
                             </Button>
                         </DialogFooter>
                     </form>

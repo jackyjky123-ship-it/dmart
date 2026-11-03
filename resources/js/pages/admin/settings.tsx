@@ -3,6 +3,7 @@ import { Head, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import { Save, Store, Truck, BellRing } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -21,6 +22,7 @@ interface SettingsProps {
 }
 
 export default function AdminSettingsView({ settings: initialSettings, errors = {} }: SettingsProps) {
+    const { t } = useTranslation();
     const settings = initialSettings || {
         store_name: 'DMart Grocery & Mini-Mart',
         store_address: '#24 Samdach Penn Nouth St (214), Phnom Penh',
@@ -51,11 +53,11 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
             low_stock_threshold: lowStock,
         }, {
             onSuccess: () => {
-                toast.success('Store parameters and delivery settings saved successfully.');
+                toast.success(t('Store parameters and delivery settings saved successfully.'));
             },
             onError: (err) => {
                 const first = Object.values(err)[0];
-                toast.error(first || 'Failed to save settings.');
+                toast.error(first || t('Failed to save settings.'));
             },
             onFinish: () => setSubmitting(false),
         });
@@ -63,14 +65,14 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
-            <Head title="Store Settings — DMart Admin" />
+            <Head title={t('Store Settings — DMart Admin')} />
 
             <div className="pb-4 border-b">
                 <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                    Store & Shipping Settings
+                    {t('Store & Shipping Settings')}
                 </h1>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                    Configure store profile, delivery fee tiers, and low-inventory triggers
+                    {t('Configure store profile, delivery fee tiers, and low-inventory triggers')}
                 </p>
             </div>
 
@@ -80,13 +82,13 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                     <div className="flex items-center gap-2 pb-2 border-b">
                         <Store className="w-4 h-4 text-purple-600" />
                         <h2 className="font-bold text-sm tracking-tight text-foreground">
-                            Store Profile & Contact
+                            {t('Store Profile & Contact')}
                         </h2>
                     </div>
 
                     <div className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="sName" className="text-xs">Store Display Name</Label>
+                            <Label htmlFor="sName" className="text-xs">{t('Store Display Name')}</Label>
                             <Input
                                 id="sName"
                                 required
@@ -98,7 +100,7 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sAddr" className="text-xs">Physical Address (Prints on POS Receipts)</Label>
+                            <Label htmlFor="sAddr" className="text-xs">{t('Physical Address (Prints on POS Receipts)')}</Label>
                             <Input
                                 id="sAddr"
                                 required
@@ -110,7 +112,7 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sPhone" className="text-xs">Customer Support Phone</Label>
+                            <Label htmlFor="sPhone" className="text-xs">{t('Customer Support Phone')}</Label>
                             <Input
                                 id="sPhone"
                                 required
@@ -128,13 +130,13 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                     <div className="flex items-center gap-2 pb-2 border-b">
                         <Truck className="w-4 h-4 text-purple-600" />
                         <h2 className="font-bold text-sm tracking-tight text-foreground">
-                            Local Delivery Fees
+                            {t('Local Delivery Fees')}
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="fee" className="text-xs">Flat City Delivery Fee (USD)</Label>
+                            <Label htmlFor="fee" className="text-xs">{t('Flat City Delivery Fee (USD)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -151,7 +153,7 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="threshold" className="text-xs">Free Delivery Minimum Order (USD)</Label>
+                            <Label htmlFor="threshold" className="text-xs">{t('Free Delivery Minimum Order (USD)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -174,12 +176,12 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                     <div className="flex items-center gap-2 pb-2 border-b">
                         <BellRing className="w-4 h-4 text-purple-600" />
                         <h2 className="font-bold text-sm tracking-tight text-foreground">
-                            Inventory Warnings
+                            {t('Inventory Warnings')}
                         </h2>
                     </div>
 
                     <div className="space-y-1.5 max-w-xs">
-                        <Label htmlFor="low" className="text-xs">Default Low Stock Alert Threshold</Label>
+                        <Label htmlFor="low" className="text-xs">{t('Default Low Stock Alert Threshold')}</Label>
                         <Input
                             id="low"
                             type="number"
@@ -190,7 +192,7 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                         />
                         {errors.low_stock_threshold && <p className="text-xs text-rose-600">{errors.low_stock_threshold}</p>}
                         <div className="text-[11px] text-muted-foreground">
-                            Products with stock &le; this number show warning badges on Dashboard & POS.
+                            {t('Products with stock ≤ this number show warning badges on Dashboard & POS.')}
                         </div>
                     </div>
                 </div>
@@ -198,7 +200,7 @@ export default function AdminSettingsView({ settings: initialSettings, errors = 
                 <div className="flex justify-end pt-2">
                     <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs gap-1.5 px-6 shadow-md">
                         <Save className="w-4 h-4" />
-                        <span>{submitting ? 'Saving...' : 'Save Store Settings'}</span>
+                        <span>{submitting ? t('Saving...') : t('Save Store Settings')}</span>
                     </Button>
                 </div>
             </form>

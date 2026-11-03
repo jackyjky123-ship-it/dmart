@@ -12,6 +12,7 @@ import {
     Star,
     Layers,
 } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 
 // Heatmap scale
@@ -101,18 +102,19 @@ const SALES_BY_COUNTRY = [
 ];
 
 export default function AdminDashboard() {
+    const { t } = useTranslation();
     const [hoveredCell, setHoveredCell] = useState<{ hour: string; day: string; val: number } | null>(null);
 
     return (
         <div className="space-y-6 text-white pb-12">
-            <Head title="Metric Flow — Analytics Dashboard" />
+            <Head title={t('Metric Flow — Analytics Dashboard')} />
 
             {/* 1. TOP KPI METRIC CARDS ROW (From admin_dashboard_ref.png) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Total Revenue */}
                 <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">Total Revenue</span>
+                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Total Revenue')}</span>
                         <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
                             <ArrowUpRight className="w-3 h-3" /> +12.5%
                         </span>
@@ -121,14 +123,14 @@ export default function AdminDashboard() {
                         <span className="text-[#F25623]">$</span> 24,500
                     </div>
                     <div className="text-[10px] text-[#737373] font-mono">
-                        From Jun 01,2024 To Jun 29, 2024
+                        {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* Total Order */}
                 <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">Total Order</span>
+                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Total Order')}</span>
                         <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
                             <ArrowUpRight className="w-3 h-3" /> +8.2%
                         </span>
@@ -137,14 +139,14 @@ export default function AdminDashboard() {
                         1,240
                     </div>
                     <div className="text-[10px] text-[#737373] font-mono">
-                        From Jun 01,2024 To Jun 29, 2024
+                        {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* New Customer */}
                 <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">New customer</span>
+                        <span className="text-xs text-[#a3a3a3] font-medium">{t('New customer')}</span>
                         <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 bg-rose-500/15 px-2 py-0.5 rounded-full">
                             <ArrowDownRight className="w-3 h-3" /> -4.3%
                         </span>
@@ -153,14 +155,14 @@ export default function AdminDashboard() {
                         320
                     </div>
                     <div className="text-[10px] text-[#737373] font-mono">
-                        From Jun 01,2024 To Jun 29, 2024
+                        {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* Conversion Rate */}
                 <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">Conversion rate</span>
+                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Conversion rate')}</span>
                         <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
                             <ArrowUpRight className="w-3 h-3" /> +2.1%
                         </span>
@@ -169,7 +171,7 @@ export default function AdminDashboard() {
                         3.2 %
                     </div>
                     <div className="text-[10px] text-[#737373] font-mono">
-                        From Jun 01,2024 To Jun 29, 2024
+                        {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
             </div>
@@ -180,7 +182,7 @@ export default function AdminDashboard() {
                 <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-bold text-white tracking-tight">
-                            Orders by time
+                            {t('Orders by time')}
                         </h3>
 
                         {/* Legend */}
@@ -213,7 +215,7 @@ export default function AdminDashboard() {
                             {/* Column Days Header */}
                             {HEATMAP_DAYS.map((day) => (
                                 <div key={day} className="text-[10px] font-mono text-[#888]">
-                                    {day}
+                                    {t(day)}
                                 </div>
                             ))}
 
@@ -221,7 +223,7 @@ export default function AdminDashboard() {
                             {HEATMAP_HOURS.map((hr, rIdx) => (
                                 <React.Fragment key={hr}>
                                     <div className="text-[10px] font-mono text-[#888] text-right pr-1">
-                                        {hr}
+                                        {t(hr)}
                                     </div>
 
                                     {HEATMAP_DAYS.map((day, cIdx) => {
@@ -238,7 +240,7 @@ export default function AdminDashboard() {
                                                         ? 'scale-115 ring-2 ring-white z-10'
                                                         : 'hover:scale-105'
                                                 )}
-                                                title={`${day} at ${hr}: ${val} orders`}
+                                                title={t(':day at :hour: :val orders', { day: t(day), hour: t(hr), val })}
                                             />
                                         );
                                     })}
@@ -248,13 +250,13 @@ export default function AdminDashboard() {
 
                         {/* Interactive Status Footer */}
                         <div className="mt-3 text-[11px] text-[#737373] font-mono flex items-center justify-between">
-                            <span>Peak Rush: 11 am – 1 pm</span>
+                            <span>{t('Peak Rush: 11 am – 1 pm')}</span>
                             {hoveredCell ? (
                                 <span className="text-[#F25623] font-bold">
-                                    {hoveredCell.day} {hoveredCell.hour}: {hoveredCell.val} orders
+                                    {t(':day :hour: :val orders', { day: t(hoveredCell.day), hour: t(hoveredCell.hour), val: hoveredCell.val })}
                                 </span>
                             ) : (
-                                <span>Hover cell for exact count</span>
+                                <span>{t('Hover cell for exact count')}</span>
                             )}
                         </div>
                     </div>
@@ -264,16 +266,16 @@ export default function AdminDashboard() {
                 <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md flex flex-col justify-between">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-bold text-white tracking-tight">
-                            Monthly Sales performance
+                            {t('Monthly Sales performance')}
                         </h3>
 
                         {/* Chart Legend */}
                         <div className="flex items-center gap-4 text-xs font-mono">
                             <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
-                                <span className="w-3 h-0.5 bg-[#F25623]" /> Sales
+                                <span className="w-3 h-0.5 bg-[#F25623]" /> {t('Sales')}
                             </span>
                             <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
-                                <span className="w-3 h-0.5 bg-[#818cf8]" /> Target
+                                <span className="w-3 h-0.5 bg-[#818cf8]" /> {t('Target')}
                             </span>
                         </div>
                     </div>
@@ -341,16 +343,16 @@ export default function AdminDashboard() {
 
                         {/* Interactive Tooltip Card on April (replicating design_ref) */}
                         <div className="absolute top-14 right-20 sm:right-28 bg-[#111111]/95 border border-[#333] rounded-xl p-3 shadow-xl backdrop-blur-md text-[11px] space-y-1 z-20 pointer-events-none">
-                            <div className="font-mono text-[#a3a3a3] font-bold">April 1, 2025</div>
+                            <div className="font-mono text-[#a3a3a3] font-bold">{t('April 1, 2025')}</div>
                             <div className="flex items-center justify-between gap-4">
                                 <span className="flex items-center gap-1.5 text-white">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F25623]" /> Total sales
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F25623]" /> {t('Total sales')}
                                 </span>
                                 <span className="font-mono font-bold text-white">4790</span>
                             </div>
                             <div className="flex items-center justify-between gap-4">
                                 <span className="flex items-center gap-1.5 text-[#a3a3a3]">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" /> Target sales
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" /> {t('Target sales')}
                                 </span>
                                 <span className="font-mono font-bold text-[#818cf8]">3830</span>
                             </div>
@@ -359,7 +361,7 @@ export default function AdminDashboard() {
                         {/* X-axis months */}
                         <div className="absolute bottom-0 left-10 right-4 flex justify-between text-[10px] font-mono text-[#888]">
                             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m) => (
-                                <span key={m}>{m}</span>
+                                <span key={m}>{t(m)}</span>
                             ))}
                         </div>
                     </div>
@@ -372,10 +374,10 @@ export default function AdminDashboard() {
                 <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-bold text-white tracking-tight">
-                            Sales by Country
+                            {t('Sales by Country')}
                         </h3>
                         <button type="button" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
-                            View All
+                            {t('View All')}
                         </button>
                     </div>
 
@@ -386,8 +388,8 @@ export default function AdminDashboard() {
                                 className="p-3 rounded-xl bg-[#222222] border border-[#2d2d2d] hover:border-[#F25623]/60 transition-colors space-y-1"
                             >
                                 <div className="text-xl leading-none">{country.flag}</div>
-                                <div className="text-xs font-bold text-white truncate">{country.name}</div>
-                                <div className="text-[10px] font-mono text-[#888]">{country.products}</div>
+                                <div className="text-xs font-bold text-white truncate">{t(country.name)}</div>
+                                <div className="text-[10px] font-mono text-[#888]">{country.products.replace('Products', t('Products'))}</div>
                             </div>
                         ))}
                     </div>
@@ -397,10 +399,10 @@ export default function AdminDashboard() {
                 <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-bold text-white tracking-tight">
-                            Top Product Sales
+                            {t('Top Product Sales')}
                         </h3>
                         <Link href="/admin/products" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
-                            View All
+                            {t('View All')}
                         </Link>
                     </div>
 
@@ -408,12 +410,12 @@ export default function AdminDashboard() {
                         <table className="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr className="border-b border-[#262626] text-[10px] font-mono uppercase tracking-wider text-[#737373]">
-                                    <th className="pb-3 font-semibold">PRODUCT</th>
-                                    <th className="pb-3 font-semibold">REVENUE</th>
-                                    <th className="pb-3 font-semibold">SALES</th>
-                                    <th className="pb-3 font-semibold">GROWTH</th>
-                                    <th className="pb-3 font-semibold">REVIEWS</th>
-                                    <th className="pb-3 font-semibold">VIEWS</th>
+                                    <th className="pb-3 font-semibold">{t('PRODUCT')}</th>
+                                    <th className="pb-3 font-semibold">{t('REVENUE')}</th>
+                                    <th className="pb-3 font-semibold">{t('SALES')}</th>
+                                    <th className="pb-3 font-semibold">{t('GROWTH')}</th>
+                                    <th className="pb-3 font-semibold">{t('REVIEWS')}</th>
+                                    <th className="pb-3 font-semibold">{t('VIEWS')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-[#242424]">

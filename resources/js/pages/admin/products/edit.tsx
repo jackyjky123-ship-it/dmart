@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ArrowLeft,
     UploadCloud,
@@ -50,6 +51,7 @@ interface ProductEditProps {
 }
 
 export default function ProductEdit({ product, categories = [], errors = {} }: ProductEditProps) {
+    const { t } = useTranslation();
     const [name, setName] = useState(product.name);
     const [slug, setSlug] = useState(product.slug);
     const [sku, setSku] = useState(product.sku);
@@ -77,10 +79,10 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
             description,
             is_active: isActive ? 1 : 0,
         }, {
-            onSuccess: () => toast.success(`Product "${name}" updated successfully.`),
+            onSuccess: () => toast.success(t('Product ":name" updated successfully.', { name })),
             onError: (err) => {
                 const first = Object.values(err)[0];
-                toast.error(first || 'Failed to update product.');
+                toast.error(first || t('Failed to update product.'));
             },
             onFinish: () => setSubmitting(false),
         });
@@ -96,10 +98,10 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
         });
 
         router.post(`/admin/products/${product.id}/images`, formData, {
-            onSuccess: () => toast.success('Images uploaded successfully.'),
+            onSuccess: () => toast.success(t('Images uploaded successfully.')),
             onError: (err) => {
                 const first = Object.values(err)[0];
-                toast.error(first || 'Failed to upload images.');
+                toast.error(first || t('Failed to upload images.'));
             },
             onFinish: () => setUploading(false),
         });
@@ -107,34 +109,34 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
 
     const handleSetPrimary = (image: ProductImage) => {
         router.patch(`/admin/products/${product.id}/images/${image.id}/primary`, {}, {
-            onSuccess: () => toast.success('Primary image updated.'),
-            onError: () => toast.error('Failed to update primary image.'),
+            onSuccess: () => toast.success(t('Primary image updated.')),
+            onError: () => toast.error(t('Failed to update primary image.')),
         });
     };
 
     const handleDeleteImage = (image: ProductImage) => {
-        if (confirm('Delete this product image?')) {
+        if (confirm(t('Delete this product image?'))) {
             router.delete(`/admin/products/${product.id}/images/${image.id}`, {
-                onSuccess: () => toast.success('Image deleted.'),
-                onError: () => toast.error('Failed to delete image.'),
+                onSuccess: () => toast.success(t('Image deleted.')),
+                onError: () => toast.error(t('Failed to delete image.')),
             });
         }
     };
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
-            <Head title={`Edit ${product.name} — DMart Admin`} />
+            <Head title={t('Edit :name — DMart Admin', { name: product.name })} />
 
             <div className="flex items-center gap-3 pb-4 border-b">
                 <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">
                     <Link href="/admin/products">
                         <ArrowLeft className="w-4 h-4 mr-1" />
-                        Back to Products
+                        {t('Back to Products')}
                     </Link>
                 </Button>
                 <div className="h-4 w-px bg-border" />
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground truncate">
-                    Edit {product.name}
+                    {t('Edit :name', { name: product.name })}
                 </h1>
             </div>
 
@@ -142,12 +144,12 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                 {/* General Information Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Basic Information
+                        {t('Basic Information')}
                     </h2>
 
                     <div className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="name" className="text-xs">Product Name</Label>
+                            <Label htmlFor="name" className="text-xs">{t('Product Name')}</Label>
                             <Input
                                 id="name"
                                 required
@@ -160,7 +162,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div className="space-y-1.5">
-                                <Label htmlFor="sku" className="text-xs">SKU / Code</Label>
+                                <Label htmlFor="sku" className="text-xs">{t('SKU / Code')}</Label>
                                 <Input
                                     id="sku"
                                     required
@@ -172,7 +174,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="category" className="text-xs">Category</Label>
+                                <Label htmlFor="category" className="text-xs">{t('Category')}</Label>
                                 <select
                                     id="category"
                                     required
@@ -188,7 +190,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="slug" className="text-xs">Slug</Label>
+                                <Label htmlFor="slug" className="text-xs">{t('Slug')}</Label>
                                 <Input
                                     id="slug"
                                     value={slug}
@@ -200,7 +202,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="desc" className="text-xs">Description</Label>
+                            <Label htmlFor="desc" className="text-xs">{t('Description')}</Label>
                             <textarea
                                 id="desc"
                                 rows={3}
@@ -216,12 +218,12 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                 {/* Pricing Card */}
                 <div className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                     <h2 className="font-bold text-sm tracking-tight text-foreground pb-2 border-b">
-                        Pricing & Thresholds
+                        {t('Pricing & Thresholds')}
                     </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="price" className="text-xs">Selling Price (USD)</Label>
+                            <Label htmlFor="price" className="text-xs">{t('Selling Price (USD)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -238,7 +240,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="compareAt" className="text-xs">Compare-At Price (USD)</Label>
+                            <Label htmlFor="compareAt" className="text-xs">{t('Compare-At Price (USD)')}</Label>
                             <div className="relative">
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
                                 <Input
@@ -247,7 +249,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                                     step="0.01"
                                     value={compareAt}
                                     onChange={(e) => setCompareAt(e.target.value)}
-                                    placeholder="Optional"
+                                    placeholder={t('Optional')}
                                     className="pl-7 h-10 text-xs rounded-xl"
                                 />
                             </div>
@@ -255,7 +257,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="lowStock" className="text-xs">Low Stock Threshold</Label>
+                            <Label htmlFor="lowStock" className="text-xs">{t('Low Stock Threshold')}</Label>
                             <Input
                                 id="lowStock"
                                 type="number"
@@ -268,7 +270,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                     </div>
 
                     <div className="pt-2 text-xs text-muted-foreground">
-                        Current stock: <strong>{product.stock} units</strong>. To adjust inventory balances, visit the <Link href="/admin/stock" className="text-purple-600 underline font-semibold">Stock & Ledger</Link> section.
+                        {t('Current stock:')} <strong>{t(':count units', { count: product.stock })}</strong>. {t('To adjust inventory balances, visit the')} <Link href="/admin/stock" className="text-purple-600 underline font-semibold">{t('Stock & Ledger')}</Link> {t('section.')}
                     </div>
                 </div>
 
@@ -282,17 +284,17 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                         className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4"
                     />
                     <Label htmlFor="active" className="text-xs cursor-pointer">
-                        <span className="font-bold">Active in Catalog</span> &mdash; Customer storefront and POS can see and purchase this product.
+                        <span className="font-bold">{t('Active in Catalog')}</span> &mdash; {t('Customer storefront and POS can see and purchase this product.')}
                     </Label>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-2">
                     <Button asChild variant="outline" className="rounded-xl text-xs">
-                        <Link href="/admin/products">Cancel</Link>
+                        <Link href="/admin/products">{t('Cancel')}</Link>
                     </Button>
                     <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold gap-1.5 px-6 shadow-md">
                         <Save className="w-4 h-4" />
-                        <span>{submitting ? 'Saving...' : 'Update Product'}</span>
+                        <span>{submitting ? t('Saving...') : t('Update Product')}</span>
                     </Button>
                 </div>
             </form>
@@ -302,10 +304,10 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                 <div className="flex items-center justify-between pb-2 border-b">
                     <div>
                         <h2 className="font-bold text-sm tracking-tight text-foreground">
-                            Product Images
+                            {t('Product Images')}
                         </h2>
                         <p className="text-xs text-muted-foreground">
-                            Upload photos, set primary thumbnail, or remove outdated images (max 5)
+                            {t('Upload photos, set primary thumbnail, or remove outdated images (max 5)')}
                         </p>
                     </div>
 
@@ -322,7 +324,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                             <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1.5" disabled={uploading}>
                                 <span>
                                     <UploadCloud className="w-4 h-4" />
-                                    <span>{uploading ? 'Uploading...' : 'Upload Images'}</span>
+                                    <span>{uploading ? t('Uploading...') : t('Upload Images')}</span>
                                 </span>
                             </Button>
                         </label>
@@ -331,7 +333,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
 
                 {product.images.length === 0 ? (
                     <div className="p-8 border-2 border-dashed rounded-2xl text-center text-muted-foreground text-xs">
-                        No product images uploaded yet. The storefront and POS will display a colored letter-tile fallback.
+                        {t('No product images uploaded yet. The storefront and POS will display a colored letter-tile fallback.')}
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -342,7 +344,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                                 {img.is_primary ? (
                                     <div className="absolute top-2 left-2 bg-purple-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm flex items-center gap-1">
                                         <Star className="w-3 h-3 fill-current" />
-                                        Primary
+                                        {t('Primary')}
                                     </div>
                                 ) : (
                                     <Button
@@ -352,7 +354,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                                         onClick={() => handleSetPrimary(img)}
                                         className="absolute top-2 left-2 h-6 text-[10px] px-2 bg-background/80 hover:bg-background backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity"
                                     >
-                                        Set Primary
+                                        {t('Set Primary')}
                                     </Button>
                                 )}
 
@@ -362,7 +364,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                                     size="icon"
                                     onClick={() => handleDeleteImage(img)}
                                     className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-sm"
-                                    title="Delete image"
+                                    title={t('Delete image')}
                                 >
                                     <Trash2 className="w-3.5 h-3.5" />
                                 </Button>

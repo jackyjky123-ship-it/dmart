@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     Plus,
     Search,
@@ -48,6 +49,7 @@ interface ProductsIndexProps {
 }
 
 export default function AdminProductsIndex({ products: propProducts, categories = [], filters = {} }: ProductsIndexProps) {
+    const { t } = useTranslation();
     const productList: Product[] = Array.isArray(propProducts)
         ? propProducts
         : propProducts?.data || [];
@@ -74,12 +76,12 @@ export default function AdminProductsIndex({ products: propProducts, categories 
     };
 
     const handleDelete = (product: Product) => {
-        if (confirm(`Are you sure you want to delete product "${product.name}"?`)) {
+        if (confirm(t('Are you sure you want to delete product ":name"?', { name: product.name }))) {
             router.delete(`/admin/products/${product.id}`, {
-                onSuccess: () => toast.success(`Product "${product.name}" deleted.`),
+                onSuccess: () => toast.success(t('Product ":name" deleted.', { name: product.name })),
                 onError: (err) => {
                     const firstError = Object.values(err)[0];
-                    toast.error(firstError || 'Failed to delete product.');
+                    toast.error(firstError || t('Failed to delete product.'));
                 },
             });
         }
@@ -87,23 +89,23 @@ export default function AdminProductsIndex({ products: propProducts, categories 
 
     return (
         <div className="space-y-6">
-            <Head title="Products Management — DMart Admin" />
+            <Head title={t('Products Management — DMart Admin')} />
 
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Product Catalog
+                        {t('Product Catalog')}
                     </h1>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Manage grocery items, SKU prices, inventory limits and media
+                        {t('Manage grocery items, SKU prices, inventory limits and media')}
                     </p>
                 </div>
 
                 <Button asChild size="sm" className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl gap-1.5 shadow-sm text-xs">
                     <Link href="/admin/products/create">
                         <Plus className="w-4 h-4" />
-                        <span>Add New Product</span>
+                        <span>{t('Add New Product')}</span>
                     </Link>
                 </Button>
             </div>
@@ -114,7 +116,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                         type="text"
-                        placeholder="Search SKU or product name..."
+                        placeholder={t('Search SKU or product name...')}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="pl-9 h-9 text-xs rounded-xl"
@@ -123,14 +125,14 @@ export default function AdminProductsIndex({ products: propProducts, categories 
 
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <SlidersHorizontal className="w-3.5 h-3.5" /> Department:
+                        <SlidersHorizontal className="w-3.5 h-3.5" /> {t('Department:')}
                     </span>
                     <select
                         value={selectedCategory}
                         onChange={(e) => handleCategoryChange(e.target.value)}
                         className="bg-background border rounded-lg px-2.5 py-1 text-xs font-medium focus:ring-1 focus:ring-purple-500"
                     >
-                        <option value="all">All Departments</option>
+                        <option value="all">{t('All Departments')}</option>
                         {categories.map((c) => (
                             <option key={c.id} value={c.id.toString()}>{c.name}</option>
                         ))}
@@ -144,20 +146,20 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                     <table className="w-full text-left text-xs">
                         <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
                             <tr>
-                                <th className="p-3.5">Product</th>
-                                <th className="p-3.5">SKU</th>
-                                <th className="p-3.5">Category</th>
-                                <th className="p-3.5">Price</th>
-                                <th className="p-3.5">Stock</th>
-                                <th className="p-3.5">Status</th>
-                                <th className="p-3.5 text-right">Actions</th>
+                                <th className="p-3.5">{t('Product')}</th>
+                                <th className="p-3.5">{t('SKU')}</th>
+                                <th className="p-3.5">{t('Category')}</th>
+                                <th className="p-3.5">{t('Price')}</th>
+                                <th className="p-3.5">{t('Stock')}</th>
+                                <th className="p-3.5">{t('Status')}</th>
+                                <th className="p-3.5 text-right">{t('Actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y">
                             {productList.length === 0 ? (
                                 <tr>
                                     <td colSpan={7} className="p-8 text-center text-muted-foreground">
-                                        No products found. Click "Add New Product" to create one.
+                                        {t('No products found. Click "Add New Product" to create one.')}
                                     </td>
                                 </tr>
                             ) : (
@@ -209,7 +211,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                                                             : 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
                                                     }`}
                                                 >
-                                                    {product.stock} units
+                                                    {t(':count units', { count: product.stock })}
                                                 </Badge>
                                             </td>
                                             <td className="p-3.5">
@@ -221,7 +223,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                                                     variant="ghost"
                                                     size="sm"
                                                     className="h-7 px-2 text-xs text-purple-600 hover:text-purple-700"
-                                                    title="Edit Product"
+                                                    title={t('Edit Product')}
                                                 >
                                                     <Link href={`/admin/products/${product.id}/edit`}>
                                                         <Edit className="w-3.5 h-3.5" />
@@ -233,7 +235,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                                                     size="sm"
                                                     onClick={() => handleDelete(product)}
                                                     className="h-7 px-2 text-xs text-rose-600 hover:text-rose-700"
-                                                    title="Delete Product"
+                                                    title={t('Delete Product')}
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" />
                                                 </Button>

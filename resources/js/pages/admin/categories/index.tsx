@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Plus, Tags, Trash2, Edit, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface Category {
     id: number;
@@ -22,6 +23,7 @@ interface CategoriesProps {
 }
 
 export default function AdminCategoriesIndex({ categories = [], errors = {} }: CategoriesProps) {
+    const { t } = useTranslation();
     const [modalOpen, setModalOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
     const [name, setName] = useState('');
@@ -57,11 +59,11 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
             }, {
                 onSuccess: () => {
                     setModalOpen(false);
-                    toast.success(`Category "${name}" updated.`);
+                    toast.success(t('Category ":name" updated.', { name }));
                 },
                 onError: (err) => {
                     const firstError = Object.values(err)[0];
-                    toast.error(firstError || 'Failed to update category.');
+                    toast.error(firstError || t('Failed to update category.'));
                 },
                 onFinish: () => setSubmitting(false),
             });
@@ -76,11 +78,11 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                     setName('');
                     setSlug('');
                     setDescription('');
-                    toast.success(`Category "${name}" created.`);
+                    toast.success(t('Category ":name" created.', { name }));
                 },
                 onError: (err) => {
                     const firstError = Object.values(err)[0];
-                    toast.error(firstError || 'Failed to create category.');
+                    toast.error(firstError || t('Failed to create category.'));
                 },
                 onFinish: () => setSubmitting(false),
             });
@@ -89,16 +91,16 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
 
     const handleDelete = (cat: Category) => {
         if (cat.product_count > 0) {
-            toast.error(`Cannot delete category "${cat.name}" because it contains ${cat.product_count} product(s). Reassign or delete products first.`);
+            toast.error(t('Cannot delete category ":name" because it contains :count product(s). Reassign or delete products first.', { name: cat.name, count: cat.product_count }));
             return;
         }
 
-        if (confirm(`Are you sure you want to delete category "${cat.name}"?`)) {
+        if (confirm(t('Are you sure you want to delete category ":name"?', { name: cat.name }))) {
             router.delete(`/admin/categories/${cat.id}`, {
-                onSuccess: () => toast.success(`Category "${cat.name}" deleted.`),
+                onSuccess: () => toast.success(t('Category ":name" deleted.', { name: cat.name })),
                 onError: (err) => {
                     const firstError = Object.values(err)[0];
-                    toast.error(firstError || 'Failed to delete category.');
+                    toast.error(firstError || t('Failed to delete category.'));
                 },
             });
         }
@@ -106,22 +108,22 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
 
     return (
         <div className="space-y-6">
-            <Head title="Categories Management — DMart Admin" />
+            <Head title={t('Categories Management — DMart Admin')} />
 
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                        Product Categories
+                        {t('Product Categories')}
                     </h1>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        Organize grocery departments across the storefront and POS terminal
+                        {t('Organize grocery departments across the storefront and POS terminal')}
                     </p>
                 </div>
 
                 <Button onClick={openCreateModal} size="sm" className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl gap-1.5 shadow-sm text-xs">
                     <Plus className="w-4 h-4" />
-                    <span>Add Category</span>
+                    <span>{t('Add Category')}</span>
                 </Button>
             </div>
 
@@ -130,18 +132,18 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                 <table className="w-full text-left text-xs">
                     <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
                         <tr>
-                            <th className="p-3.5">Category Name</th>
-                            <th className="p-3.5">Slug</th>
-                            <th className="p-3.5">Description</th>
-                            <th className="p-3.5">Products</th>
-                            <th className="p-3.5 text-right">Actions</th>
+                            <th className="p-3.5">{t('Category Name')}</th>
+                            <th className="p-3.5">{t('Slug')}</th>
+                            <th className="p-3.5">{t('Description')}</th>
+                            <th className="p-3.5">{t('Products')}</th>
+                            <th className="p-3.5 text-right">{t('Actions')}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y">
                         {categories.length === 0 ? (
                             <tr>
                                 <td colSpan={5} className="p-8 text-center text-muted-foreground">
-                                    No categories yet. Click "Add Category" above to create your first category.
+                                    {t('No categories yet. Click "Add Category" above to create your first category.')}
                                 </td>
                             </tr>
                         ) : (
@@ -161,7 +163,7 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                                     </td>
                                     <td className="p-3.5">
                                         <Badge variant="outline" className="text-[10px] py-0 font-semibold">
-                                            {cat.product_count} items
+                                            {t(':count items', { count: cat.product_count })}
                                         </Badge>
                                     </td>
                                     <td className="p-3.5 text-right space-x-1">
@@ -171,7 +173,7 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                                             size="sm"
                                             onClick={() => openEditModal(cat)}
                                             className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
-                                            title="Edit Category"
+                                            title={t('Edit Category')}
                                         >
                                             <Edit className="w-3.5 h-3.5" />
                                         </Button>
@@ -181,7 +183,7 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                                             size="sm"
                                             onClick={() => handleDelete(cat)}
                                             className="h-7 px-2 text-xs text-rose-600 hover:text-rose-700"
-                                            title="Delete Category"
+                                            title={t('Delete Category')}
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
                                         </Button>
@@ -199,43 +201,43 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
                             <Tags className="w-5 h-5 text-purple-600" />
-                            <span>{editingCategory ? 'Edit Category' : 'Create New Category'}</span>
+                            <span>{editingCategory ? t('Edit Category') : t('Create New Category')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="catName" className="text-xs">Category Name</Label>
+                            <Label htmlFor="catName" className="text-xs">{t('Category Name')}</Label>
                             <Input
                                 id="catName"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="e.g. Fresh Produce"
+                                placeholder={t('e.g. Fresh Produce')}
                                 className="h-10 text-xs rounded-xl"
                             />
                             {errors.name && <p className="text-xs text-rose-600">{errors.name}</p>}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="catSlug" className="text-xs">Slug (Optional, auto-generated)</Label>
+                            <Label htmlFor="catSlug" className="text-xs">{t('Slug (Optional, auto-generated)')}</Label>
                             <Input
                                 id="catSlug"
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
-                                placeholder="e.g. fresh-produce"
+                                placeholder={t('e.g. fresh-produce')}
                                 className="h-10 text-xs rounded-xl font-mono"
                             />
                             {errors.slug && <p className="text-xs text-rose-600">{errors.slug}</p>}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="catDesc" className="text-xs">Description</Label>
+                            <Label htmlFor="catDesc" className="text-xs">{t('Description')}</Label>
                             <Input
                                 id="catDesc"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Brief summary of department items..."
+                                placeholder={t('Brief summary of department items...')}
                                 className="h-10 text-xs rounded-xl"
                             />
                             {errors.description && <p className="text-xs text-rose-600">{errors.description}</p>}
@@ -243,10 +245,10 @@ export default function AdminCategoriesIndex({ categories = [], errors = {} }: C
 
                         <DialogFooter className="pt-2">
                             <Button type="button" variant="outline" onClick={() => setModalOpen(false)} disabled={submitting}>
-                                Cancel
+                                {t('Cancel')}
                             </Button>
                             <Button type="submit" disabled={submitting} className="bg-purple-600 hover:bg-purple-700 text-white font-bold">
-                                {submitting ? 'Saving...' : editingCategory ? 'Save Changes' : 'Create Category'}
+                                {submitting ? t('Saving...') : editingCategory ? t('Save Changes') : t('Create Category')}
                             </Button>
                         </DialogFooter>
                     </form>

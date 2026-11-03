@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatMoney } from '@/lib/money';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     ArrowLeft,
     CheckCircle2,
@@ -48,6 +49,7 @@ interface OrderDetailProps {
 }
 
 export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps) {
+    const { t } = useTranslation();
     const order = initialOrder || {
         id: 103,
         order_number: 'DM-00103',
@@ -77,17 +79,17 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
 
     const handleUpdateStatus = (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success(`Order ${order.order_number} status updated to ${status.toUpperCase()}!`);
+        toast.success(t('Order :number status updated to :status!', { number: order.order_number, status: status.toUpperCase() }));
     };
 
     const handleCancelAndRestock = () => {
         setStatus('cancelled');
-        toast.info(`Order ${order.order_number} cancelled. Items automatically returned to stock ledger.`);
+        toast.info(t('Order :number cancelled. Items automatically returned to stock ledger.', { number: order.order_number }));
     };
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
-            <Head title={`Fulfill Order ${order.order_number} — DMart Admin`} />
+            <Head title={t('Fulfill Order :number — DMart Admin', { number: order.order_number })} />
 
             {/* Back Button & Title */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b">
@@ -95,12 +97,12 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
                     <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">
                         <Link href="/admin/orders">
                             <ArrowLeft className="w-4 h-4 mr-1" />
-                            All Orders
+                            {t('All Orders')}
                         </Link>
                     </Button>
                     <div className="h-4 w-px bg-border" />
                     <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-                        Fulfill #{order.order_number}
+                        {t('Fulfill #:number', { number: order.order_number })}
                     </h1>
                 </div>
 
@@ -113,47 +115,47 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
             <form onSubmit={handleUpdateStatus} className="p-6 rounded-3xl bg-card border shadow-xs space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b">
                     <h2 className="font-bold text-sm tracking-tight text-foreground">
-                        Update Fulfillment Pipeline
+                        {t('Update Fulfillment Pipeline')}
                     </h2>
-                    <span className="text-xs text-muted-foreground">Order Channel: <strong className="uppercase">{order.channel}</strong></span>
+                    <span className="text-xs text-muted-foreground">{t('Order Channel:')} <strong className="uppercase">{t(order.channel)}</strong></span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1.5">
-                        <Label htmlFor="orderStatus" className="text-xs">Order Status</Label>
+                        <Label htmlFor="orderStatus" className="text-xs">{t('Order Status')}</Label>
                         <select
                             id="orderStatus"
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             className="w-full h-10 px-3 bg-background border rounded-xl text-xs font-semibold focus:ring-1 focus:ring-purple-500"
                         >
-                            <option value="pending_payment">Pending Payment</option>
-                            <option value="paid">Paid (Confirmed)</option>
-                            <option value="processing">Processing & Packing</option>
-                            <option value="shipped">Shipped / Out for Delivery</option>
-                            <option value="delivered">Delivered to Customer</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="pending_payment">{t('Pending Payment')}</option>
+                            <option value="paid">{t('Paid (Confirmed)')}</option>
+                            <option value="processing">{t('Processing & Packing')}</option>
+                            <option value="shipped">{t('Shipped / Out for Delivery')}</option>
+                            <option value="delivered">{t('Delivered to Customer')}</option>
+                            <option value="cancelled">{t('Cancelled')}</option>
                         </select>
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label htmlFor="carrier" className="text-xs">Local Delivery Carrier</Label>
+                        <Label htmlFor="carrier" className="text-xs">{t('Local Delivery Carrier')}</Label>
                         <Input
                             id="carrier"
                             value={carrier}
                             onChange={(e) => setCarrier(e.target.value)}
-                            placeholder="e.g. Grab Express, J&T"
+                            placeholder={t('e.g. Grab Express, J&T')}
                             className="h-10 text-xs rounded-xl"
                         />
                     </div>
 
                     <div className="space-y-1.5">
-                        <Label htmlFor="tracking" className="text-xs">Tracking Number</Label>
+                        <Label htmlFor="tracking" className="text-xs">{t('Tracking Number')}</Label>
                         <Input
                             id="tracking"
                             value={trackingNumber}
                             onChange={(e) => setTrackingNumber(e.target.value)}
-                            placeholder="e.g. DM-TRK-1038"
+                            placeholder={t('e.g. DM-TRK-1038')}
                             className="h-10 text-xs rounded-xl font-mono"
                         />
                     </div>
@@ -167,12 +169,12 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
                         onClick={handleCancelAndRestock}
                         className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
                     >
-                        <RotateCcw className="w-3.5 h-3.5 mr-1" /> Cancel & Restock Order
+                        <RotateCcw className="w-3.5 h-3.5 mr-1" /> {t('Cancel & Restock Order')}
                     </Button>
 
                     <Button type="submit" size="sm" className="bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs gap-1.5 shadow-sm">
                         <Save className="w-3.5 h-3.5" />
-                        <span>Save Status</span>
+                        <span>{t('Save Status')}</span>
                     </Button>
                 </div>
             </form>
@@ -182,7 +184,7 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
                 {/* Items */}
                 <div className="md:col-span-2 border rounded-3xl bg-card overflow-hidden shadow-xs">
                     <div className="p-5 border-b font-bold text-sm">
-                        Order Items Snapshot ({order.items.length})
+                        {t('Order Items Snapshot (:count)', { count: order.items.length })}
                     </div>
                     <div className="divide-y text-xs">
                         {order.items.map((item, idx) => (
@@ -203,15 +205,15 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
 
                     <div className="p-5 bg-muted/20 border-t space-y-2 text-xs">
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Subtotal</span>
+                            <span>{t('Subtotal')}</span>
                             <span className="font-medium text-foreground">{formatMoney(order.subtotal_cents)}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
-                            <span>Delivery Fee</span>
+                            <span>{t('Delivery Fee')}</span>
                             <span className="font-medium text-foreground">{formatMoney(order.shipping_fee_cents)}</span>
                         </div>
                         <div className="pt-2 border-t flex justify-between text-base font-bold text-foreground">
-                            <span>Total</span>
+                            <span>{t('Total')}</span>
                             <span className="text-purple-700 dark:text-purple-400">
                                 {formatMoney(order.total_cents)}
                             </span>
@@ -221,7 +223,7 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
 
                 {/* Destination */}
                 <div className="border rounded-3xl bg-card p-6 space-y-4 shadow-xs text-xs">
-                    <h3 className="font-bold text-sm text-foreground">Delivery Customer</h3>
+                    <h3 className="font-bold text-sm text-foreground">{t('Delivery Customer')}</h3>
                     <div className="space-y-2 text-muted-foreground">
                         <div className="font-semibold text-foreground text-sm">{order.customer_name}</div>
                         <div>{order.customer_phone}</div>
@@ -232,7 +234,7 @@ export default function AdminOrderShow({ order: initialOrder }: OrderDetailProps
                     </div>
 
                     <div className="pt-3 border-t">
-                        <div className="text-muted-foreground">Payment:</div>
+                        <div className="text-muted-foreground">{t('Payment:')}</div>
                         <div className="font-semibold uppercase text-foreground">{order.payment_method}</div>
                     </div>
                 </div>
