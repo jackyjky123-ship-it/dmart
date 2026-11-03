@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { ProductCard } from '@/components/product-card';
+import { ProductThumb } from '@/components/product-thumb';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CartProduct, useCart } from '@/hooks/use-cart';
@@ -21,8 +22,14 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
+interface ProductImage {
+    id: number;
+    url: string;
+    alt?: string;
+}
+
 interface ProductDetailProps {
-    product?: (CartProduct & { description?: string }) | null;
+    product?: (CartProduct & { description?: string; images?: ProductImage[] }) | null;
     relatedProducts?: CartProduct[];
 }
 
@@ -37,6 +44,7 @@ const DEFAULT_STREETWEAR_PRODUCT = {
     unit: 'Charcoal Gray',
     category_name: 'Hoodies & Fleece',
     image_url: null,
+    images: [] as ProductImage[],
     description:
         'Premium heavyweight cotton hoodie with an oversized fit for ultimate comfort and modern style. Tailored with dropped shoulders and double-needle reinforced seams.',
 };
@@ -517,7 +525,7 @@ export default function ProductShow({ product: propProduct, relatedProducts = []
             {/* Zoom Image Modal */}
             <Dialog open={zoomOpen} onOpenChange={setZoomOpen}>
                 <DialogContent className="max-w-4xl p-0 bg-black border-[#333] overflow-hidden">
-                    <img src={selectedImage} alt="Expanded preview" className="w-full h-auto max-h-[85vh] object-contain" />
+                    <img src={selectedImage || undefined} alt="Expanded preview" className="w-full h-auto max-h-[85vh] object-contain" />
                 </DialogContent>
             </Dialog>
         </div>
