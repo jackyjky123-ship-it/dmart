@@ -46,6 +46,9 @@ class HandleInertiaRequests extends Middleware
             'cartCount' => 0,
             'today' => now()->format('D, M d Y'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'locale' => app()->getLocale(),
+            'locales' => ['en' => 'English', 'km' => 'ភាសាខ្មែរ'],
+            'translations' => fn () => app()->getLocale() === 'km' && file_exists(base_path('lang/km.json')) ? json_decode(file_get_contents(base_path('lang/km.json')), true) : (object) [],
         ];
     }
 }

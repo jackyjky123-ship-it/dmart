@@ -1,9 +1,12 @@
 <?php
 
 use App\Enums\UserRole;
+use App\Http\Controllers\LocaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::post('locale', [LocaleController::class, 'update'])->name('locale.update');
 
 require __DIR__.'/storefront.php';
 require __DIR__.'/pos.php';
