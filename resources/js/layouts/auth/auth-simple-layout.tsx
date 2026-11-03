@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 import { Store, ArrowLeft } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/language-switcher';
 
 export default function AuthSimpleLayout({
     children,
@@ -12,6 +13,11 @@ export default function AuthSimpleLayout({
         <div className="relative flex min-h-svh flex-col items-center justify-center bg-background p-4 sm:p-6 md:p-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.08),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.14),transparent)] selection:bg-emerald-100 selection:text-emerald-900 transition-colors">
             {/* Ambient subtle glow */}
             <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+
+            {/* Top-Right Language Switcher */}
+            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+                <LanguageSwitcher variant="compact" align="end" />
+            </div>
 
             <div className="relative w-full max-w-md">
                 <div className="flex flex-col gap-6">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { useAppearance } from '@/hooks/use-appearance';
 import {
     Terminal,
@@ -140,6 +141,9 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                         <Clock className="w-3.5 h-3.5 text-[#F25623]" />
                         <span>{currentTime || '00:00:00'}</span>
                     </div>
+
+                    {/* Language Switcher */}
+                    <LanguageSwitcher variant="compact" align="end" />
 
                     {/* Portals Switcher Dropdown */}
                     <DropdownMenu>

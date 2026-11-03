@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { CartProvider, useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { toast } from 'sonner';
 import {
     ShoppingCart,
@@ -82,13 +83,15 @@ function StorefrontHeader() {
                         </span>
                     </div>
 
-                    <div className="hidden sm:flex items-center gap-6 text-[11px] text-[#a3a3a3]">
+                    <div className="hidden sm:flex items-center gap-4 text-[11px] text-[#a3a3a3]">
                         <span className="flex items-center gap-1.5">
                             <Truck className="w-3.5 h-3.5 text-[#F25623]" />
                             Free shipping over $35
                         </span>
                         <span className="text-white/40">|</span>
                         <span className="text-white font-semibold tracking-wider">USD $</span>
+                        <span className="text-white/40">|</span>
+                        <LanguageSwitcher variant="compact" align="end" />
                     </div>
                 </div>
             </div>
@@ -367,6 +370,14 @@ function StorefrontHeader() {
                             </Link>
                         )}
                     </nav>
+
+                    {/* Language Selection in Mobile Drawer */}
+                    <div className="pt-3 border-t border-[#2d2d2d] flex items-center justify-between px-2">
+                        <span className="text-xs uppercase tracking-wider text-neutral-400 font-mono">
+                            Language / ភាសា
+                        </span>
+                        <LanguageSwitcher variant="toggle" />
+                    </div>
                 </div>
             )}
         </header>

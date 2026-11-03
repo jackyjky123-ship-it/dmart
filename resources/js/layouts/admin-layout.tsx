@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import {
@@ -149,8 +150,14 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                 </div>
             </div>
 
-            {/* Quick Portals in Sidebar */}
+            {/* Quick Portals & Language in Sidebar */}
             <div className="p-4 border-t border-[#242424] bg-[#111111] space-y-2.5">
+                <div className="flex items-center justify-between pb-1">
+                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
+                        Language
+                    </span>
+                    <LanguageSwitcher variant="toggle" />
+                </div>
                 <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
                     Quick Portals
                 </div>
@@ -328,6 +335,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <Calendar className="w-3.5 h-3.5 text-[#F25623]" />
                             <span>{props.today ?? 'Today'}</span>
                         </div>
+
+                        {/* Language Switcher */}
+                        <LanguageSwitcher variant="compact" align="end" />
 
                         {/* Portals Switcher Dropdown */}
                         <DropdownMenu>
