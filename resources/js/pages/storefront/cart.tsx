@@ -36,7 +36,7 @@ export default function CartView() {
 
     return (
         <div className="space-y-8 text-white pb-12">
-            <Head title="Shopping Bag — DMART Exclusive Drops" />
+            <Head title={t('Shopping Bag — DMART Exclusive Drops')} />
 
             <div className="flex items-center justify-between pb-4 border-b border-[#282828]">
                 <div>

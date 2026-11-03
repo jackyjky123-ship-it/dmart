@@ -4,7 +4,7 @@ test('user can switch locale between en and km', function () {
     $response = $this->post(route('locale.update'), ['locale' => 'km']);
     $response->assertRedirect();
     $response->assertSessionHas('locale', 'km');
-    $response->assertCookie('locale', 'km');
+    $response->assertPlainCookie('locale', 'km');
 });
 
 test('invalid locale is rejected', function () {
@@ -22,7 +22,7 @@ test('inertia receives locale and translations props', function () {
 });
 
 test('locale falls back to cookie when session is not set', function () {
-    $this->withCookie('locale', 'km')
+    $this->withUnencryptedCookie('locale', 'km')
         ->get('/')
         ->assertInertia(fn ($page) => $page
             ->where('locale', 'km')

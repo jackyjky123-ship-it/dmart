@@ -183,7 +183,7 @@ export default function ProductEdit({ product, categories = [], errors = {} }: P
                                     className="w-full h-10 px-3 bg-background border rounded-xl text-xs font-medium focus:ring-1 focus:ring-purple-500"
                                 >
                                     {categories.map((cat) => (
-                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        <option key={cat.id} value={cat.id}>{t(cat.name)}</option>
                                     ))}
                                 </select>
                                 {errors.category_id && <p className="text-xs text-rose-600">{errors.category_id}</p>}

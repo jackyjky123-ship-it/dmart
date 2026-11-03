@@ -150,7 +150,7 @@ export default function ProductCreate({ categories = [], errors = {} }: ProductC
                                 >
                                     <option value="" disabled>{t('Select Department')}</option>
                                     {categories.map((cat) => (
-                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        <option key={cat.id} value={cat.id}>{t(cat.name)}</option>
                                     ))}
                                 </select>
                                 {errors.category_id && <p className="text-xs text-rose-600">{errors.category_id}</p>}

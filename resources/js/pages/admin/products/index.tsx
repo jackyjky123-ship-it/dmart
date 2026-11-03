@@ -134,7 +134,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                     >
                         <option value="all">{t('All Departments')}</option>
                         {categories.map((c) => (
-                            <option key={c.id} value={c.id.toString()}>{c.name}</option>
+                            <option key={c.id} value={c.id.toString()}>{t(c.name)}</option>
                         ))}
                     </select>
                 </div>
@@ -189,7 +189,7 @@ export default function AdminProductsIndex({ products: propProducts, categories 
                                             </td>
                                             <td className="p-3.5">
                                                 <Badge variant="outline" className="text-[10px] py-0">
-                                                    {product.category_name}
+                                                    {t(product.category_name)}
                                                 </Badge>
                                             </td>
                                             <td className="p-3.5">

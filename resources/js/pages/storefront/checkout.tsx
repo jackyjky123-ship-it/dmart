@@ -45,7 +45,7 @@ export default function CheckoutView() {
 
     return (
         <div className="space-y-8">
-            <Head title="Checkout — DMart Groceries" />
+            <Head title={t('Checkout — DMart Groceries')} />
 
             <div className="flex items-center gap-2 pb-4 border-b">
                 <Button asChild variant="ghost" size="sm" className="h-8 px-2 text-xs">

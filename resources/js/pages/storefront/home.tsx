@@ -160,7 +160,7 @@ export default function Home({
 
     return (
         <div className="space-y-16 pb-12">
-            <Head title="DMART — Limited Releases & Modern Luxury Streetwear" />
+            <Head title={t('DMART — Limited Releases & Modern Luxury Streetwear')} />
 
             {/* 1. HERO SECTION (Recreated from banner_herosection_ref.png with bg_girlshopping.png) */}
             <HeroBanner
@@ -170,8 +170,8 @@ export default function Home({
                 headlineSmall={t('NEW ARRIVALS')}
                 headlineMain={t('JUST FOR')}
                 headlineScript={t('you')}
-                locationTitle="BUILDING NAME"
-                locationSubtitle="MAIN ROAD, COUNTRY, 45612"
+                locationTitle={t('BUILDING NAME')}
+                locationSubtitle={t('MAIN ROAD, COUNTRY, 45612')}
                 ctaText={t('Shop Now')}
                 ctaHref="/products"
                 backgroundImageUrl="/images/bg_girlshopping.png"
@@ -184,7 +184,7 @@ export default function Home({
                         {t('DESIGNED TO DISRUPT')}
                     </h2>
                     <p className="text-xs sm:text-sm text-[#888888] uppercase tracking-wider leading-relaxed font-mono font-medium max-w-2xl mx-auto">
-                        LUXURY STAPLES FOR THE MODERN DISRUPTOR. PRECISION-TAILORED PIECES THAT BREAK CONVENTION AND REDEFINE PRESENCE. THIS ISN'T JUST FASHION—IT'S A STATEMENT.
+                        {t("LUXURY STAPLES FOR THE MODERN DISRUPTOR. PRECISION-TAILORED PIECES THAT BREAK CONVENTION AND REDEFINE PRESENCE. THIS ISN'T JUST FASHION—IT'S A STATEMENT.")}
                     </p>
                 </div>
             </section>
@@ -309,7 +309,7 @@ export default function Home({
                             {t('Our Mission')}
                         </h3>
                         <p className="text-sm text-[#888888] leading-relaxed">
-                            Pair text with an image to focus on your chosen product, collection, or drop. Add details on availability, style, or silhouette construction. Engineered to bridge elevated runway design with gritty street culture.
+                            {t('Pair text with an image to focus on your chosen product, collection, or drop. Add details on availability, style, or silhouette construction. Engineered to bridge elevated runway design with gritty street culture.')}
                         </p>
                         <div className="pt-2">
                             <Button
@@ -349,7 +349,7 @@ export default function Home({
                             {t('Our Vision')}
                         </h3>
                         <p className="text-sm text-[#888888] leading-relaxed">
-                            Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or craftsmanship. Our pieces are crafted with timeless cuts that outlast passing hype.
+                            {t('Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or craftsmanship. Our pieces are crafted with timeless cuts that outlast passing hype.')}
                         </p>
                         <div className="pt-2">
                             <Button
