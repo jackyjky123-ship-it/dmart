@@ -88,9 +88,11 @@ function AdminSidebar({
             {/* Brand Header */}
             <div className="flex h-16 items-center justify-between border-b border-border px-5">
                 <Link href="/admin" className="group flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F25623] text-sm font-black text-white shadow-md shadow-[#F25623]/25 transition-transform group-hover:scale-105">
-                        D
-                    </div>
+                    <img
+                        src="/images/admin_icon.png"
+                        alt="DMart Admin"
+                        className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
+                    />
                     <div>
                         <div className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-foreground">
                             <span>DMART</span>
@@ -179,7 +181,11 @@ function AdminSidebar({
                         href="/"
                         className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-[#F25623] hover:text-[#F25623]"
                     >
-                        <Store className="h-3.5 w-3.5 text-[#F25623]" />
+                        <img
+                            src="/images/dmart_icon.png"
+                            alt=""
+                            className="h-3.5 w-3.5 object-contain"
+                        />
                         <span>{t('Storefront')}</span>
                     </Link>
                     <Link
@@ -408,7 +414,11 @@ export default function AdminLayout({
                                         href="/"
                                         className="flex items-center gap-2.5 px-2.5 py-2"
                                     >
-                                        <Store className="h-4 w-4 shrink-0 text-[#F25623]" />
+                                        <img
+                                            src="/images/dmart_icon.png"
+                                            alt=""
+                                            className="h-4 w-4 shrink-0 object-contain"
+                                        />
                                         <div>
                                             <div className="text-xs font-semibold text-foreground">
                                                 {t('Storefront')}
@@ -529,7 +539,11 @@ export default function AdminLayout({
                                             href="/"
                                             className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
                                         >
-                                            <Store className="h-3.5 w-3.5 text-[#F25623]" />
+                                            <img
+                                                src="/images/dmart_icon.png"
+                                                alt=""
+                                                className="h-3.5 w-3.5 object-contain"
+                                            />
                                             <span>{t('View Storefront')}</span>
                                         </Link>
                                     </DropdownMenuItem>

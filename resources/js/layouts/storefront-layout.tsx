@@ -137,9 +137,11 @@ function StorefrontHeader() {
                 {/* Center Brand Logo */}
                 <div className="flex items-center justify-center">
                     <Link href="/" className="group flex items-center gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F25623] text-lg font-black tracking-tighter text-white shadow-md shadow-[#F25623]/20 transition-transform group-hover:scale-105">
-                            D
-                        </div>
+                        <img
+                            src="/images/dmart_icon.png"
+                            alt="DMart"
+                            className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
+                        />
                         <div className="flex flex-col">
                             <span className="font-sans text-2xl font-black tracking-widest text-foreground uppercase">
                                 D<span className="text-[#F25623]">MART</span>
@@ -244,7 +246,11 @@ function StorefrontHeader() {
                                             href="/admin"
                                             className="flex items-center px-2.5 py-2"
                                         >
-                                            <Shield className="mr-2.5 h-4 w-4 shrink-0 text-purple-400" />
+                                            <img
+                                                src="/images/admin_icon.png"
+                                                alt=""
+                                                className="mr-2.5 h-4 w-4 shrink-0 object-contain"
+                                            />
                                             <div>
                                                 <div className="text-xs font-semibold text-foreground">
                                                     {t('Admin Dashboard')}
@@ -560,9 +566,11 @@ function StorefrontFooter() {
                 <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
                     <div className="space-y-4 md:col-span-1">
                         <div className="flex items-center gap-2">
-                            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#F25623] text-sm font-black text-white">
-                                D
-                            </div>
+                            <img
+                                src="/images/dmart_icon.png"
+                                alt="DMart"
+                                className="h-7 w-7 object-contain"
+                            />
                             <span className="font-sans text-xl font-black tracking-widest text-foreground uppercase">
                                 D<span className="text-[#F25623]">MART</span>
                             </span>

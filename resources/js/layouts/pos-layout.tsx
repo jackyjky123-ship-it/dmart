@@ -192,7 +192,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                     href="/"
                                     className="flex items-center gap-2.5 px-2.5 py-2"
                                 >
-                                    <ShoppingBag className="h-4 w-4 shrink-0 text-[#F25623]" />
+                                    <img
+                                        src="/images/dmart_icon.png"
+                                        alt=""
+                                        className="h-4 w-4 shrink-0 object-contain"
+                                    />
                                     <div>
                                         <div className="text-xs font-semibold text-foreground">
                                             {t('Storefront')}
@@ -211,7 +215,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                     href="/admin"
                                     className="flex items-center gap-2.5 px-2.5 py-2"
                                 >
-                                    <Shield className="h-4 w-4 shrink-0 text-purple-400" />
+                                    <img
+                                        src="/images/admin_icon.png"
+                                        alt=""
+                                        className="h-4 w-4 shrink-0 object-contain"
+                                    />
                                     <div>
                                         <div className="text-xs font-semibold text-foreground">
                                             {t('Admin Console')}
@@ -290,7 +298,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                         href="/"
                                         className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
                                     >
-                                        <Store className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <img
+                                            src="/images/dmart_icon.png"
+                                            alt=""
+                                            className="h-3.5 w-3.5 object-contain"
+                                        />
                                         <span>{t('Storefront')}</span>
                                     </Link>
                                 </DropdownMenuItem>
@@ -303,7 +315,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                             href="/admin"
                                             className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
                                         >
-                                            <Shield className="h-3.5 w-3.5 text-purple-400" />
+                                            <img
+                                                src="/images/admin_icon.png"
+                                                alt=""
+                                                className="h-3.5 w-3.5 object-contain"
+                                            />
                                             <span>{t('Admin Console')}</span>
                                         </Link>
                                     </DropdownMenuItem>
