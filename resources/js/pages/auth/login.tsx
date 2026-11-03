@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
@@ -17,11 +18,13 @@ type Props = {
 };
 
 export default function Login({ status, canResetPassword, portal }: Props) {
+    const { t } = useTranslation();
+
     const title = portal === 'admin'
-        ? 'Admin Sign In'
+        ? t('Admin Sign In')
         : portal === 'cashier'
-        ? 'Cashier Sign In'
-        : 'Log in to DMart';
+        ? t('Cashier Sign In')
+        : t('Log in to DMart');
 
     return (
         <>
@@ -31,10 +34,10 @@ export default function Login({ status, canResetPassword, portal }: Props) {
                 <h1 className="text-xl font-bold tracking-tight text-foreground">{title}</h1>
                 <p className="text-sm text-muted-foreground">
                     {portal === 'admin'
-                        ? 'Administrative credentials required'
+                        ? t('Administrative credentials required')
                         : portal === 'cashier'
-                        ? 'Staff cashier credentials required'
-                        : 'Enter your email and password below'}
+                        ? t('Staff cashier credentials required')
+                        : t('Enter your email and password below')}
                 </p>
             </div>
 
@@ -49,7 +52,7 @@ export default function Login({ status, canResetPassword, portal }: Props) {
 
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">{t('Email address')}</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -65,14 +68,14 @@ export default function Login({ status, canResetPassword, portal }: Props) {
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">{t('Password')}</Label>
                                     {canResetPassword && !portal && (
                                         <TextLink
                                             href={request()}
                                             className="ml-auto text-sm"
                                             tabIndex={5}
                                         >
-                                            Forgot your password?
+                                            {t('Forgot your password?')}
                                         </TextLink>
                                     )}
                                 </div>
@@ -82,7 +85,7 @@ export default function Login({ status, canResetPassword, portal }: Props) {
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
+                                    placeholder={t('Password')}
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -93,7 +96,7 @@ export default function Login({ status, canResetPassword, portal }: Props) {
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <Label htmlFor="remember">{t('Remember me')}</Label>
                             </div>
 
                             <Button
@@ -103,18 +106,18 @@ export default function Login({ status, canResetPassword, portal }: Props) {
                                 className="mt-2 w-full font-bold shadow-md"
                                 tabIndex={4}
                                 loading={processing}
-                                loadingText="Signing in..."
+                                loadingText={t('Signing in...')}
                                 data-test="login-button"
                             >
-                                Log in
+                                {t('Log in')}
                             </Button>
                         </div>
 
                         {!portal && (
                             <div className="text-center text-sm text-muted-foreground">
-                                Don't have an account?{' '}
+                                {t("Don't have an account?")}{' '}
                                 <TextLink href={register()} tabIndex={5}>
-                                    Sign up
+                                    {t('Sign up')}
                                 </TextLink>
                             </div>
                         )}
@@ -124,7 +127,7 @@ export default function Login({ status, canResetPassword, portal }: Props) {
 
             {status && (
                 <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
+                    {t(status)}
                 </div>
             )}
         </>

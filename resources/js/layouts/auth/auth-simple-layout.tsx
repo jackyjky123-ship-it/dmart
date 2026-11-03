@@ -1,14 +1,17 @@
 import { Link } from '@inertiajs/react';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
-import { Store, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function AuthSimpleLayout({
     children,
     title,
     description,
 }: AuthLayoutProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="relative flex min-h-svh flex-col items-center justify-center bg-background p-4 sm:p-6 md:p-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.08),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.14),transparent)] selection:bg-emerald-100 selection:text-emerald-900 transition-colors">
             {/* Ambient subtle glow */}
@@ -26,7 +29,7 @@ export default function AuthSimpleLayout({
                         <Link
                             href={home()}
                             className="flex flex-col items-center gap-2 group"
-                            aria-label="Back to DMart Storefront"
+                            aria-label={t('Back to DMart Storefront')}
                         >
                             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-700/25 group-hover:scale-105 group-hover:shadow-emerald-600/35 transition-all duration-200">
                                 D
@@ -43,12 +46,12 @@ export default function AuthSimpleLayout({
                             <div className="space-y-1">
                                 {title && (
                                     <h1 className="text-2xl font-black tracking-tight text-foreground">
-                                        {title}
+                                        {t(title)}
                                     </h1>
                                 )}
                                 {description && (
                                     <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-                                        {description}
+                                        {t(description)}
                                     </p>
                                 )}
                             </div>
@@ -67,7 +70,7 @@ export default function AuthSimpleLayout({
                             className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 font-medium transition-colors"
                         >
                             <ArrowLeft className="w-3.5 h-3.5" />
-                            <span>Return to Storefront</span>
+                            <span>{t('Return to Storefront')}</span>
                         </Link>
                     </div>
                 </div>

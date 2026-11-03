@@ -36,3 +36,19 @@ test('unsupported locale falls back to en', function () {
             ->where('locale', 'en')
         );
 });
+
+test('auth and settings pages receive localized translations in km', function () {
+    $this->withSession(['locale' => 'km'])
+        ->get('/login')
+        ->assertInertia(fn ($page) => $page
+            ->where('locale', 'km')
+            ->where('translations.Admin Sign In', 'ចូលគណនីអ្នកគ្រប់គ្រង')
+            ->where('translations.Cashier Sign In', 'ចូលគណនីអ្នកគិតប្រាក់')
+            ->where('translations.Log in to DMart', 'ចូលគណនី DMart')
+            ->where('translations.Register', 'ចុះឈ្មោះ')
+            ->where('translations.Email address', 'អាសយដ្ឋានអ៊ីមែល')
+            ->where('translations.Password', 'ពាក្យសម្ងាត់')
+            ->where('translations.Profile Information', 'ព័ត៌មានប្រវត្តិរូប')
+            ->where('translations.Delete account', 'លុបគណនី')
+        );
+});
