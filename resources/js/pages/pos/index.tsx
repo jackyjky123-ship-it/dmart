@@ -4,7 +4,13 @@ import { ProductThumb } from '@/components/product-thumb';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from '@/components/ui/dialog';
 import { formatMoney } from '@/lib/money';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
@@ -114,23 +120,29 @@ export default function PosIndex({
     const [cashModalOpen, setCashModalOpen] = useState(false);
     const [qrModalOpen, setQrModalOpen] = useState(false);
     const [receiptModalOpen, setReceiptModalOpen] = useState(false);
-    const [completedReceipt, setCompletedReceipt] = useState<CompletedReceipt | null>(null);
+    const [completedReceipt, setCompletedReceipt] =
+        useState<CompletedReceipt | null>(null);
     const [tenderedCents, setTenderedCents] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Active ticket resolution
-    const activeTicket = tickets.find((t) => t.id === activeTicketId) || tickets[0];
+    const activeTicket =
+        tickets.find((t) => t.id === activeTicketId) || tickets[0];
     const ticketItems = activeTicket?.items || [];
 
     // Financial totals (no fake taxes - in DMart subtotal = total)
     const subtotalCents = useMemo(
-        () => ticketItems.reduce((acc, item) => acc + item.product.price_cents * item.quantity, 0),
-        [ticketItems]
+        () =>
+            ticketItems.reduce(
+                (acc, item) => acc + item.product.price_cents * item.quantity,
+                0,
+            ),
+        [ticketItems],
     );
     const totalCents = subtotalCents;
     const totalItemCount = useMemo(
         () => ticketItems.reduce((acc, item) => acc + item.quantity, 0),
-        [ticketItems]
+        [ticketItems],
     );
 
     // Change calculation
@@ -146,7 +158,8 @@ export default function PosIndex({
                 (p) =>
                     p.name.toLowerCase().includes(q) ||
                     p.sku.toLowerCase().includes(q) ||
-                    (p.category_name && p.category_name.toLowerCase().includes(q))
+                    (p.category_name &&
+                        p.category_name.toLowerCase().includes(q)),
             );
         }
         if (selectedCategory !== 'all') {
@@ -157,8 +170,10 @@ export default function PosIndex({
 
     // Total products count across active categories
     const totalProductCount = useMemo(
-        () => categories.reduce((sum, c) => sum + (c.product_count || 0), 0) || products.length,
-        [categories, products]
+        () =>
+            categories.reduce((sum, c) => sum + (c.product_count || 0), 0) ||
+            products.length,
+        [categories, products],
     );
 
     // Flash listener to capture receipt from server if returned via Inertia flash
@@ -174,15 +189,19 @@ export default function PosIndex({
     }, []);
 
     // Ticket helper methods
-    const updateActiveTicket = (updater: (prevTicket: PosTicket) => PosTicket) => {
+    const updateActiveTicket = (
+        updater: (prevTicket: PosTicket) => PosTicket,
+    ) => {
         setTickets((prev) =>
-            prev.map((t) => (t.id === activeTicketId ? updater(t) : t))
+            prev.map((t) => (t.id === activeTicketId ? updater(t) : t)),
         );
     };
 
     const handleAddToCart = (product: Product) => {
         if (product.stock <= 0) {
-            toast.error(t('":name" is currently out of stock.', { name: product.name }));
+            toast.error(
+                t('":name" is currently out of stock.', { name: product.name }),
+            );
             return;
         }
 
@@ -190,7 +209,11 @@ export default function PosIndex({
         const currentQty = existing ? existing.quantity : 0;
 
         if (currentQty >= product.stock) {
-            toast.warning(t('Cannot add more than :count available unit(s).', { count: product.stock }));
+            toast.warning(
+                t('Cannot add more than :count available unit(s).', {
+                    count: product.stock,
+                }),
+            );
             return;
         }
 
@@ -198,7 +221,9 @@ export default function PosIndex({
             updateActiveTicket((tState) => ({
                 ...tState,
                 items: tState.items.map((i) =>
-                    i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+                    i.product.id === product.id
+                        ? { ...i, quantity: i.quantity + 1 }
+                        : i,
                 ),
             }));
         } else {
@@ -222,14 +247,19 @@ export default function PosIndex({
         }
 
         if (newQty > item.product.stock) {
-            toast.warning(t('Only :count unit(s) of ":name" in stock.', { count: item.product.stock, name: item.product.name }));
+            toast.warning(
+                t('Only :count unit(s) of ":name" in stock.', {
+                    count: item.product.stock,
+                    name: item.product.name,
+                }),
+            );
             return;
         }
 
         updateActiveTicket((tState) => ({
             ...tState,
             items: tState.items.map((i) =>
-                i.product.id === productId ? { ...i, quantity: newQty } : i
+                i.product.id === productId ? { ...i, quantity: newQty } : i,
             ),
         }));
     };
@@ -312,7 +342,8 @@ export default function PosIndex({
                 quantity: item.quantity,
             })),
             payment_method: paymentMethod,
-            cash_tendered_cents: paymentMethod === 'cash' ? tenderedCents : undefined,
+            cash_tendered_cents:
+                paymentMethod === 'cash' ? tenderedCents : undefined,
             customer_name: activeTicket.customerName?.trim() || undefined,
         };
 
@@ -324,7 +355,9 @@ export default function PosIndex({
                 setQrModalOpen(false);
 
                 // Check flashed receipt in props or fallback to response
-                const flashedReceipt = (res.props as any)?.flash?.receipt as CompletedReceipt | undefined;
+                const flashedReceipt = (res.props as any)?.flash?.receipt as
+                    | CompletedReceipt
+                    | undefined;
                 if (flashedReceipt) {
                     setCompletedReceipt(flashedReceipt);
                     setReceiptModalOpen(true);
@@ -333,17 +366,28 @@ export default function PosIndex({
                 // Reset or prune the completed ticket
                 setTickets((prev) => {
                     if (prev.length > 1) {
-                        const remaining = prev.filter((tkt) => tkt.id !== activeTicket.id);
+                        const remaining = prev.filter(
+                            (tkt) => tkt.id !== activeTicket.id,
+                        );
                         setActiveTicketId(remaining[0].id);
                         return remaining;
                     } else {
-                        return [{ id: '1', label: 'Ticket 1', customerName: '', items: [] }];
+                        return [
+                            {
+                                id: '1',
+                                label: 'Ticket 1',
+                                customerName: '',
+                                items: [],
+                            },
+                        ];
                     }
                 });
             },
             onError: (errors) => {
                 setIsSubmitting(false);
-                const firstError = Object.values(errors)[0] as string | undefined;
+                const firstError = Object.values(errors)[0] as
+                    | string
+                    | undefined;
                 toast.error(firstError || t('Failed to complete POS sale.'));
             },
         });
@@ -354,7 +398,7 @@ export default function PosIndex({
     };
 
     return (
-        <div className="flex-1 flex flex-col lg:flex-row w-full h-[calc(100vh-3.5rem)] overflow-hidden bg-[#121212] text-white">
+        <div className="flex h-[calc(100vh-3.5rem)] w-full flex-1 flex-col overflow-hidden bg-card text-foreground lg:flex-row">
             <Head title={`${t('POS Terminal')} — DMART`} />
 
             {/* Print Stylesheet for 80mm Thermal Receipt */}
@@ -381,50 +425,60 @@ export default function PosIndex({
             `}</style>
 
             {/* 1. LEFT PANEL: Real Product Catalog, Search & Categories */}
-            <div className="flex-1 flex flex-col min-w-0 bg-[#141414] border-r border-[#242424] overflow-hidden">
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden border-r border-border bg-background">
                 {/* Search Bar & Filter Header */}
-                <div className="p-4 border-b border-[#242424] bg-[#171717] flex items-center justify-between gap-4 shrink-0">
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737373] pointer-events-none" />
+                <div className="flex shrink-0 items-center justify-between gap-4 border-b border-border bg-background p-4">
+                    <div className="relative max-w-md flex-1">
+                        <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             type="text"
                             placeholder={t('Search by name or SKU...')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full h-10 pl-10 pr-9 rounded-full border-[#2d2d2d] bg-[#202020] text-xs text-white placeholder:text-[#666] focus:border-[#F25623]"
+                            className="h-10 w-full rounded-full border-border bg-muted pr-9 pl-10 text-xs text-foreground placeholder:text-muted-foreground focus:border-[#F25623]"
                         />
                         {search && (
                             <button
                                 type="button"
                                 onClick={() => setSearch('')}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737373] hover:text-white"
+                                className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                             >
-                                <X className="w-3.5 h-3.5" />
+                                <X className="h-3.5 w-3.5" />
                             </button>
                         )}
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs font-mono text-[#888]">
-                        <span className="hidden sm:inline">{t('Active Catalog:')}</span>
-                        <Badge variant="outline" className="border-[#333] text-white bg-[#222]">
-                            {t(':count items', { count: filteredProducts.length })}
+                    <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                        <span className="hidden sm:inline">
+                            {t('Active Catalog:')}
+                        </span>
+                        <Badge
+                            variant="outline"
+                            className="border-border bg-muted text-foreground"
+                        >
+                            {t(':count items', {
+                                count: filteredProducts.length,
+                            })}
                         </Badge>
                     </div>
                 </div>
 
                 {/* Category Chips Bar (Built from real database categories) */}
-                <div className="px-4 py-2.5 border-b border-[#242424] bg-[#161616] flex items-center gap-2 overflow-x-auto shrink-0 scrollbar-none">
+                <div className="flex shrink-0 scrollbar-none items-center gap-2 overflow-x-auto border-b border-border bg-card px-4 py-2.5">
                     <button
                         type="button"
                         onClick={() => setSelectedCategory('all')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border',
+                            'rounded-full border px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all',
                             selectedCategory === 'all'
-                                ? 'bg-[#F25623] text-white border-[#F25623] shadow-sm shadow-[#F25623]/25'
-                                : 'bg-[#202020] text-[#a3a3a3] border-[#2d2d2d] hover:text-white hover:border-[#444]'
+                                ? 'border-[#F25623] bg-[#F25623] text-white shadow-sm shadow-[#F25623]/25'
+                                : 'border-border bg-muted text-muted-foreground hover:border-border hover:text-foreground',
                         )}
                     >
-                        {t('All Drops')} <span className="text-[10px] opacity-75 font-mono ml-1">({totalProductCount})</span>
+                        {t('All Drops')}{' '}
+                        <span className="ml-1 font-mono text-[10px] opacity-75">
+                            ({totalProductCount})
+                        </span>
                     </button>
                     {categories.map((cat) => (
                         <button
@@ -432,44 +486,55 @@ export default function PosIndex({
                             type="button"
                             onClick={() => setSelectedCategory(cat.slug)}
                             className={cn(
-                                'px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border',
+                                'rounded-full border px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all',
                                 selectedCategory === cat.slug
-                                    ? 'bg-[#F25623] text-white border-[#F25623] shadow-sm shadow-[#F25623]/25'
-                                    : 'bg-[#202020] text-[#a3a3a3] border-[#2d2d2d] hover:text-white hover:border-[#444]'
+                                    ? 'border-[#F25623] bg-[#F25623] text-white shadow-sm shadow-[#F25623]/25'
+                                    : 'border-border bg-muted text-muted-foreground hover:border-border hover:text-foreground',
                             )}
                         >
                             {t(cat.name)}
-                            <span className="text-[10px] opacity-75 font-mono ml-1">({cat.product_count})</span>
+                            <span className="ml-1 font-mono text-[10px] opacity-75">
+                                ({cat.product_count})
+                            </span>
                         </button>
                     ))}
                 </div>
 
                 {/* Product Catalog Grid */}
-                <div className="flex-1 p-4 overflow-y-auto">
+                <div className="flex-1 overflow-y-auto p-4">
                     {filteredProducts.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#737373]">
-                            <ShoppingBag className="w-12 h-12 mb-3 stroke-[1.5] text-[#444]" />
-                            <div className="font-bold text-sm text-white mb-1">{t('No products found')}</div>
-                            <div className="text-xs max-w-xs">
+                        <div className="flex h-full flex-col items-center justify-center p-8 text-center text-muted-foreground">
+                            <ShoppingBag className="mb-3 h-12 w-12 stroke-[1.5] text-muted-foreground" />
+                            <div className="mb-1 text-sm font-bold text-foreground">
+                                {t('No products found')}
+                            </div>
+                            <div className="max-w-xs text-xs">
                                 {search
-                                    ? t('No active items match ":search". Try searching another name or SKU.', { search })
-                                    : t('No active items available in this category.')}
+                                    ? t(
+                                          'No active items match ":search". Try searching another name or SKU.',
+                                          { search },
+                                      )
+                                    : t(
+                                          'No active items available in this category.',
+                                      )}
                             </div>
                             {search && (
                                 <Button
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setSearch('')}
-                                    className="mt-4 border-[#333] text-xs"
+                                    className="mt-4 border-border text-xs"
                                 >
                                     {t('Clear Search')}
                                 </Button>
                             )}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
                             {filteredProducts.map((p) => {
-                                const inCartItem = ticketItems.find((i) => i.product.id === p.id);
+                                const inCartItem = ticketItems.find(
+                                    (i) => i.product.id === p.id,
+                                );
                                 const isOutOfStock = p.stock <= 0;
                                 const isLowStock = p.stock > 0 && p.stock <= 5;
 
@@ -480,59 +545,67 @@ export default function PosIndex({
                                         disabled={isOutOfStock}
                                         onClick={() => handleAddToCart(p)}
                                         className={cn(
-                                            'relative flex flex-col justify-between text-left p-3 rounded-xl border transition-all select-none group',
+                                            'group relative flex flex-col justify-between rounded-xl border p-3 text-left transition-all select-none',
                                             isOutOfStock
-                                                ? 'bg-[#181818] border-[#242424] opacity-45 cursor-not-allowed'
-                                                : 'bg-[#1c1c1c] border-[#282828] hover:border-[#F25623] hover:bg-[#202020] active:scale-[0.98]'
+                                                ? 'cursor-not-allowed border-border bg-card opacity-45'
+                                                : 'border-border bg-card hover:border-[#F25623] hover:bg-muted active:scale-[0.98]',
                                         )}
                                     >
                                         <div>
                                             {/* Product Thumbnail (Letter-tile fallback or real image) */}
-                                            <div className="relative aspect-square w-full rounded-lg overflow-hidden mb-2.5 bg-[#242424]">
+                                            <div className="relative mb-2.5 aspect-square w-full overflow-hidden rounded-lg bg-muted">
                                                 <ProductThumb
                                                     name={p.name}
                                                     imageUrl={p.image_url}
                                                     size="full"
-                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                                 />
 
                                                 {/* Stock Status Badge */}
                                                 {isOutOfStock ? (
-                                                    <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-rose-500/90 text-white">
+                                                    <span className="absolute top-2 right-2 rounded bg-rose-500/90 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-white uppercase">
                                                         {t('Sold Out')}
                                                     </span>
                                                 ) : isLowStock ? (
-                                                    <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-500/90 text-black">
-                                                        {t(':count left', { count: p.stock })}
+                                                    <span className="absolute top-2 right-2 rounded bg-amber-500/90 px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-black uppercase">
+                                                        {t(':count left', {
+                                                            count: p.stock,
+                                                        })}
                                                     </span>
                                                 ) : null}
 
                                                 {/* In Cart Indicator */}
                                                 {inCartItem && (
-                                                    <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#F25623] text-white shadow-md">
-                                                        {t(':count in cart', { count: inCartItem.quantity })}
+                                                    <span className="absolute bottom-2 left-2 rounded-full bg-[#F25623] px-2 py-0.5 font-mono text-[10px] font-bold text-white shadow-md">
+                                                        {t(':count in cart', {
+                                                            count: inCartItem.quantity,
+                                                        })}
                                                     </span>
                                                 )}
                                             </div>
 
                                             {/* SKU & Category */}
-                                            <div className="flex items-center justify-between text-[10px] text-[#737373] font-mono mb-0.5">
+                                            <div className="mb-0.5 flex items-center justify-between font-mono text-[10px] text-muted-foreground">
                                                 <span>{p.sku}</span>
-                                                <span className="truncate max-w-[80px]">{p.category_name ? t(p.category_name) : ''}</span>
+                                                <span className="max-w-[80px] truncate">
+                                                    {p.category_name
+                                                        ? t(p.category_name)
+                                                        : ''}
+                                                </span>
                                             </div>
 
                                             {/* Name */}
-                                            <h4 className="font-semibold text-xs text-white leading-snug line-clamp-2 group-hover:text-[#F25623] transition-colors">
+                                            <h4 className="line-clamp-2 text-xs leading-snug font-semibold text-foreground transition-colors group-hover:text-[#F25623]">
                                                 {p.name}
                                             </h4>
                                         </div>
 
                                         {/* Price & Stock info */}
-                                        <div className="mt-3 pt-2 border-t border-[#282828] flex items-baseline justify-between">
-                                            <span className="font-black font-sans text-sm text-[#F25623]">
+                                        <div className="mt-3 flex items-baseline justify-between border-t border-border pt-2">
+                                            <span className="font-sans text-sm font-black text-[#F25623]">
                                                 {formatMoney(p.price_cents)}
                                             </span>
-                                            <span className="text-[10px] text-[#737373] font-mono">
+                                            <span className="font-mono text-[10px] text-muted-foreground">
                                                 {t('Stock:')} {p.stock}
                                             </span>
                                         </div>
@@ -545,12 +618,15 @@ export default function PosIndex({
             </div>
 
             {/* 2. RIGHT PANEL: Register Drawer, Held Tickets & Checkout Settlement */}
-            <div className="w-full lg:w-[420px] xl:w-[460px] bg-[#171717] flex flex-col shrink-0 overflow-hidden">
+            <div className="flex w-full shrink-0 flex-col overflow-hidden bg-background lg:w-[420px] xl:w-[460px]">
                 {/* Tickets Switcher & Cashier Tag */}
-                <div className="p-3 border-b border-[#242424] bg-[#1a1a1a] flex items-center justify-between gap-2 shrink-0">
-                    <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-1">
+                <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border bg-card p-3">
+                    <div className="flex flex-1 scrollbar-none items-center gap-1.5 overflow-x-auto">
                         {tickets.map((tkt) => {
-                            const itemCount = tkt.items.reduce((acc, i) => acc + i.quantity, 0);
+                            const itemCount = tkt.items.reduce(
+                                (acc, i) => acc + i.quantity,
+                                0,
+                            );
                             const isActive = tkt.id === activeTicketId;
                             return (
                                 <button
@@ -558,25 +634,27 @@ export default function PosIndex({
                                     type="button"
                                     onClick={() => setActiveTicketId(tkt.id)}
                                     className={cn(
-                                        'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all border shrink-0',
+                                        'flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition-all',
                                         isActive
-                                            ? 'bg-[#282828] border-[#F25623] text-white'
-                                            : 'bg-[#1c1c1c] border-[#2d2d2d] text-[#888] hover:text-white'
+                                            ? 'border-[#F25623] bg-muted text-foreground'
+                                            : 'border-border bg-card text-muted-foreground hover:text-foreground',
                                     )}
                                 >
                                     <span>{t(tkt.label)}</span>
                                     {itemCount > 0 && (
-                                        <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#F25623] text-white">
+                                        <span className="py-0.2 rounded-full bg-[#F25623] px-1.5 font-mono text-[10px] text-white">
                                             {itemCount}
                                         </span>
                                     )}
                                     {tickets.length > 1 && (
                                         <span
-                                            onClick={(e) => handleCloseTicket(tkt.id, e)}
-                                            className="ml-1 text-[#666] hover:text-rose-400 p-0.5"
+                                            onClick={(e) =>
+                                                handleCloseTicket(tkt.id, e)
+                                            }
+                                            className="ml-1 p-0.5 text-muted-foreground hover:text-rose-400"
                                             title={t('Close Ticket')}
                                         >
-                                            <X className="w-3 h-3" />
+                                            <X className="h-3 w-3" />
                                         </span>
                                     )}
                                 </button>
@@ -588,22 +666,24 @@ export default function PosIndex({
                             variant="outline"
                             size="icon-xs"
                             onClick={handleNewTicket}
-                            className="border-[#333] bg-[#222] text-[#888] hover:text-white hover:border-[#F25623] rounded-lg shrink-0"
+                            className="shrink-0 rounded-lg border-border bg-muted text-muted-foreground hover:border-[#F25623] hover:text-foreground"
                             title={t('Hold Sale')}
                         >
-                            <Plus className="w-3.5 h-3.5" />
+                            <Plus className="h-3.5 w-3.5" />
                         </Button>
                     </div>
 
-                    <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-[#888] shrink-0 pl-2 border-l border-[#2d2d2d]">
-                        <User className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span className="text-white font-semibold truncate max-w-[120px]">{cashier?.name || t('Cashier')}</span>
+                    <div className="hidden shrink-0 items-center gap-1.5 border-l border-border pl-2 font-mono text-[11px] text-muted-foreground sm:flex">
+                        <User className="h-3.5 w-3.5 text-[#F25623]" />
+                        <span className="max-w-[120px] truncate font-semibold text-foreground">
+                            {cashier?.name || t('Cashier')}
+                        </span>
                     </div>
                 </div>
 
                 {/* Customer Name or Reference Field */}
-                <div className="px-4 py-2 border-b border-[#242424] bg-[#161616] flex items-center gap-2 shrink-0">
-                    <span className="text-[11px] font-mono text-[#737373] uppercase tracking-wider shrink-0">
+                <div className="flex shrink-0 items-center gap-2 border-b border-border bg-card px-4 py-2">
+                    <span className="shrink-0 font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                         {t('Customer:')}
                     </span>
                     <input
@@ -611,15 +691,18 @@ export default function PosIndex({
                         placeholder={t('Walk-in customer (optional name/note)')}
                         value={activeTicket.customerName}
                         onChange={(e) =>
-                            updateActiveTicket((tState) => ({ ...tState, customerName: e.target.value }))
+                            updateActiveTicket((tState) => ({
+                                ...tState,
+                                customerName: e.target.value,
+                            }))
                         }
-                        className="w-full bg-transparent border-0 text-xs text-white placeholder:text-[#555] focus:outline-none"
+                        className="w-full border-0 bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
                     />
                     {ticketItems.length > 0 && (
                         <button
                             type="button"
                             onClick={handleClearActiveTicket}
-                            className="text-[#737373] hover:text-rose-400 text-[11px] font-mono shrink-0"
+                            className="shrink-0 font-mono text-[11px] text-muted-foreground hover:text-rose-400"
                             title={t('Clear Cart')}
                         >
                             {t('Clear Cart')}
@@ -629,7 +712,7 @@ export default function PosIndex({
 
                 {/* Cart basket column headers when items exist */}
                 {ticketItems.length > 0 && (
-                    <div className="px-4 py-1.5 text-[10px] uppercase font-mono text-[#737373] flex items-center justify-between border-b border-[#242424] bg-[#161616] shrink-0">
+                    <div className="flex shrink-0 items-center justify-between border-b border-border bg-card px-4 py-1.5 font-mono text-[10px] text-muted-foreground uppercase">
                         <span>{t('Item')}</span>
                         <div className="flex items-center gap-8 pr-12">
                             <span>{t('Qty')}</span>
@@ -639,22 +722,26 @@ export default function PosIndex({
                 )}
 
                 {/* Ticket Line Items List */}
-                <div className="flex-1 p-4 overflow-y-auto space-y-2.5">
+                <div className="flex-1 space-y-2.5 overflow-y-auto p-4">
                     {ticketItems.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#666]">
-                            <ReceiptIcon className="w-12 h-12 mb-3 stroke-[1.2] text-[#333]" />
-                            <div className="font-semibold text-xs text-white mb-1">{t('Current ticket is empty')}</div>
-                            <p className="text-[11px] text-[#737373] max-w-xs leading-relaxed">
-                                {t('Tap items from the catalog on the left to add products to this order.')}
+                        <div className="flex h-full flex-col items-center justify-center p-8 text-center text-muted-foreground">
+                            <ReceiptIcon className="mb-3 h-12 w-12 stroke-[1.2] text-muted-foreground" />
+                            <div className="mb-1 text-xs font-semibold text-foreground">
+                                {t('Current ticket is empty')}
+                            </div>
+                            <p className="max-w-xs text-[11px] leading-relaxed text-muted-foreground">
+                                {t(
+                                    'Tap items from the catalog on the left to add products to this order.',
+                                )}
                             </p>
                         </div>
                     ) : (
                         ticketItems.map((item) => (
                             <div
                                 key={item.product.id}
-                                className="p-2.5 rounded-xl border border-[#262626] bg-[#1d1d1d] flex items-center justify-between gap-3 group"
+                                className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-2.5"
                             >
-                                <div className="flex items-center gap-3 min-w-0">
+                                <div className="flex min-w-0 items-center gap-3">
                                     <ProductThumb
                                         name={item.product.name}
                                         imageUrl={item.product.image_url}
@@ -662,51 +749,72 @@ export default function PosIndex({
                                         className="shrink-0 rounded-lg"
                                     />
                                     <div className="min-w-0">
-                                        <div className="font-semibold text-xs text-white truncate max-w-[170px] sm:max-w-[200px]">
+                                        <div className="max-w-[170px] truncate text-xs font-semibold text-foreground sm:max-w-[200px]">
                                             {item.product.name}
                                         </div>
-                                        <div className="text-[10px] text-[#737373] font-mono">
-                                            {formatMoney(item.product.price_cents)} &times; {item.quantity}
+                                        <div className="font-mono text-[10px] text-muted-foreground">
+                                            {formatMoney(
+                                                item.product.price_cents,
+                                            )}{' '}
+                                            &times; {item.quantity}
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 shrink-0">
+                                <div className="flex shrink-0 items-center gap-3">
                                     {/* Quantity Stepper */}
-                                    <div className="flex items-center border border-[#333] rounded-lg bg-[#141414] overflow-hidden">
+                                    <div className="flex items-center overflow-hidden rounded-lg border border-border bg-background">
                                         <button
                                             type="button"
-                                            onClick={() => handleUpdateQuantity(item.product.id, item.quantity - 1)}
-                                            className="w-7 h-7 flex items-center justify-center text-[#888] hover:text-white hover:bg-[#222]"
+                                            onClick={() =>
+                                                handleUpdateQuantity(
+                                                    item.product.id,
+                                                    item.quantity - 1,
+                                                )
+                                            }
+                                            className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground"
                                         >
-                                            <Minus className="w-3 h-3" />
+                                            <Minus className="h-3 w-3" />
                                         </button>
-                                        <span className="w-8 text-center text-xs font-mono font-bold text-white">
+                                        <span className="w-8 text-center font-mono text-xs font-bold text-foreground">
                                             {item.quantity}
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => handleUpdateQuantity(item.product.id, item.quantity + 1)}
-                                            disabled={item.quantity >= item.product.stock}
-                                            className="w-7 h-7 flex items-center justify-center text-[#888] hover:text-white hover:bg-[#222] disabled:opacity-30 disabled:hover:bg-transparent"
+                                            onClick={() =>
+                                                handleUpdateQuantity(
+                                                    item.product.id,
+                                                    item.quantity + 1,
+                                                )
+                                            }
+                                            disabled={
+                                                item.quantity >=
+                                                item.product.stock
+                                            }
+                                            className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-30 disabled:hover:bg-transparent"
                                         >
-                                            <Plus className="w-3 h-3" />
+                                            <Plus className="h-3 w-3" />
                                         </button>
                                     </div>
 
                                     {/* Line Total */}
-                                    <div className="w-16 text-right font-mono font-bold text-xs text-white">
-                                        {formatMoney(item.product.price_cents * item.quantity)}
+                                    <div className="w-16 text-right font-mono text-xs font-bold text-foreground">
+                                        {formatMoney(
+                                            item.product.price_cents *
+                                                item.quantity,
+                                        )}
                                     </div>
 
                                     {/* Remove Line Item */}
                                     <button
                                         type="button"
-                                        onClick={() => handleRemoveItem(item.product.id)}
-                                        className="text-[#666] hover:text-rose-400 p-1"
+                                        onClick={() =>
+                                            handleRemoveItem(item.product.id)
+                                        }
+                                        className="p-1 text-muted-foreground hover:text-rose-400"
                                         title={t('Remove item')}
                                     >
-                                        <Trash2 className="w-3.5 h-3.5" />
+                                        <Trash2 className="h-3.5 w-3.5" />
                                     </button>
                                 </div>
                             </div>
@@ -715,19 +823,25 @@ export default function PosIndex({
                 </div>
 
                 {/* Calculation & Settlement Bar */}
-                <div className="p-4 border-t border-[#242424] bg-[#141414] space-y-3 shrink-0">
-                    <div className="space-y-1.5 text-xs text-[#a3a3a3] font-mono">
+                <div className="shrink-0 space-y-3 border-t border-border bg-background p-4">
+                    <div className="space-y-1.5 font-mono text-xs text-muted-foreground">
                         <div className="flex justify-between">
                             <span>{t('Item Count')}</span>
-                            <span className="text-white">{t(':count unit(s)', { count: totalItemCount })}</span>
+                            <span className="text-foreground">
+                                {t(':count unit(s)', { count: totalItemCount })}
+                            </span>
                         </div>
                         <div className="flex justify-between">
                             <span>{t('Subtotal')}</span>
-                            <span className="text-white">{formatMoney(subtotalCents)}</span>
+                            <span className="text-foreground">
+                                {formatMoney(subtotalCents)}
+                            </span>
                         </div>
-                        <div className="flex justify-between text-base font-black text-white pt-2 border-t border-[#242424]">
+                        <div className="flex justify-between border-t border-border pt-2 text-base font-black text-foreground">
                             <span>{t('Total Amount')}</span>
-                            <span className="text-lg text-[#F25623]">{formatMoney(totalCents)}</span>
+                            <span className="text-lg text-[#F25623]">
+                                {formatMoney(totalCents)}
+                            </span>
                         </div>
                     </div>
 
@@ -739,10 +853,12 @@ export default function PosIndex({
                             size="lg"
                             disabled={ticketItems.length === 0}
                             onClick={handleOpenCashModal}
-                            className="h-12 rounded-xl border-[#333] bg-[#202020] hover:bg-[#282828] hover:border-[#F25623] text-white flex items-center justify-center gap-2"
+                            className="flex h-12 items-center justify-center gap-2 rounded-xl border-border bg-muted text-foreground hover:border-[#F25623] hover:bg-muted"
                         >
-                            <Banknote className="w-4 h-4 text-[#F25623]" />
-                            <span className="text-xs font-bold uppercase tracking-wider">{t('Pay / Tender')}</span>
+                            <Banknote className="h-4 w-4 text-[#F25623]" />
+                            <span className="text-xs font-bold tracking-wider uppercase">
+                                {t('Pay / Tender')}
+                            </span>
                         </Button>
 
                         <Button
@@ -751,10 +867,12 @@ export default function PosIndex({
                             size="lg"
                             disabled={ticketItems.length === 0}
                             onClick={handleOpenQrModal}
-                            className="h-12 rounded-xl border-[#333] bg-[#202020] hover:bg-[#282828] hover:border-emerald-400 text-white flex items-center justify-center gap-2"
+                            className="flex h-12 items-center justify-center gap-2 rounded-xl border-border bg-muted text-foreground hover:border-emerald-400 hover:bg-muted"
                         >
-                            <QrCode className="w-4 h-4 text-emerald-400" />
-                            <span className="text-xs font-bold uppercase tracking-wider">{t('KHQR Pay')}</span>
+                            <QrCode className="h-4 w-4 text-emerald-400" />
+                            <span className="text-xs font-bold tracking-wider uppercase">
+                                {t('KHQR Pay')}
+                            </span>
                         </Button>
                     </div>
                 </div>
@@ -762,24 +880,28 @@ export default function PosIndex({
 
             {/* CASH TENDER DIALOG */}
             <Dialog open={cashModalOpen} onOpenChange={setCashModalOpen}>
-                <DialogContent className="max-w-md bg-[#1a1a1a] border-[#333] text-white">
+                <DialogContent className="max-w-md border-border bg-card text-foreground">
                     <DialogHeader>
-                        <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center gap-2">
-                            <Banknote className="w-5 h-5 text-[#F25623]" />
+                        <DialogTitle className="flex items-center gap-2 text-base font-black tracking-wider text-foreground uppercase">
+                            <Banknote className="h-5 w-5 text-[#F25623]" />
                             <span>{t('Cash Settlement')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <div className="space-y-4 py-2 text-xs">
                         {/* Due Total */}
-                        <div className="p-3 bg-[#222] rounded-xl border border-[#333] flex justify-between font-mono text-sm">
-                            <span className="text-[#a3a3a3]">{t('Total Due:')}</span>
-                            <span className="text-[#F25623] font-bold text-base">{formatMoney(totalCents)}</span>
+                        <div className="flex justify-between rounded-xl border border-border bg-muted p-3 font-mono text-sm">
+                            <span className="text-muted-foreground">
+                                {t('Total Due:')}
+                            </span>
+                            <span className="text-base font-bold text-[#F25623]">
+                                {formatMoney(totalCents)}
+                            </span>
                         </div>
 
                         {/* Tendered Input */}
                         <div className="space-y-1.5">
-                            <label className="text-[11px] font-mono uppercase text-[#a3a3a3]">
+                            <label className="font-mono text-[11px] text-muted-foreground uppercase">
                                 {t('Received Cash')} ($)
                             </label>
                             <Input
@@ -787,9 +909,14 @@ export default function PosIndex({
                                 step="0.01"
                                 value={(tenderedCents / 100).toFixed(2)}
                                 onChange={(e) =>
-                                    setTenderedCents(Math.round(parseFloat(e.target.value || '0') * 100))
+                                    setTenderedCents(
+                                        Math.round(
+                                            parseFloat(e.target.value || '0') *
+                                                100,
+                                        ),
+                                    )
                                 }
-                                className="bg-[#222] border-[#333] text-white font-mono text-lg font-bold h-12"
+                                className="h-12 border-border bg-muted font-mono text-lg font-bold text-foreground"
                             />
                         </div>
 
@@ -798,7 +925,7 @@ export default function PosIndex({
                             <button
                                 type="button"
                                 onClick={() => setTenderedCents(totalCents)}
-                                className="flex-1 min-w-[70px] py-2 rounded-lg border border-[#333] bg-[#222] text-xs font-mono font-bold hover:border-[#F25623]"
+                                className="min-w-[70px] flex-1 rounded-lg border border-border bg-muted py-2 font-mono text-xs font-bold hover:border-[#F25623]"
                             >
                                 {t('Exact Amount')}
                             </button>
@@ -807,7 +934,7 @@ export default function PosIndex({
                                     key={amt}
                                     type="button"
                                     onClick={() => setTenderedCents(amt * 100)}
-                                    className="flex-1 min-w-[50px] py-2 rounded-lg border border-[#333] bg-[#222] text-xs font-mono font-bold hover:border-[#F25623]"
+                                    className="min-w-[50px] flex-1 rounded-lg border border-border bg-muted py-2 font-mono text-xs font-bold hover:border-[#F25623]"
                                 >
                                     ${amt}
                                 </button>
@@ -817,16 +944,29 @@ export default function PosIndex({
                         {/* Change Due Display */}
                         <div
                             className={cn(
-                                'p-3 rounded-xl border flex justify-between font-mono text-sm',
+                                'flex justify-between rounded-xl border p-3 font-mono text-sm',
                                 isUnderTendered
-                                    ? 'bg-rose-950/20 border-rose-900/50 text-rose-400'
-                                    : 'bg-[#111] border-[#333]'
+                                    ? 'border-rose-900/50 bg-rose-950/20 text-rose-400'
+                                    : 'border-border bg-sidebar',
                             )}
                         >
-                            <span className="text-[#a3a3a3]">{t('Change Due:')}</span>
-                            <span className={cn('font-bold', isUnderTendered ? 'text-rose-400' : 'text-emerald-400 text-base')}>
+                            <span className="text-muted-foreground">
+                                {t('Change Due:')}
+                            </span>
+                            <span
+                                className={cn(
+                                    'font-bold',
+                                    isUnderTendered
+                                        ? 'text-rose-400'
+                                        : 'text-base text-emerald-400',
+                                )}
+                            >
                                 {isUnderTendered
-                                    ? t('Short by :amount', { amount: formatMoney(totalCents - tenderedCents) })
+                                    ? t('Short by :amount', {
+                                          amount: formatMoney(
+                                              totalCents - tenderedCents,
+                                          ),
+                                      })
                                     : formatMoney(changeCents)}
                             </span>
                         </div>
@@ -837,7 +977,7 @@ export default function PosIndex({
                             variant="outline"
                             onClick={() => setCashModalOpen(false)}
                             disabled={isSubmitting}
-                            className="border-[#333]"
+                            className="border-border"
                         >
                             {t('Cancel')}
                         </Button>
@@ -845,11 +985,11 @@ export default function PosIndex({
                             variant="orange"
                             onClick={() => handleCompleteSale('cash')}
                             disabled={isUnderTendered || isSubmitting}
-                            className="font-bold uppercase tracking-wider text-xs"
+                            className="text-xs font-bold tracking-wider uppercase"
                         >
                             {isSubmitting ? (
                                 <>
-                                    <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
+                                    <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
                                     {t('Recording Sale...')}
                                 </>
                             ) : (
@@ -862,33 +1002,39 @@ export default function PosIndex({
 
             {/* KHQR PAYMENT DIALOG */}
             <Dialog open={qrModalOpen} onOpenChange={setQrModalOpen}>
-                <DialogContent className="max-w-md bg-[#1a1a1a] border-[#333] text-white text-center">
+                <DialogContent className="max-w-md border-border bg-card text-center text-foreground">
                     <DialogHeader>
-                        <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center justify-center gap-2">
-                            <QrCode className="w-5 h-5 text-emerald-400" />
+                        <DialogTitle className="flex items-center justify-center gap-2 text-base font-black tracking-wider text-foreground uppercase">
+                            <QrCode className="h-5 w-5 text-emerald-400" />
                             <span>{t('Bakong / KHQR Instant Pay')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
-                    <div className="py-4 space-y-4">
+                    <div className="space-y-4 py-4">
                         {/* Dynamic KHQR Card */}
-                        <div className="w-56 h-56 mx-auto bg-white p-4 rounded-2xl flex flex-col items-center justify-between shadow-xl">
-                            <div className="text-[10px] font-mono font-bold text-red-600 tracking-wider">
+                        <div className="mx-auto flex h-56 w-56 flex-col items-center justify-between rounded-2xl bg-white p-4 shadow-xl">
+                            <div className="font-mono text-[10px] font-bold tracking-wider text-red-600">
                                 KHQR &bull; BAKONG
                             </div>
-                            <QrCode className="w-40 h-40 text-black stroke-[1.5]" />
-                            <div className="text-[9px] font-mono text-zinc-600">
+                            <QrCode className="h-40 w-40 stroke-[1.5] text-black" />
+                            <div className="font-mono text-[9px] text-zinc-600">
                                 {t('DMART STORE #01')}
                             </div>
                         </div>
 
                         <div className="space-y-1">
-                            <div className="text-xs text-[#a3a3a3]">{t('Amount to collect:')}</div>
-                            <div className="text-2xl font-black text-white font-mono">{formatMoney(totalCents)}</div>
+                            <div className="text-xs text-muted-foreground">
+                                {t('Amount to collect:')}
+                            </div>
+                            <div className="font-mono text-2xl font-black text-foreground">
+                                {formatMoney(totalCents)}
+                            </div>
                         </div>
 
-                        <p className="text-[11px] text-[#737373] max-w-xs mx-auto">
-                            {t('Customer scans with any Cambodian banking app (Bakong, ABA, Acleda). Tap below once transaction confirms.')}
+                        <p className="mx-auto max-w-xs text-[11px] text-muted-foreground">
+                            {t(
+                                'Customer scans with any Cambodian banking app (Bakong, ABA, Acleda). Tap below once transaction confirms.',
+                            )}
                         </p>
                     </div>
 
@@ -897,7 +1043,7 @@ export default function PosIndex({
                             variant="outline"
                             onClick={() => setQrModalOpen(false)}
                             disabled={isSubmitting}
-                            className="border-[#333]"
+                            className="border-border"
                         >
                             {t('Cancel')}
                         </Button>
@@ -905,11 +1051,11 @@ export default function PosIndex({
                             variant="orange"
                             onClick={() => handleCompleteSale('khqr')}
                             disabled={isSubmitting}
-                            className="font-bold uppercase tracking-wider text-xs"
+                            className="text-xs font-bold tracking-wider uppercase"
                         >
                             {isSubmitting ? (
                                 <>
-                                    <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
+                                    <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
                                     {t('Recording Sale...')}
                                 </>
                             ) : (
@@ -922,20 +1068,20 @@ export default function PosIndex({
 
             {/* COMPLETED SALE & 80MM THERMAL RECEIPT MODAL */}
             <Dialog open={receiptModalOpen} onOpenChange={setReceiptModalOpen}>
-                <DialogContent className="max-w-md bg-[#1a1a1a] border-[#333] text-white">
+                <DialogContent className="max-w-md border-border bg-card text-foreground">
                     <DialogHeader>
-                        <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center justify-between">
+                        <DialogTitle className="flex items-center justify-between text-base font-black tracking-wider text-foreground uppercase">
                             <span className="flex items-center gap-2">
-                                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                                <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                                 <span>{t('Sale Completed')}</span>
                             </span>
                             <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={handlePrintReceipt}
-                                className="h-8 gap-1.5 text-xs border-[#444] text-white"
+                                className="h-8 gap-1.5 border-border text-xs text-foreground"
                             >
-                                <Printer className="w-3.5 h-3.5" />
+                                <Printer className="h-3.5 w-3.5" />
                                 <span>{t('Print Receipt')}</span>
                             </Button>
                         </DialogTitle>
@@ -944,35 +1090,62 @@ export default function PosIndex({
                     {completedReceipt && (
                         <div
                             id="receipt-print-area"
-                            className="p-5 bg-white text-slate-900 border rounded-xl font-mono text-xs space-y-3 shadow-inner max-h-[60vh] overflow-y-auto"
+                            className="max-h-[60vh] space-y-3 overflow-y-auto rounded-xl border bg-white p-5 font-mono text-xs text-slate-900 shadow-inner"
                         >
                             {/* Receipt Store Header */}
-                            <div className="text-center space-y-1">
-                                <div className="font-black text-base tracking-tight">{t('DMART FLAGSHIP STORE')}</div>
-                                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500">{t('Store Receipt')}</div>
-                                <div className="text-[10px] text-slate-600">{t('Samdach Penn Nouth St (214), Phnom Penh')}</div>
-                                <div className="text-[10px] text-slate-600">{t('Tel: +855 23 888 999')}</div>
-                                <div className="border-b border-dashed border-slate-400 my-2" />
+                            <div className="space-y-1 text-center">
+                                <div className="text-base font-black tracking-tight">
+                                    {t('DMART FLAGSHIP STORE')}
+                                </div>
+                                <div className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                                    {t('Store Receipt')}
+                                </div>
+                                <div className="text-[10px] text-slate-600">
+                                    {t(
+                                        'Samdach Penn Nouth St (214), Phnom Penh',
+                                    )}
+                                </div>
+                                <div className="text-[10px] text-slate-600">
+                                    {t('Tel: +855 23 888 999')}
+                                </div>
+                                <div className="my-2 border-b border-dashed border-slate-400" />
                                 <div className="flex justify-between text-[10px]">
-                                    <span>{t('Receipt:')} {completedReceipt.order_number}</span>
+                                    <span>
+                                        {t('Receipt:')}{' '}
+                                        {completedReceipt.order_number}
+                                    </span>
                                     <span>{completedReceipt.created_at}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px]">
-                                    <span>{t('Cashier:')} {completedReceipt.cashier_name || cashier?.name || t('Staff')}</span>
+                                    <span>
+                                        {t('Cashier:')}{' '}
+                                        {completedReceipt.cashier_name ||
+                                            cashier?.name ||
+                                            t('Staff')}
+                                    </span>
                                     <span>{t('Reg #01')}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px]">
-                                    <span>{t('Customer:')} {completedReceipt.customer_name || t('Walk-in')}</span>
-                                    <span className="uppercase">{t(completedReceipt.payment_method)}</span>
+                                    <span>
+                                        {t('Customer:')}{' '}
+                                        {completedReceipt.customer_name ||
+                                            t('Walk-in')}
+                                    </span>
+                                    <span className="uppercase">
+                                        {t(completedReceipt.payment_method)}
+                                    </span>
                                 </div>
-                                <div className="border-b border-dashed border-slate-400 my-2" />
+                                <div className="my-2 border-b border-dashed border-slate-400" />
                             </div>
 
                             {/* Itemized Lines */}
                             <div className="space-y-1.5 text-[11px]">
                                 {completedReceipt.items.map((item, idx) => (
-                                    <div key={idx} className="flex justify-between">
-                                        <div className="truncate max-w-[220px]">
+                                    <div
+                                        key={idx}
+                                        className="flex justify-between"
+                                    >
+                                        <div className="max-w-[220px] truncate">
                                             {item.quantity}x {item.name}
                                         </div>
                                         <div className="font-bold">
@@ -982,38 +1155,63 @@ export default function PosIndex({
                                 ))}
                             </div>
 
-                            <div className="border-b border-dashed border-slate-400 my-2" />
+                            <div className="my-2 border-b border-dashed border-slate-400" />
 
                             {/* Financial Summary */}
                             <div className="space-y-1 text-xs">
                                 <div className="flex justify-between">
                                     <span>{t('Subtotal:')}</span>
-                                    <span>{formatMoney(completedReceipt.subtotal_cents)}</span>
+                                    <span>
+                                        {formatMoney(
+                                            completedReceipt.subtotal_cents,
+                                        )}
+                                    </span>
                                 </div>
-                                <div className="flex justify-between font-bold text-sm">
+                                <div className="flex justify-between text-sm font-bold">
                                     <span>{t('TOTAL:')}</span>
-                                    <span>{formatMoney(completedReceipt.total_cents)}</span>
+                                    <span>
+                                        {formatMoney(
+                                            completedReceipt.total_cents,
+                                        )}
+                                    </span>
                                 </div>
-                                {completedReceipt.cash_tendered_cents !== null && (
+                                {completedReceipt.cash_tendered_cents !==
+                                    null && (
                                     <>
                                         <div className="flex justify-between text-[11px] text-slate-600">
                                             <span>{t('Cash Tendered:')}</span>
-                                            <span>{formatMoney(completedReceipt.cash_tendered_cents)}</span>
+                                            <span>
+                                                {formatMoney(
+                                                    completedReceipt.cash_tendered_cents,
+                                                )}
+                                            </span>
                                         </div>
-                                        <div className="flex justify-between text-[11px] text-slate-600 font-bold">
+                                        <div className="flex justify-between text-[11px] font-bold text-slate-600">
                                             <span>{t('Change Due:')}</span>
-                                            <span>{formatMoney(completedReceipt.change_cents || 0)}</span>
+                                            <span>
+                                                {formatMoney(
+                                                    completedReceipt.change_cents ||
+                                                        0,
+                                                )}
+                                            </span>
                                         </div>
                                     </>
                                 )}
                             </div>
 
-                            <div className="border-b border-dashed border-slate-400 my-3" />
+                            <div className="my-3 border-b border-dashed border-slate-400" />
 
                             {/* Receipt Footer Message */}
-                            <div className="text-center text-[10px] text-slate-600 space-y-0.5">
-                                <div className="font-bold">*** {t('Thank you for shopping with us!')} ***</div>
-                                <div>{t('Keep this receipt for 30-day exchanges')}</div>
+                            <div className="space-y-0.5 text-center text-[10px] text-slate-600">
+                                <div className="font-bold">
+                                    *** {t('Thank you for shopping with us!')}{' '}
+                                    ***
+                                </div>
+                                <div>
+                                    {t(
+                                        'Keep this receipt for 30-day exchanges',
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}
@@ -1021,7 +1219,7 @@ export default function PosIndex({
                     <DialogFooter>
                         <Button
                             variant="orange"
-                            className="w-full uppercase font-bold text-xs"
+                            className="w-full text-xs font-bold uppercase"
                             onClick={() => setReceiptModalOpen(false)}
                         >
                             {t('Next Sale / Close')}

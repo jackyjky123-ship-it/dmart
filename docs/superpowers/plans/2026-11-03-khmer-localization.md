@@ -22,21 +22,22 @@
 ## Review Focus
 
 1. **Locale Persistence on Guest Visits:** When an unauthenticated user switches language to Khmer, cookies preserve the choice across multiple subsequent page requests.
-   - *Test:* `tests/Feature/LocaleTest.php::test_unauthenticated_user_can_switch_locale_and_cookie_persists()`
+    - _Test:_ `tests/Feature/LocaleTest.php::test_unauthenticated_user_can_switch_locale_and_cookie_persists()`
 2. **Invalid Locale Fallback:** A request posting an invalid locale (e.g. `es`, `fr`, or arbitrary string) safely rejects with validation error or falls back to default `en`.
-   - *Test:* `tests/Feature/LocaleTest.php::test_invalid_locale_is_rejected()`
+    - _Test:_ `tests/Feature/LocaleTest.php::test_invalid_locale_is_rejected()`
 3. **Inertia Props Optimization:** In English mode, `translations` prop is empty; in Khmer mode, `translations` contains the mapped dictionary.
-   - *Test:* `tests/Feature/LocaleTest.php::test_inertia_shares_translations_only_when_khmer_active()`
+    - _Test:_ `tests/Feature/LocaleTest.php::test_inertia_shares_translations_only_when_khmer_active()`
 4. **Font Switching Cascade:** When `html[lang="km"]` is active, elements using `font-sans` render with `Kantumruy Pro`.
-   - *Test:* Verified in `resources/css/app.css` and browser stylesheet inspection.
+    - _Test:_ Verified in `resources/css/app.css` and browser stylesheet inspection.
 5. **Replacements in Translation Strings:** Placeholders such as `:count` or `:name` are properly replaced when formatted via `t(key, replacements)`.
-   - *Test:* Verified in `useTranslation` unit test / React component assertions.
+    - _Test:_ Verified in `useTranslation` unit test / React component assertions.
 
 ---
 
 ### Task 1: Backend Localization Infrastructure (Routes, Controller, Middleware & Inertia Sharing)
 
 **Files:**
+
 - Create: `app/Http/Controllers/LocaleController.php`
 - Create: `app/Http/Middleware/SetLocale.php`
 - Modify: `bootstrap/app.php`
@@ -45,11 +46,12 @@
 - Test: `tests/Feature/LocaleTest.php`
 
 **Interfaces:**
+
 - Consumes: Standard Laravel Request, Session, Cookie, Inertia middleware
 - Produces:
-  - Route: `POST /locale` (`name: locale.update`) accepting `{ "locale": "en" | "km" }`
-  - Middleware `SetLocale`: sets `app()->setLocale($locale)`
-  - Inertia Shared Props: `locale: string`, `locales: Record<string, string>`, `translations: Record<string, string>`
+    - Route: `POST /locale` (`name: locale.update`) accepting `{ "locale": "en" | "km" }`
+    - Middleware `SetLocale`: sets `app()->setLocale($locale)`
+    - Inertia Shared Props: `locale: string`, `locales: Record<string, string>`, `translations: Record<string, string>`
 
 - [ ] **Step 1: Write the failing tests in `tests/Feature/LocaleTest.php`**
 
@@ -84,19 +86,19 @@ Expected: FAIL (route `locale.update` not defined)
 - [ ] **Step 3: Implement `LocaleController`, `SetLocale` middleware, routes, and `HandleInertiaRequests` sharing**
 
 1. Create `app/Http/Controllers/LocaleController.php`:
-   - Validates `['locale' => 'required|string|in:en,km']`.
-   - Stores in session `session(['locale' => $request->input('locale')])`.
-   - Returns `back()->withCookie(cookie()->forever('locale', $request->input('locale')))`.
+    - Validates `['locale' => 'required|string|in:en,km']`.
+    - Stores in session `session(['locale' => $request->input('locale')])`.
+    - Returns `back()->withCookie(cookie()->forever('locale', $request->input('locale')))`.
 2. Create `app/Http/Middleware/SetLocale.php`:
-   - Checks `session('locale') ?? $request->cookie('locale') ?? config('app.locale', 'en')`.
-   - If not in `['en', 'km']`, defaults to `'en'`.
-   - Calls `app()->setLocale($locale)`.
+    - Checks `session('locale') ?? $request->cookie('locale') ?? config('app.locale', 'en')`.
+    - If not in `['en', 'km']`, defaults to `'en'`.
+    - Calls `app()->setLocale($locale)`.
 3. Register `SetLocale` in `bootstrap/app.php` inside `withMiddleware(function (Middleware $middleware) { ... })`.
 4. Register `Route::post('locale', [LocaleController::class, 'update'])->name('locale.update');` in `routes/web.php`.
 5. Update `app/Http/Middleware/HandleInertiaRequests.php` `share()` method to include:
-   - `'locale' => app()->getLocale()`
-   - `'locales' => ['en' => 'English', 'km' => 'ភាសាខ្មែរ']`
-   - `'translations' => fn () => app()->getLocale() === 'km' && file_exists(base_path('lang/km.json')) ? json_decode(file_get_contents(base_path('lang/km.json')), true) : (object)[]`
+    - `'locale' => app()->getLocale()`
+    - `'locales' => ['en' => 'English', 'km' => 'ភាសាខ្មែរ']`
+    - `'translations' => fn () => app()->getLocale() === 'km' && file_exists(base_path('lang/km.json')) ? json_decode(file_get_contents(base_path('lang/km.json')), true) : (object)[]`
 
 - [ ] **Step 4: Run test to verify it passes**
 
@@ -116,33 +118,36 @@ git commit -m "feat(i18n): add locale controller, set-locale middleware, and ine
 ### Task 2: Kantumruy Pro Typography & Tailwind CSS Configuration
 
 **Files:**
+
 - Modify: `resources/css/app.css`
 - Modify: `resources/views/app.blade.php`
 
 **Interfaces:**
+
 - Consumes: Google Fonts API (`family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700`)
 - Produces: CSS rules dynamically switching `--font-sans` to `'Kantumruy Pro'` when `html[lang="km"]` is active.
 
 - [ ] **Step 1: Inspect and update `resources/css/app.css`**
 
 1. Update Google Fonts `@import` at line 1 to include `Kantumruy Pro`:
-   ```css
-   @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Montserrat:wght@800;900&display=swap');
-   ```
+    ```css
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Montserrat:wght@800;900&display=swap');
+    ```
 2. In `@theme`, define `--font-khmer`:
-   ```css
-   --font-khmer: 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif;
-   ```
+    ```css
+    --font-khmer: 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif;
+    ```
 3. Add locale font rule below `@theme`:
-   ```css
-   html[lang="km"],
-   html[lang^="km-"] {
-       --font-sans: 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif,
-           'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-           'Noto Color Emoji';
-       font-family: var(--font-sans);
-   }
-   ```
+    ```css
+    html[lang='km'],
+    html[lang^='km-'] {
+        --font-sans:
+            'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif,
+            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+            'Noto Color Emoji';
+        font-family: var(--font-sans);
+    }
+    ```
 
 - [ ] **Step 2: Verify `resources/views/app.blade.php`**
 
@@ -165,16 +170,19 @@ git commit -m "style: configure Kantumruy Pro font for Khmer locale in app.css"
 ### Task 3: Comprehensive Translation Dictionaries (`lang/km.json` and `lang/en.json`)
 
 **Files:**
+
 - Create: `lang/km.json`
 - Create: `lang/en.json`
 
 **Interfaces:**
+
 - Consumes: System labels, button texts, table headers, validation errors, and categories across DMart
 - Produces: Key-value JSON dictionaries for English and Khmer.
 
 - [ ] **Step 1: Author comprehensive Khmer dictionary in `lang/km.json`**
 
 Include standard Cambodian translations for:
+
 - **Navigation & Layout:** "Home", "Products", "Categories", "Cart", "Checkout", "Orders", "Sign In", "Sign Out", "Register", "Dashboard", "POS Register", "Admin Portal", "Settings", "Profile", "Security", "Appearance".
 - **Storefront Home & Catalog:** "Featured Categories", "Best Sellers", "New Arrivals", "Special Offers", "Shop Now", "Add to Cart", "View Details", "In Stock", "Out of Stock", "Search products...", "Filter by", "Sort by", "Price: Low to High", "Price: High to Low", "All Products", "Free shipping over $35".
 - **Cart & Checkout:** "Shopping Cart", "Your cart is empty", "Subtotal", "Delivery Fee", "Total", "Proceed to Checkout", "Shipping Address", "Full Name", "Phone Number", "Delivery Address", "Payment Method", "Bakong KHQR", "Cash on Delivery", "Place Order", "Order Summary".
@@ -205,15 +213,17 @@ git commit -m "feat(i18n): create Khmer and English translation dictionaries"
 ### Task 4: Frontend `useTranslation` Hook & `LanguageSwitcher` Component
 
 **Files:**
+
 - Create: `resources/js/hooks/use-translation.ts`
 - Create: `resources/js/components/language-switcher.tsx`
 - Modify: `resources/js/types/index.ts` (or relevant types)
 
 **Interfaces:**
+
 - Consumes: Inertia `props.locale`, `props.translations`, `props.locales`
 - Produces:
-  - `useTranslation()`: `{ t: (key: string, replacements?: Record<string, string | number>) => string, locale: string }`
-  - `<LanguageSwitcher variant="header" | "compact" | "dropdown" />`
+    - `useTranslation()`: `{ t: (key: string, replacements?: Record<string, string | number>) => string, locale: string }`
+    - `<LanguageSwitcher variant="header" | "compact" | "dropdown" />`
 
 - [ ] **Step 1: Create `resources/js/hooks/use-translation.ts`**
 
@@ -224,9 +234,15 @@ Include placeholder replacement for `:key` and `{key}`.
 
 Implement a dropdown / toggle component displaying current language (`EN` / `ខ្មែរ`).
 On change:
+
 ```ts
-router.post('/locale', { locale: targetLocale }, { preserveScroll: true, preserveState: false });
+router.post(
+    '/locale',
+    { locale: targetLocale },
+    { preserveScroll: true, preserveState: false },
+);
 ```
+
 Support dark mode and clean styling matching DMart's navbar/sidebar aesthetic.
 
 - [ ] **Step 3: Run TypeScript check to verify type safety**
@@ -246,6 +262,7 @@ git commit -m "feat(i18n): add useTranslation hook and LanguageSwitcher componen
 ### Task 5: Integrate Language Switcher into Layouts
 
 **Files:**
+
 - Modify: `resources/js/layouts/storefront-layout.tsx`
 - Modify: `resources/js/layouts/pos-layout.tsx`
 - Modify: `resources/js/layouts/admin-layout.tsx`
@@ -253,6 +270,7 @@ git commit -m "feat(i18n): add useTranslation hook and LanguageSwitcher componen
 - Modify: `resources/js/layouts/auth/auth-card-layout.tsx`
 
 **Interfaces:**
+
 - Consumes: `<LanguageSwitcher />` from `resources/js/components/language-switcher.tsx`
 - Produces: Header and mobile language switcher access across all roles.
 
@@ -289,6 +307,7 @@ git commit -m "feat(ui): add language switcher across Storefront, POS, Admin, an
 ### Task 6: Localize Storefront Pages & Components
 
 **Files:**
+
 - Modify: `resources/js/layouts/storefront-layout.tsx`
 - Modify: `resources/js/pages/storefront/home.tsx`
 - Modify: `resources/js/pages/storefront/products/index.tsx`
@@ -302,6 +321,7 @@ git commit -m "feat(ui): add language switcher across Storefront, POS, Admin, an
 - Modify: `resources/js/components/status-badge.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTranslation` (`t`)
 - Produces: Fully translated customer-facing storefront in Khmer when active.
 
@@ -342,11 +362,13 @@ git commit -m "feat(storefront): localize storefront layout, catalog, cart, chec
 ### Task 7: Localize POS (Point of Sale) Pages
 
 **Files:**
+
 - Modify: `resources/js/layouts/pos-layout.tsx`
 - Modify: `resources/js/pages/pos/index.tsx`
 - Modify: `resources/js/pages/pos/sales/index.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTranslation` (`t`)
 - Produces: Fully localized cashier terminal, product search, cart, tender payment modal, receipt modal, and sales history.
 
@@ -357,6 +379,7 @@ Translate cashier shift badge, current date display, "Sales History", "Register"
 - [ ] **Step 2: Localize POS Cashier Register in `pages/pos/index.tsx`**
 
 Translate:
+
 - Search bar & barcode scanner placeholders.
 - Category filter buttons `t(category.name)`.
 - Cart basket headers ("Item", "Qty", "Price", "Total", "Discount", "Clear Cart").
@@ -386,6 +409,7 @@ git commit -m "feat(pos): localize cashier register, tender modal, receipt, and 
 ### Task 8: Localize Admin Portal Pages & Navigation
 
 **Files:**
+
 - Modify: `resources/js/layouts/admin-layout.tsx`
 - Modify: `resources/js/components/app-sidebar.tsx`
 - Modify: `resources/js/pages/admin/dashboard.tsx`
@@ -400,6 +424,7 @@ git commit -m "feat(pos): localize cashier register, tender modal, receipt, and 
 - Modify: `resources/js/pages/admin/settings.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTranslation` (`t`)
 - Produces: Fully translated admin portal for inventory, categories, orders, staff, settings, and dashboard metrics.
 
@@ -444,6 +469,7 @@ git commit -m "feat(admin): localize admin dashboard, inventory, categories, ord
 ### Task 9: Localize Authentication & User Settings Pages
 
 **Files:**
+
 - Modify: `resources/js/pages/auth/login.tsx`
 - Modify: `resources/js/pages/auth/register.tsx`
 - Modify: `resources/js/pages/auth/forgot-password.tsx`
@@ -455,12 +481,14 @@ git commit -m "feat(admin): localize admin dashboard, inventory, categories, ord
 - Modify: `resources/js/components/user-menu-content.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTranslation` (`t`)
 - Produces: Localized authentication portals (Customer, Cashier, Admin login) and account settings screens.
 
 - [ ] **Step 1: Localize Auth pages (Login, Register, Password Recovery)**
 
 Translate:
+
 - Role titles ("Customer Sign In", "Cashier Terminal Login", "Admin Portal Login").
 - Form inputs ("Email address", "Password", "Confirm Password", "Remember me", "Forgot your password?").
 - Actions ("Sign in", "Create Account", "Already have an account? Sign in", "Send Password Reset Link", "Reset Password").
@@ -486,9 +514,11 @@ git commit -m "feat(auth): localize login, register, password recovery, and user
 ### Task 10: System Verification, Formatting & Final Build
 
 **Files:**
+
 - Modify: (Any files touched that require formatting or linting)
 
 **Interfaces:**
+
 - Consumes: All updated codebase files
 - Produces: Verified, green test suite, formatted PHP code, and compiled Vite assets.
 

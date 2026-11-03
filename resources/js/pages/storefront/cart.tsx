@@ -32,21 +32,28 @@ export default function CartView() {
         totalCents,
     } = useCart();
 
-    const centsNeededForFreeShipping = Math.max(0, freeShippingThresholdCents - subtotalCents);
+    const centsNeededForFreeShipping = Math.max(
+        0,
+        freeShippingThresholdCents - subtotalCents,
+    );
 
     return (
-        <div className="space-y-8 text-white pb-12">
+        <div className="space-y-8 pb-12 text-foreground">
             <Head title={t('Shopping Bag — DMART Exclusive Drops')} />
 
-            <div className="flex items-center justify-between pb-4 border-b border-[#282828]">
+            <div className="flex items-center justify-between border-b border-border pb-4">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white font-sans">
+                    <h1 className="font-sans text-2xl font-black tracking-tight text-foreground uppercase sm:text-3xl">
                         {t('Shopping Bag')}
                     </h1>
-                    <p className="text-xs text-[#737373] font-mono mt-0.5">
+                    <p className="mt-0.5 font-mono text-xs text-muted-foreground">
                         {items.length === 1
-                            ? t(':count UNIQUE PIECE IN YOUR BAG', { count: items.length })
-                            : t(':count UNIQUE PIECES IN YOUR BAG', { count: items.length })}
+                            ? t(':count UNIQUE PIECE IN YOUR BAG', {
+                                  count: items.length,
+                              })
+                            : t(':count UNIQUE PIECES IN YOUR BAG', {
+                                  count: items.length,
+                              })}
                     </p>
                 </div>
 
@@ -56,87 +63,107 @@ export default function CartView() {
                         variant="ghost"
                         size="sm"
                         onClick={clearCart}
-                        className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 gap-1.5"
+                        className="gap-1.5 text-xs text-rose-400 hover:bg-rose-950/40 hover:text-rose-300"
                     >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="h-3.5 w-3.5" />
                         <span>{t('Clear Bag')}</span>
                     </Button>
                 )}
             </div>
 
             {items.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
                     {/* Left: Cart Items List */}
-                    <div className="lg:col-span-2 space-y-4">
+                    <div className="space-y-4 lg:col-span-2">
                         {/* Free Shipping Progress */}
-                        <div className="p-4 rounded-xl border border-[#2d2d2d] bg-[#1a1a1a] space-y-2">
+                        <div className="space-y-2 rounded-xl border border-border bg-card p-4">
                             <div className="flex items-center justify-between text-xs">
-                                <span className="flex items-center gap-1.5 font-bold text-white uppercase tracking-wider font-mono">
-                                    <Truck className="w-4 h-4 text-[#F25623]" />
+                                <span className="flex items-center gap-1.5 font-mono font-bold tracking-wider text-foreground uppercase">
+                                    <Truck className="h-4 w-4 text-[#F25623]" />
                                     {centsNeededForFreeShipping === 0
                                         ? t('Free Express Shipping unlocked!')
-                                        : t('Add :amount more for FREE Global Shipping', { amount: formatMoney(centsNeededForFreeShipping) })}
+                                        : t(
+                                              'Add :amount more for FREE Global Shipping',
+                                              {
+                                                  amount: formatMoney(
+                                                      centsNeededForFreeShipping,
+                                                  ),
+                                              },
+                                          )}
                                 </span>
-                                <span className="text-xs font-mono text-[#F25623] font-bold">
+                                <span className="font-mono text-xs font-bold text-[#F25623]">
                                     {Math.round(progressToFreeShipping)}%
                                 </span>
                             </div>
-                            <div className="w-full h-1.5 bg-[#252525] rounded-full overflow-hidden">
+                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                                 <div
                                     className="h-full bg-[#F25623] transition-all duration-300"
-                                    style={{ width: `${progressToFreeShipping}%` }}
+                                    style={{
+                                        width: `${progressToFreeShipping}%`,
+                                    }}
                                 />
                             </div>
                         </div>
 
                         {/* Items Table */}
-                        <div className="border border-[#282828] rounded-xl bg-[#1a1a1a] divide-y divide-[#242424] overflow-hidden">
+                        <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
                             {items.map(({ product, quantity }) => (
                                 <div
                                     key={product.id}
-                                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#202020] transition-colors"
+                                    className="flex flex-col justify-between gap-4 p-4 transition-colors hover:bg-muted sm:flex-row sm:items-center"
                                 >
-                                    <div className="flex items-center gap-4 min-w-0">
-                                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#242424] shrink-0 border border-[#333]">
+                                    <div className="flex min-w-0 items-center gap-4">
+                                        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
                                             {product.image_url ? (
                                                 <img
                                                     src={product.image_url}
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover"
+                                                    className="h-full w-full object-cover"
                                                 />
                                             ) : (
-                                                <ProductThumb name={product.name} size="full" />
+                                                <ProductThumb
+                                                    name={product.name}
+                                                    size="full"
+                                                />
                                             )}
                                         </div>
 
                                         <div className="min-w-0 space-y-1">
-                                            <div className="text-[10px] font-mono text-[#737373] uppercase">
+                                            <div className="font-mono text-[10px] text-muted-foreground uppercase">
                                                 {product.sku}
                                             </div>
                                             <Link
                                                 href={`/products/${product.slug}`}
-                                                className="text-sm font-bold text-white hover:text-[#F25623] transition-colors line-clamp-1"
+                                                className="line-clamp-1 text-sm font-bold text-foreground transition-colors hover:text-[#F25623]"
                                             >
                                                 {product.name}
                                             </Link>
-                                            <div className="text-xs text-[#a3a3a3] font-mono">
-                                                {formatMoney(product.price_cents)} &bull; {product.unit}
+                                            <div className="font-mono text-xs text-muted-foreground">
+                                                {formatMoney(
+                                                    product.price_cents,
+                                                )}{' '}
+                                                &bull; {product.unit}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
+                                    <div className="flex shrink-0 items-center justify-between gap-4 sm:justify-end">
                                         <QuantityStepper
                                             value={quantity}
-                                            onChange={(qty) => updateQuantity(product.id, qty)}
+                                            onChange={(qty) =>
+                                                updateQuantity(product.id, qty)
+                                            }
                                             min={1}
                                             max={product.stock}
                                             size="sm"
                                         />
 
-                                        <div className="text-right min-w-[70px]">
-                                            <div className="text-sm font-bold text-white font-mono">
-                                                {formatMoney(product.price_cents * quantity)}
+                                        <div className="min-w-[70px] text-right">
+                                            <div className="font-mono text-sm font-bold text-foreground">
+                                                {formatMoney(
+                                                    product.price_cents *
+                                                        quantity,
+                                                )}
                                             </div>
                                         </div>
 
@@ -144,11 +171,13 @@ export default function CartView() {
                                             type="button"
                                             variant="ghost"
                                             size="icon"
-                                            onClick={() => removeFromCart(product.id)}
-                                            className="h-8 w-8 text-[#737373] hover:text-rose-400"
+                                            onClick={() =>
+                                                removeFromCart(product.id)
+                                            }
+                                            className="h-8 w-8 text-muted-foreground hover:text-rose-400"
                                             aria-label="Remove item"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="h-4 w-4" />
                                         </Button>
                                     </div>
                                 </div>
@@ -156,7 +185,12 @@ export default function CartView() {
                         </div>
 
                         <div className="pt-2">
-                            <Button asChild variant="outline" size="sm" className="text-xs border-[#333] bg-[#1a1a1a] text-white hover:border-[#F25623]">
+                            <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="border-border bg-card text-xs text-foreground hover:border-[#F25623]"
+                            >
                                 <Link href="/products">
                                     &larr; {t('Continue Exploring Drops')}
                                 </Link>
@@ -165,27 +199,31 @@ export default function CartView() {
                     </div>
 
                     {/* Right: Order Summary Sidebar */}
-                    <div className="border border-[#282828] rounded-xl bg-[#1a1a1a] p-6 space-y-5 shadow-lg sticky top-24">
-                        <h2 className="font-black text-sm uppercase tracking-wider text-white font-mono">
+                    <div className="sticky top-24 space-y-5 rounded-xl border border-border bg-card p-6 shadow-lg">
+                        <h2 className="font-mono text-sm font-black tracking-wider text-foreground uppercase">
                             {t('Order Summary')}
                         </h2>
 
                         <div className="space-y-3 text-xs">
-                            <div className="flex justify-between text-[#a3a3a3] font-mono">
+                            <div className="flex justify-between font-mono text-muted-foreground">
                                 <span>{t('Subtotal')}</span>
-                                <span className="font-medium text-white">{formatMoney(subtotalCents)}</span>
+                                <span className="font-medium text-foreground">
+                                    {formatMoney(subtotalCents)}
+                                </span>
                             </div>
-                            <div className="flex justify-between text-[#a3a3a3] font-mono">
+                            <div className="flex justify-between font-mono text-muted-foreground">
                                 <span>{t('Express Courier Shipping')}</span>
-                                <span className="font-medium text-white">
+                                <span className="font-medium text-foreground">
                                     {shippingFeeCents === 0 ? (
-                                        <span className="text-[#F25623] font-bold">{t('Free Shipping')}</span>
+                                        <span className="font-bold text-[#F25623]">
+                                            {t('Free Shipping')}
+                                        </span>
                                     ) : (
                                         formatMoney(shippingFeeCents)
                                     )}
                                 </span>
                             </div>
-                            <div className="pt-3 border-t border-[#262626] flex justify-between text-base font-bold text-white font-mono">
+                            <div className="flex justify-between border-t border-border pt-3 font-mono text-base font-bold text-foreground">
                                 <span>{t('Estimated Total')}</span>
                                 <span className="text-[#F25623]">
                                     {formatMoney(totalCents)}
@@ -193,20 +231,27 @@ export default function CartView() {
                             </div>
                         </div>
 
-                        <Button asChild size="lg" variant="orange" className="w-full font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-[#F25623]/25 gap-2">
+                        <Button
+                            asChild
+                            size="lg"
+                            variant="orange"
+                            className="h-12 w-full gap-2 text-xs font-black tracking-widest uppercase shadow-lg shadow-[#F25623]/25"
+                        >
                             <Link href="/checkout">
                                 <span>{t('Proceed to Checkout')}</span>
-                                <ArrowRight className="w-4 h-4" />
+                                <ArrowRight className="h-4 w-4" />
                             </Link>
                         </Button>
 
-                        <div className="p-3 bg-[#141414] rounded-xl space-y-1.5 text-[11px] text-[#737373] border border-[#242424]">
-                            <div className="flex items-center gap-1.5 font-semibold text-white">
-                                <ShieldCheck className="w-3.5 h-3.5 text-[#F25623]" />
+                        <div className="space-y-1.5 rounded-xl border border-border bg-background p-3 text-[11px] text-muted-foreground">
+                            <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                                <ShieldCheck className="h-3.5 w-3.5 text-[#F25623]" />
                                 <span>{t('100% Authentic Release')}</span>
                             </div>
                             <p>
-                                {t('Worldwide express delivery. Free size exchanges and returns within 30 days.')}
+                                {t(
+                                    'Worldwide express delivery. Free size exchanges and returns within 30 days.',
+                                )}
                             </p>
                         </div>
                     </div>
@@ -214,7 +259,9 @@ export default function CartView() {
             ) : (
                 <EmptyState
                     title={t('Your shopping bag is empty')}
-                    description={t("Looks like you haven't added any pieces to your bag yet. Explore our capsule drops and limited editions.")}
+                    description={t(
+                        "Looks like you haven't added any pieces to your bag yet. Explore our capsule drops and limited editions.",
+                    )}
                     actionLabel={t('Explore Capsule Drops')}
                     actionHref="/products"
                     icon={ShoppingBag}

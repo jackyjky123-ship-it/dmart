@@ -9,7 +9,10 @@ export interface LocaleOption {
 
 export type Replacements = Record<string, string | number>;
 
-export type TranslateFunction = (key: string, replacements?: Replacements) => string;
+export type TranslateFunction = (
+    key: string,
+    replacements?: Replacements,
+) => string;
 
 export interface I18nPageProps {
     locale?: string;

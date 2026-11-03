@@ -34,11 +34,41 @@ interface HomeProps {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-    { id: 1, name: 'Hoodies & Sweats', slug: 'hoodies', description: 'Heavyweight fleece with drop shoulders', product_count: 12 },
-    { id: 2, name: 'Graphic Tees', slug: 'tees', description: 'Acid-wash vintage boxy cuts', product_count: 16 },
-    { id: 3, name: 'Outerwear', slug: 'outerwear', description: 'Technical bombers & utility jackets', product_count: 8 },
-    { id: 4, name: 'Cargos & Denim', slug: 'bottoms', description: 'Wide-leg utility cargos and relaxed denim', product_count: 10 },
-    { id: 5, name: 'Accessories', slug: 'accessories', description: 'Caps, cross-body bags & hardware', product_count: 9 },
+    {
+        id: 1,
+        name: 'Hoodies & Sweats',
+        slug: 'hoodies',
+        description: 'Heavyweight fleece with drop shoulders',
+        product_count: 12,
+    },
+    {
+        id: 2,
+        name: 'Graphic Tees',
+        slug: 'tees',
+        description: 'Acid-wash vintage boxy cuts',
+        product_count: 16,
+    },
+    {
+        id: 3,
+        name: 'Outerwear',
+        slug: 'outerwear',
+        description: 'Technical bombers & utility jackets',
+        product_count: 8,
+    },
+    {
+        id: 4,
+        name: 'Cargos & Denim',
+        slug: 'bottoms',
+        description: 'Wide-leg utility cargos and relaxed denim',
+        product_count: 10,
+    },
+    {
+        id: 5,
+        name: 'Accessories',
+        slug: 'accessories',
+        description: 'Caps, cross-body bags & hardware',
+        product_count: 9,
+    },
 ];
 
 const DEFAULT_PRODUCTS: CartProduct[] = [
@@ -145,7 +175,8 @@ export default function Home({
     featuredProducts = DEFAULT_PRODUCTS,
 }: HomeProps) {
     const { t } = useTranslation();
-    const products = featuredProducts.length > 0 ? featuredProducts : DEFAULT_PRODUCTS;
+    const products =
+        featuredProducts.length > 0 ? featuredProducts : DEFAULT_PRODUCTS;
     const [activeCategory, setActiveCategory] = useState<string>('all');
 
     const filteredProducts = useMemo(() => {
@@ -160,44 +191,47 @@ export default function Home({
 
     return (
         <div className="space-y-16 pb-12">
-            <Head title={t('DMART — Limited Releases & Modern Luxury Streetwear')} />
+            <Head
+                title={t('DMART — Limited Releases & Modern Luxury Streetwear')}
+            />
 
-            {/* 1. HERO SECTION (Recreated from banner_herosection_ref.png with bg_girlshopping.png) */}
+            {/* 1. HERO SECTION (3D DMart 24/7 Flagship Showcase) */}
             <HeroBanner
-                storeName="Store"
-                offerText={t('FOR ONLINE ORDER')}
-                discountPercent={t('30% OFF')}
-                headlineSmall={t('NEW ARRIVALS')}
-                headlineMain={t('JUST FOR')}
-                headlineScript={t('you')}
-                locationTitle={t('BUILDING NAME')}
-                locationSubtitle={t('MAIN ROAD, COUNTRY, 45612')}
+                titleTop={t('YOUR 24/7')}
+                titleBottom={t('FLAGSHIP MART')}
+                badgeText={t('DMART 24/7 FLAGSHIP STORE')}
+                subtitle={t(
+                    'Discover limited releases, premium streetwear, and everyday essentials with seamless instant checkout and express delivery.',
+                )}
                 ctaText={t('Shop Now')}
                 ctaHref="/products"
-                backgroundImageUrl="/images/bg_girlshopping.png"
+                secondaryCtaText={t('Explore Catalog')}
+                secondaryCtaHref="/products"
             />
 
             {/* 2. MANIFESTO BANNER: "DESIGNED TO DISRUPT" (Directly from design_ref.png) */}
-            <section className="text-center py-12 px-4 border-y border-[#262626] bg-[#141414]/50 rounded-2xl">
-                <div className="max-w-3xl mx-auto space-y-3">
-                    <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-white font-sans">
+            <section className="rounded-2xl border-y border-border bg-muted/40 px-4 py-12 text-center">
+                <div className="mx-auto max-w-3xl space-y-3">
+                    <h2 className="font-sans text-2xl font-black tracking-widest text-foreground uppercase sm:text-3xl">
                         {t('DESIGNED TO DISRUPT')}
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#888888] uppercase tracking-wider leading-relaxed font-mono font-medium max-w-2xl mx-auto">
-                        {t("LUXURY STAPLES FOR THE MODERN DISRUPTOR. PRECISION-TAILORED PIECES THAT BREAK CONVENTION AND REDEFINE PRESENCE. THIS ISN'T JUST FASHION—IT'S A STATEMENT.")}
+                    <p className="mx-auto max-w-2xl font-mono text-xs leading-relaxed font-medium tracking-wider text-muted-foreground uppercase sm:text-sm">
+                        {t(
+                            "LUXURY STAPLES FOR THE MODERN DISRUPTOR. PRECISION-TAILORED PIECES THAT BREAK CONVENTION AND REDEFINE PRESENCE. THIS ISN'T JUST FASHION—IT'S A STATEMENT.",
+                        )}
                     </p>
                 </div>
             </section>
 
             {/* 3. FEATURED DROPS GRID (Inspired by design_ref.png) */}
             <section className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
                     <div>
-                        <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#F25623] tracking-widest mb-1">
-                            <Sparkles className="w-3.5 h-3.5" />
+                        <div className="mb-1 flex items-center gap-2 font-mono text-xs tracking-widest text-[#F25623] uppercase">
+                            <Sparkles className="h-3.5 w-3.5" />
                             <span>{t('ARCHIVE & CURRENT RELEASES')}</span>
                         </div>
-                        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                        <h2 className="text-2xl font-black tracking-tight text-foreground uppercase sm:text-3xl">
                             {t('Signature Drops')}
                         </h2>
                     </div>
@@ -209,10 +243,10 @@ export default function Home({
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={cn(
-                                    'px-3.5 py-1.5 rounded-full uppercase tracking-wider font-semibold text-[11px] transition-all whitespace-nowrap',
+                                    'rounded-full px-3.5 py-1.5 text-[11px] font-semibold tracking-wider whitespace-nowrap uppercase transition-all',
                                     activeCategory === cat
                                         ? 'bg-[#F25623] text-white shadow-md shadow-[#F25623]/25'
-                                        : 'bg-[#222222] text-[#888888] hover:text-white hover:bg-[#2c2c2c]'
+                                        : 'bg-muted text-muted-foreground hover:bg-muted hover:text-foreground',
                                 )}
                             >
                                 {cat === 'all' ? t('All Pieces') : t(cat)}
@@ -222,77 +256,94 @@ export default function Home({
                 </div>
 
                 {/* 4-column product grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
                     {filteredProducts.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
 
-                <div className="text-center pt-6">
+                <div className="pt-6 text-center">
                     <Button
                         asChild
                         variant="outline"
                         size="lg"
-                        className="rounded-full px-8 border-[#333] bg-[#1a1a1a] text-white hover:border-[#F25623] hover:text-[#F25623] text-xs uppercase tracking-widest font-bold"
+                        className="rounded-full border-border bg-card px-8 text-xs font-bold tracking-widest text-foreground uppercase hover:border-[#F25623] hover:text-[#F25623]"
                     >
                         <Link href="/products">
-                            {t('Explore Full Collection')} <ArrowRight className="w-4 h-4 ml-2" />
+                            {t('Explore Full Collection')}{' '}
+                            <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
                 </div>
             </section>
 
             {/* 4. INFINITE MARQUEE TICKER TAPE (From design_ref.png) */}
-            <section className="relative overflow-hidden bg-black border-y border-[#282828] py-4 -mx-4 sm:-mx-6 lg:-mx-8">
-                <div className="animate-marquee whitespace-nowrap flex items-center gap-8 text-xs font-mono uppercase tracking-[0.25em] text-[#d4d4d4]">
+            <section className="relative -mx-4 overflow-hidden border-y border-border bg-black py-4 sm:-mx-6 lg:-mx-8">
+                <div className="animate-marquee flex items-center gap-8 font-mono text-xs tracking-[0.25em] whitespace-nowrap text-neutral-300 uppercase">
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('HIGH DENSITY COTTON')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('HIGH DENSITY COTTON')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('STREET LUXURY')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('STREET LUXURY')}
                     </span>
                     {/* Duplicate for seamless infinite loop */}
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('HIGH DENSITY COTTON')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('HIGH DENSITY COTTON')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('LIMITED EDITION')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('LIMITED EDITION')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('NEW ARRIVAL')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('NEW ARRIVAL')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('EXCLUSIVE DROP')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('EXCLUSIVE DROP')}
                     </span>
                     <span className="flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-[#F25623]" /> {t('STREET LUXURY')}
+                        <span className="h-2 w-2 rounded-full bg-[#F25623]" />{' '}
+                        {t('STREET LUXURY')}
                     </span>
                 </div>
             </section>
@@ -300,62 +351,74 @@ export default function Home({
             {/* 5. EDITORIAL BRAND STORY: OUR MISSION & OUR VISION (From design_ref.png) */}
             <section className="space-y-12">
                 {/* Block 1: Our Mission (Text Left, Image Right) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#171717] rounded-2xl border border-[#262626] p-6 lg:p-10">
-                    <div className="space-y-4 max-w-lg">
-                        <div className="inline-block text-[11px] font-mono uppercase tracking-widest text-[#F25623]">
+                <div className="grid grid-cols-1 items-center gap-8 rounded-2xl border border-border bg-card p-6 md:grid-cols-2 lg:p-10">
+                    <div className="max-w-lg space-y-4">
+                        <div className="inline-block font-mono text-[11px] tracking-widest text-[#F25623] uppercase">
                             #01 ETHOS
                         </div>
-                        <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
+                        <h3 className="font-sans text-3xl font-black tracking-tight text-foreground uppercase sm:text-4xl">
                             {t('Our Mission')}
                         </h3>
-                        <p className="text-sm text-[#888888] leading-relaxed">
-                            {t('Pair text with an image to focus on your chosen product, collection, or drop. Add details on availability, style, or silhouette construction. Engineered to bridge elevated runway design with gritty street culture.')}
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                            {t(
+                                'Pair text with an image to focus on your chosen product, collection, or drop. Add details on availability, style, or silhouette construction. Engineered to bridge elevated runway design with gritty street culture.',
+                            )}
                         </p>
                         <div className="pt-2">
                             <Button
                                 asChild
                                 variant="outline"
-                                className="rounded-full px-6 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 text-xs font-bold uppercase tracking-wider"
+                                className="rounded-full border-foreground/20 bg-muted/50 px-6 text-xs font-bold tracking-wider text-foreground uppercase hover:border-foreground/40 hover:bg-muted"
                             >
                                 <Link href="/products">{t('Learn More')}</Link>
                             </Button>
                         </div>
                     </div>
 
-                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-br from-[#1f1f1f] to-[#121212] border border-[#333] flex flex-col justify-between p-8">
-                        <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / MISSION / 01</div>
-                        <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
+                    <div className="relative flex aspect-4/3 flex-col justify-between overflow-hidden rounded-xl border border-border bg-gradient-to-br from-muted to-card p-8">
+                        <div className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                            DMART / MISSION / 01
+                        </div>
+                        <div className="font-mono text-3xl font-black tracking-tighter text-foreground uppercase sm:text-4xl">
                             {t('BUILT FOR THE STREETS')}
                         </div>
-                        <div className="text-xs text-[#F25623] font-mono uppercase">EST. 2026 &bull; PHNOM PENH</div>
+                        <div className="font-mono text-xs text-[#F25623] uppercase">
+                            EST. 2026 &bull; PHNOM PENH
+                        </div>
                     </div>
                 </div>
 
                 {/* Block 2: Our Vision (Image Left, Text Right) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#171717] rounded-2xl border border-[#262626] p-6 lg:p-10">
-                    <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-gradient-to-tr from-[#1a1a1a] via-[#222] to-[#161616] border border-[#333] order-2 md:order-1 flex flex-col justify-between p-8">
-                        <div className="text-[10px] font-mono tracking-widest text-[#737373] uppercase">DMART / ARCHIVE / 02</div>
-                        <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white uppercase font-mono">
+                <div className="grid grid-cols-1 items-center gap-8 rounded-2xl border border-border bg-card p-6 md:grid-cols-2 lg:p-10">
+                    <div className="relative order-2 flex aspect-4/3 flex-col justify-between overflow-hidden rounded-xl border border-border bg-gradient-to-tr from-muted via-card to-muted p-8 md:order-1">
+                        <div className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                            DMART / ARCHIVE / 02
+                        </div>
+                        <div className="font-mono text-3xl font-black tracking-tighter text-foreground uppercase sm:text-4xl">
                             {t('TIMELESS HEAVYWEIGHT')}
                         </div>
-                        <div className="text-xs text-[#888] font-mono uppercase">PRE-SHRUNK &bull; 460 GSM FLEECE</div>
+                        <div className="font-mono text-xs text-muted-foreground uppercase">
+                            PRE-SHRUNK &bull; 460 GSM FLEECE
+                        </div>
                     </div>
 
-                    <div className="space-y-4 max-w-lg order-1 md:order-2">
-                        <div className="inline-block text-[11px] font-mono uppercase tracking-widest text-[#F25623]">
+                    <div className="order-1 max-w-lg space-y-4 md:order-2">
+                        <div className="inline-block font-mono text-[11px] tracking-widest text-[#F25623] uppercase">
                             #02 DIRECTION
                         </div>
-                        <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-sans">
+                        <h3 className="font-sans text-3xl font-black tracking-tight text-foreground uppercase sm:text-4xl">
                             {t('Our Vision')}
                         </h3>
-                        <p className="text-sm text-[#888888] leading-relaxed">
-                            {t('Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or craftsmanship. Our pieces are crafted with timeless cuts that outlast passing hype.')}
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                            {t(
+                                'Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or craftsmanship. Our pieces are crafted with timeless cuts that outlast passing hype.',
+                            )}
                         </p>
                         <div className="pt-2">
                             <Button
                                 asChild
                                 variant="outline"
-                                className="rounded-full px-6 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40 text-xs font-bold uppercase tracking-wider"
+                                className="rounded-full border-foreground/20 bg-muted/50 px-6 text-xs font-bold tracking-wider text-foreground uppercase hover:border-foreground/40 hover:bg-muted"
                             >
                                 <Link href="/products">{t('Learn More')}</Link>
                             </Button>

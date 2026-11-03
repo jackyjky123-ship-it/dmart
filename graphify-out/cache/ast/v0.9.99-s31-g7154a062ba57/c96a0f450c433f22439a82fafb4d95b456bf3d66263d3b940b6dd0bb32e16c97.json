@@ -1,1 +1,243 @@
-{"nodes": [{"id": "$graphify-root$_routes_storefront_php", "label": "storefront.php", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L1"}, {"id": "$graphify-root$_routes_storefront_get", "label": "GET /()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L6", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_products", "label": "GET /products()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L13", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_products_slug", "label": "GET /products/{slug}()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L22", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_cart", "label": "GET /cart()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L29", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_checkout", "label": "GET /checkout()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L33", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_payment_order", "label": "GET /payment/{order}()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L37", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_orders", "label": "GET /orders()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L43", "_callable": true}, {"id": "$graphify-root$_routes_storefront_get_orders_order", "label": "GET /orders/{order}()", "file_type": "code", "source_file": "routes/storefront.php", "source_location": "L49", "_callable": true}], "edges": [{"source": "$graphify-root$_routes_storefront_php", "target": "route", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L3", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "inertia", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L4", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L6", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_products", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L13", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_products_slug", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L22", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_cart", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L29", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_checkout", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L33", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_payment_order", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L37", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_orders", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L43", "weight": 1.0}, {"source": "$graphify-root$_routes_storefront_php", "target": "$graphify-root$_routes_storefront_get_orders_order", "relation": "contains", "confidence": "EXTRACTED", "source_file": "routes/storefront.php", "source_location": "L49", "weight": 1.0}], "raw_calls": [{"caller_nid": "$graphify-root$_routes_storefront_get", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L7", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_products", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L14", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_products_slug", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L23", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_cart", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L30", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_checkout", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L34", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_payment_order", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L38", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_orders", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L44", "receiver": "Inertia", "php_scoped": true}, {"caller_nid": "$graphify-root$_routes_storefront_get_orders_order", "callee": "render", "is_member_call": true, "source_file": "routes/storefront.php", "source_location": "L50", "receiver": "Inertia", "php_scoped": true}]}
+{
+    "nodes": [
+        {
+            "id": "$graphify-root$_routes_storefront_php",
+            "label": "storefront.php",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L1"
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get",
+            "label": "GET /()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L6",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_products",
+            "label": "GET /products()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L13",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_products_slug",
+            "label": "GET /products/{slug}()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L22",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_cart",
+            "label": "GET /cart()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L29",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_checkout",
+            "label": "GET /checkout()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L33",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_payment_order",
+            "label": "GET /payment/{order}()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L37",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_orders",
+            "label": "GET /orders()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L43",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_routes_storefront_get_orders_order",
+            "label": "GET /orders/{order}()",
+            "file_type": "code",
+            "source_file": "routes/storefront.php",
+            "source_location": "L49",
+            "_callable": true
+        }
+    ],
+    "edges": [
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "route",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L3",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "inertia",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L4",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L6",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_products",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L13",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_products_slug",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L22",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_cart",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L29",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_checkout",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L33",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_payment_order",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L37",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_orders",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L43",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_routes_storefront_php",
+            "target": "$graphify-root$_routes_storefront_get_orders_order",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "routes/storefront.php",
+            "source_location": "L49",
+            "weight": 1.0
+        }
+    ],
+    "raw_calls": [
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L7",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_products",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L14",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_products_slug",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L23",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_cart",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L30",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_checkout",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L34",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_payment_order",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L38",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_orders",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L44",
+            "receiver": "Inertia",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_routes_storefront_get_orders_order",
+            "callee": "render",
+            "is_member_call": true,
+            "source_file": "routes/storefront.php",
+            "source_location": "L50",
+            "receiver": "Inertia",
+            "php_scoped": true
+        }
+    ]
+}

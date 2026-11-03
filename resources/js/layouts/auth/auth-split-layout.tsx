@@ -16,7 +16,7 @@ export default function AuthSplitLayout({
     return (
         <div className="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
             {/* Top-Right Language Switcher */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30">
+            <div className="absolute top-4 right-4 z-30 sm:top-6 sm:right-6">
                 <LanguageSwitcher variant="compact" align="end" />
             </div>
 
@@ -39,7 +39,9 @@ export default function AuthSplitLayout({
                         <AppLogoIcon className="h-10 fill-current text-black sm:h-12" />
                     </Link>
                     <div className="flex flex-col items-start gap-2 text-left sm:items-center sm:text-center">
-                        <h1 className="text-xl font-medium">{title ? t(title) : title}</h1>
+                        <h1 className="text-xl font-medium">
+                            {title ? t(title) : title}
+                        </h1>
                         <p className="text-sm text-balance text-muted-foreground">
                             {description ? t(description) : description}
                         </p>

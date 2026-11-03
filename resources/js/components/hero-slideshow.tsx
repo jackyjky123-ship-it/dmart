@@ -80,21 +80,21 @@ const HERO_SLIDES: HeroSlide[] = [
     {
         id: 'fresh-produce',
         tabLabel: 'Fresh Harvest',
-        tabIcon: <Apple className="w-4 h-4 text-emerald-400" />,
+        tabIcon: <Apple className="h-4 w-4 text-emerald-400" />,
         pill: 'Morning Harvest • Direct from Kandal & Battambang Farms',
-        pillIcon: <Sparkles className="w-3.5 h-3.5 text-amber-300" />,
+        pillIcon: <Sparkles className="h-3.5 w-3.5 text-amber-300" />,
         title: 'Farm-Fresh Produce Delivered in 35 Minutes',
         description:
             'Crisp morning bok choy, sweet Battambang mandarins, fragrant lemongrass, and certified fresh herbs sourced daily at dawn for your Phnom Penh kitchen.',
         primaryCta: {
             text: 'Shop Fresh Produce',
             href: '/products?category=produce',
-            icon: <ShoppingBag className="w-4 h-4 mr-2" />,
+            icon: <ShoppingBag className="mr-2 h-4 w-4" />,
         },
         secondaryCta: {
-            text: 'Today\'s Specials',
+            text: "Today's Specials",
             href: '/products',
-            icon: <ArrowRight className="w-4 h-4 ml-1.5" />,
+            icon: <ArrowRight className="ml-1.5 h-4 w-4" />,
         },
         badges: [
             { highlight: '35 mins', label: 'Average Delivery' },
@@ -104,7 +104,8 @@ const HERO_SLIDES: HeroSlide[] = [
         theme: {
             bgGradient: 'from-emerald-900 via-teal-900 to-slate-950',
             accentColor: 'bg-amber-400 hover:bg-amber-300 text-emerald-950',
-            badgeColor: 'bg-emerald-500/20 text-emerald-200 border-emerald-500/30',
+            badgeColor:
+                'bg-emerald-500/20 text-emerald-200 border-emerald-500/30',
             cardBg: 'bg-emerald-950/50 border-emerald-700/40',
             ringColor: 'ring-emerald-500/30',
         },
@@ -129,21 +130,21 @@ const HERO_SLIDES: HeroSlide[] = [
     {
         id: 'bakery-coffee',
         tabLabel: 'Artisan Bakery',
-        tabIcon: <Wheat className="w-4 h-4 text-amber-400" />,
+        tabIcon: <Wheat className="h-4 w-4 text-amber-400" />,
         pill: 'Oven-Fresh 7:00 AM • Mondulkiri Arabica Roast',
-        pillIcon: <Coffee className="w-3.5 h-3.5 text-amber-300" />,
+        pillIcon: <Coffee className="h-3.5 w-3.5 text-amber-300" />,
         title: 'Warm French Baguettes & Handcrafted Cold Brew',
         description:
             'Golden sourdough, flaky pure-butter croissants, and iced Phnom Penh coffee brewed with single-origin beans from the cool hills of Mondulkiri.',
         primaryCta: {
             text: 'Order Morning Bakes',
             href: '/products?category=bakery',
-            icon: <Wheat className="w-4 h-4 mr-2" />,
+            icon: <Wheat className="mr-2 h-4 w-4" />,
         },
         secondaryCta: {
             text: 'Explore Cold Brews',
             href: '/products?category=beverages',
-            icon: <ArrowRight className="w-4 h-4 ml-1.5" />,
+            icon: <ArrowRight className="ml-1.5 h-4 w-4" />,
         },
         badges: [
             { highlight: '2x Daily', label: 'Fresh Oven Drops' },
@@ -178,21 +179,21 @@ const HERO_SLIDES: HeroSlide[] = [
     {
         id: 'pantry-spices',
         tabLabel: 'Pantry & Spices',
-        tabIcon: <Flame className="w-4 h-4 text-rose-400" />,
+        tabIcon: <Flame className="h-4 w-4 text-rose-400" />,
         pill: 'GI-Certified Kampot Pepper & Royal Jasmine Rice',
-        pillIcon: <ShieldCheck className="w-3.5 h-3.5 text-rose-300" />,
+        pillIcon: <ShieldCheck className="h-3.5 w-3.5 text-rose-300" />,
         title: 'Authentic Kampot Spices & Royal Jasmine Rice',
         description:
             'Stock your pantry with world-renowned Kampot black and red peppercorns, award-winning Phka Rumduol jasmine rice, and essential kitchen seasonings.',
         primaryCta: {
             text: 'Stock Your Pantry',
             href: '/products?category=household',
-            icon: <ShoppingBag className="w-4 h-4 mr-2" />,
+            icon: <ShoppingBag className="mr-2 h-4 w-4" />,
         },
         secondaryCta: {
             text: 'All Pantry Items',
             href: '/products',
-            icon: <ArrowRight className="w-4 h-4 ml-1.5" />,
+            icon: <ArrowRight className="ml-1.5 h-4 w-4" />,
         },
         badges: [
             { highlight: 'GI-Certified', label: 'Kampot Origin' },
@@ -221,27 +222,28 @@ const HERO_SLIDES: HeroSlide[] = [
                 price: '$6.80',
                 tag: 'Fragrant Grain',
             },
-            guarantee: 'Certified origin stamps verified on every harvest package',
+            guarantee:
+                'Certified origin stamps verified on every harvest package',
         },
     },
     {
         id: 'instant-khqr',
         tabLabel: 'Instant Pay & POS',
-        tabIcon: <QrCode className="w-4 h-4 text-cyan-400" />,
+        tabIcon: <QrCode className="h-4 w-4 text-cyan-400" />,
         pill: 'Bakong KHQR Simulation • Cash on Delivery • In-Store POS',
-        pillIcon: <Terminal className="w-3.5 h-3.5 text-cyan-300" />,
+        pillIcon: <Terminal className="h-3.5 w-3.5 text-cyan-300" />,
         title: 'Seamless Bakong KHQR Checkout & Live POS Counter',
         description:
             'Shop online with instant mock KHQR payment simulation or pay cash with exact driver change. All orders share live stock ledger with our cashier POS counter.',
         primaryCta: {
             text: 'Start Shopping Online',
             href: '/products',
-            icon: <ShoppingBag className="w-4 h-4 mr-2" />,
+            icon: <ShoppingBag className="mr-2 h-4 w-4" />,
         },
         secondaryCta: {
             text: 'Switch to POS Terminal',
             href: '/pos',
-            icon: <Terminal className="w-4 h-4 ml-1.5" />,
+            icon: <Terminal className="ml-1.5 h-4 w-4" />,
         },
         badges: [
             { highlight: '< 3s QR Scan', label: 'Bakong Simulation' },
@@ -270,7 +272,8 @@ const HERO_SLIDES: HeroSlide[] = [
                 price: 'Ready',
                 tag: 'In-Store POS',
             },
-            guarantee: 'One shared inventory ledger across web shoppers and cashier counter',
+            guarantee:
+                'One shared inventory ledger across web shoppers and cashier counter',
         },
     },
 ];
@@ -298,9 +301,10 @@ export function HeroSlideshow() {
     return (
         <div className="relative space-y-3">
             {/* Quick Category Jump Tabs for Slideshow */}
-            <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                <span className="text-xs font-semibold text-muted-foreground mr-1 uppercase tracking-wider shrink-0 flex items-center gap-1.5">
-                    <Store className="w-3.5 h-3.5 text-emerald-600" /> Featured Highlights:
+            <div className="hidden scrollbar-none items-center gap-2 overflow-x-auto pb-1 sm:flex">
+                <span className="mr-1 flex shrink-0 items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                    <Store className="h-3.5 w-3.5 text-emerald-600" /> Featured
+                    Highlights:
                 </span>
                 <div className="flex items-center gap-2">
                     {HERO_SLIDES.map((slide, idx) => (
@@ -312,10 +316,10 @@ export function HeroSlideshow() {
                                 setCurrentSlideIndex(idx);
                             }}
                             className={cn(
-                                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border',
+                                'flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-200',
                                 currentSlideIndex === idx
-                                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm font-semibold scale-102'
-                                    : 'bg-card text-muted-foreground border-border hover:bg-muted/70 hover:text-foreground'
+                                    ? 'scale-102 border-emerald-600 bg-emerald-600 font-semibold text-white shadow-sm'
+                                    : 'border-border bg-card text-muted-foreground hover:bg-muted/70 hover:text-foreground',
                             )}
                         >
                             {slide.tabIcon}
@@ -332,42 +336,44 @@ export function HeroSlideshow() {
                 autoplayInterval={6000}
                 pauseOnHover={true}
                 loop={true}
-                className="overflow-hidden shadow-2xl border border-white/10 dark:border-white/5"
+                className="overflow-hidden border border-white/10 shadow-2xl dark:border-white/5"
             >
                 {/* Previous & Next Navigation Controls */}
-                <CarouselPrevious className="hidden md:flex bg-black/40 hover:bg-black/60 text-white border-white/20 -left-4 sm:left-4 shadow-lg backdrop-blur-md" />
-                <CarouselNext className="hidden md:flex bg-black/40 hover:bg-black/60 text-white border-white/20 -right-4 sm:right-4 shadow-lg backdrop-blur-md" />
+                <CarouselPrevious className="-left-4 hidden border-white/20 bg-black/40 text-white shadow-lg backdrop-blur-md hover:bg-black/60 sm:left-4 md:flex" />
+                <CarouselNext className="-right-4 hidden border-white/20 bg-black/40 text-white shadow-lg backdrop-blur-md hover:bg-black/60 sm:right-4 md:flex" />
 
                 <CarouselContent>
                     {HERO_SLIDES.map((slide, slideIdx) => (
                         <CarouselItem key={slide.id}>
                             <div
                                 className={cn(
-                                    'relative overflow-hidden text-white p-6 sm:p-10 lg:p-12 min-h-[500px] lg:min-h-[540px] flex flex-col justify-between bg-linear-to-br transition-colors duration-500',
-                                    slide.theme.bgGradient
+                                    'relative flex min-h-[500px] flex-col justify-between overflow-hidden bg-linear-to-br p-6 text-white transition-colors duration-500 sm:p-10 lg:min-h-[540px] lg:p-12',
+                                    slide.theme.bgGradient,
                                 )}
                             >
                                 {/* Subtle decorative atmospheric glow */}
-                                <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none" />
-                                <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-black/20 blur-3xl pointer-events-none" />
+                                <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-white/5 blur-3xl" />
+                                <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-black/20 blur-3xl" />
 
                                 {/* Slide Main Grid: Content (Left) & Showcase Composition (Right) */}
-                                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-auto">
+                                <div className="relative z-10 my-auto grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
                                     {/* Left Column: Editorial Content */}
-                                    <div className="lg:col-span-7 space-y-5">
+                                    <div className="space-y-5 lg:col-span-7">
                                         {/* Status / Announcement Tag */}
-                                        <div className="inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold backdrop-blur-md border shadow-xs max-w-full">
+                                        <div className="inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-semibold shadow-xs backdrop-blur-md">
                                             {slide.pillIcon}
-                                            <span className="truncate">{slide.pill}</span>
+                                            <span className="truncate">
+                                                {slide.pill}
+                                            </span>
                                         </div>
 
                                         {/* Main Headline */}
-                                        <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight leading-[1.15] text-balance">
+                                        <h1 className="text-3xl leading-[1.15] font-black tracking-tight text-balance sm:text-5xl lg:text-5xl">
                                             {slide.title}
                                         </h1>
 
                                         {/* Descriptive Copy */}
-                                        <p className="text-sm sm:text-base text-white/85 leading-relaxed max-w-xl font-normal">
+                                        <p className="max-w-xl text-sm leading-relaxed font-normal text-white/85 sm:text-base">
                                             {slide.description}
                                         </p>
 
@@ -377,11 +383,13 @@ export function HeroSlideshow() {
                                                 asChild
                                                 size="lg"
                                                 className={cn(
-                                                    'font-bold px-6 shadow-lg transition-transform active:scale-95',
-                                                    slide.theme.accentColor
+                                                    'px-6 font-bold shadow-lg transition-transform active:scale-95',
+                                                    slide.theme.accentColor,
                                                 )}
                                             >
-                                                <Link href={slide.primaryCta.href}>
+                                                <Link
+                                                    href={slide.primaryCta.href}
+                                                >
                                                     {slide.primaryCta.icon}
                                                     {slide.primaryCta.text}
                                                 </Link>
@@ -390,9 +398,13 @@ export function HeroSlideshow() {
                                                 asChild
                                                 variant="outline"
                                                 size="lg"
-                                                className="border-white/30 text-white hover:bg-white/10 backdrop-blur-xs font-medium"
+                                                className="border-white/30 font-medium text-white backdrop-blur-xs hover:bg-white/10"
                                             >
-                                                <Link href={slide.secondaryCta.href}>
+                                                <Link
+                                                    href={
+                                                        slide.secondaryCta.href
+                                                    }
+                                                >
                                                     {slide.secondaryCta.text}
                                                     {slide.secondaryCta.icon}
                                                 </Link>
@@ -400,13 +412,16 @@ export function HeroSlideshow() {
                                         </div>
 
                                         {/* Value Badges Ticker */}
-                                        <div className="grid grid-cols-3 gap-3 pt-4 border-t border-white/15 max-w-xl">
+                                        <div className="grid max-w-xl grid-cols-3 gap-3 border-t border-white/15 pt-4">
                                             {slide.badges.map((b, i) => (
-                                                <div key={i} className="flex flex-col">
-                                                    <span className="text-sm sm:text-base font-extrabold text-white tracking-tight">
+                                                <div
+                                                    key={i}
+                                                    className="flex flex-col"
+                                                >
+                                                    <span className="text-sm font-extrabold tracking-tight text-white sm:text-base">
                                                         {b.highlight}
                                                     </span>
-                                                    <span className="text-[11px] text-white/70 leading-tight">
+                                                    <span className="text-[11px] leading-tight text-white/70">
                                                         {b.label}
                                                     </span>
                                                 </div>
@@ -415,93 +430,127 @@ export function HeroSlideshow() {
                                     </div>
 
                                     {/* Right Column: High-Craft Showcase Card */}
-                                    <div className="lg:col-span-5 relative">
+                                    <div className="relative lg:col-span-5">
                                         <div
                                             className={cn(
-                                                'relative rounded-2xl p-6 backdrop-blur-xl border shadow-2xl space-y-4 overflow-hidden',
-                                                slide.theme.cardBg
+                                                'relative space-y-4 overflow-hidden rounded-2xl border p-6 shadow-2xl backdrop-blur-xl',
+                                                slide.theme.cardBg,
                                             )}
                                         >
                                             {/* Card Header */}
-                                            <div className="flex items-center justify-between pb-3 border-b border-white/15">
+                                            <div className="flex items-center justify-between border-b border-white/15 pb-3">
                                                 <div>
-                                                    <div className="text-xs font-bold uppercase tracking-wider text-white/90">
+                                                    <div className="text-xs font-bold tracking-wider text-white/90 uppercase">
                                                         {slide.showcase.title}
                                                     </div>
                                                     <div className="text-[11px] text-white/60">
-                                                        {slide.showcase.subtitle}
+                                                        {
+                                                            slide.showcase
+                                                                .subtitle
+                                                        }
                                                     </div>
                                                 </div>
-                                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white backdrop-blur-xs">
+                                                <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold text-white backdrop-blur-xs">
                                                     DMart Special
                                                 </span>
                                             </div>
 
                                             {/* Primary Showcase Item */}
-                                            <div className="bg-white/10 hover:bg-white/15 transition-colors p-4 rounded-xl border border-white/15 flex items-start justify-between gap-3">
+                                            <div className="flex items-start justify-between gap-3 rounded-xl border border-white/15 bg-white/10 p-4 transition-colors hover:bg-white/15">
                                                 <div className="space-y-1">
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-amber-400 text-stone-950">
-                                                            {slide.showcase.mainItem.tag}
+                                                        <span className="rounded bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-stone-950 uppercase">
+                                                            {
+                                                                slide.showcase
+                                                                    .mainItem
+                                                                    .tag
+                                                            }
                                                         </span>
                                                         <span className="text-[10px] text-white/70">
-                                                            {slide.showcase.mainItem.badge}
+                                                            {
+                                                                slide.showcase
+                                                                    .mainItem
+                                                                    .badge
+                                                            }
                                                         </span>
                                                     </div>
                                                     <div className="text-sm font-bold text-white">
-                                                        {slide.showcase.mainItem.title}
+                                                        {
+                                                            slide.showcase
+                                                                .mainItem.title
+                                                        }
                                                     </div>
                                                     <div className="text-xs text-white/70">
-                                                        {slide.showcase.mainItem.detail}
+                                                        {
+                                                            slide.showcase
+                                                                .mainItem.detail
+                                                        }
                                                     </div>
                                                 </div>
-                                                <div className="text-right shrink-0">
+                                                <div className="shrink-0 text-right">
                                                     <div className="text-lg font-black text-amber-300">
-                                                        {slide.showcase.mainItem.price}
+                                                        {
+                                                            slide.showcase
+                                                                .mainItem.price
+                                                        }
                                                     </div>
-                                                    <div className="text-[10px] text-white/50">In Stock</div>
+                                                    <div className="text-[10px] text-white/50">
+                                                        In Stock
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             {/* Secondary Showcase Item */}
-                                            <div className="bg-white/5 p-3 rounded-lg border border-white/10 flex items-center justify-between text-xs">
+                                            <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3 text-xs">
                                                 <div className="flex items-center gap-2 text-white/90">
-                                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                                                    <span className="font-medium truncate">
-                                                        {slide.showcase.secondaryItem.title}
+                                                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                                                    <span className="truncate font-medium">
+                                                        {
+                                                            slide.showcase
+                                                                .secondaryItem
+                                                                .title
+                                                        }
                                                     </span>
                                                 </div>
-                                                <div className="font-bold text-white shrink-0 ml-2">
-                                                    {slide.showcase.secondaryItem.price}
+                                                <div className="ml-2 shrink-0 font-bold text-white">
+                                                    {
+                                                        slide.showcase
+                                                            .secondaryItem.price
+                                                    }
                                                 </div>
                                             </div>
 
                                             {/* Guarantee Footer */}
-                                            <div className="pt-1 flex items-center gap-2 text-[11px] text-white/80">
-                                                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                                                <span>{slide.showcase.guarantee}</span>
+                                            <div className="flex items-center gap-2 pt-1 text-[11px] text-white/80">
+                                                <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-400" />
+                                                <span>
+                                                    {slide.showcase.guarantee}
+                                                </span>
                                             </div>
                                         </div>
 
                                         {/* Floating Badge on Corner */}
-                                        <div className="absolute -bottom-3 -right-3 hidden sm:flex items-center gap-1.5 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-[11px] font-semibold text-white shadow-xl">
-                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                            <span>Phnom Penh Express Ready</span>
+                                        <div className="absolute -right-3 -bottom-3 hidden items-center gap-1.5 rounded-full border border-white/20 bg-black/80 px-3 py-1.5 text-[11px] font-semibold text-white shadow-xl backdrop-blur-md sm:flex">
+                                            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                                            <span>
+                                                Phnom Penh Express Ready
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Slide Bottom Controls Row: Dots, Timer Bar, Play/Pause */}
-                                <div className="relative z-10 pt-6 mt-4 border-t border-white/10 flex items-center justify-between gap-4">
+                                <div className="relative z-10 mt-4 flex items-center justify-between gap-4 border-t border-white/10 pt-6">
                                     <div className="flex items-center gap-4">
                                         <CarouselDots className="[&>button]:bg-white/40 [&>button[aria-selected='true']]:bg-white" />
-                                        <span className="text-xs text-white/60 font-medium hidden sm:inline">
-                                            Slide {slideIdx + 1} of {HERO_SLIDES.length}
+                                        <span className="hidden text-xs font-medium text-white/60 sm:inline">
+                                            Slide {slideIdx + 1} of{' '}
+                                            {HERO_SLIDES.length}
                                         </span>
                                     </div>
 
                                     {/* Progress Timer & Autoplay Control */}
-                                    <div className="flex items-center gap-3 w-48 sm:w-64">
+                                    <div className="flex w-48 items-center gap-3 sm:w-64">
                                         <CarouselProgressBar className="bg-white/20 [&>div]:bg-white" />
                                         <CarouselAutoplayToggle className="text-white hover:bg-white/20 hover:text-white" />
                                     </div>

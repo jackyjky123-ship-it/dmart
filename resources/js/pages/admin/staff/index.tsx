@@ -4,7 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from '@/components/ui/dialog';
 import { StatusBadge } from '@/components/status-badge';
 import { useTranslation } from '@/hooks/use-translation';
 import {
@@ -31,7 +37,9 @@ interface StaffProps {
     staff?: StaffMember[];
 }
 
-export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps) {
+export default function AdminStaffIndex({
+    staff: initialStaff = [],
+}: StaffProps) {
     const { t } = useTranslation();
     const [staffList, setStaffList] = useState(initialStaff);
     const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -58,24 +66,42 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
         setCreateModalOpen(false);
         setName('');
         setEmail('');
-        toast.success(t('Staff member ":name" created with role :role', { name, role: role.toUpperCase() }));
+        toast.success(
+            t('Staff member ":name" created with role :role', {
+                name,
+                role: role.toUpperCase(),
+            }),
+        );
     };
 
     const toggleStatus = (user: StaffMember) => {
         if (user.id === 1) {
-            toast.error(t('You cannot deactivate your own administrative account.'));
+            toast.error(
+                t('You cannot deactivate your own administrative account.'),
+            );
             return;
         }
 
         setStaffList(
-            staffList.map((u) => (u.id === user.id ? { ...u, is_active: !u.is_active } : u))
+            staffList.map((u) =>
+                u.id === user.id ? { ...u, is_active: !u.is_active } : u,
+            ),
         );
-        toast.info(t('Account status for :name changed to :status', { name: user.name, status: !user.is_active ? t('ACTIVE') : t('INACTIVE') }));
+        toast.info(
+            t('Account status for :name changed to :status', {
+                name: user.name,
+                status: !user.is_active ? t('ACTIVE') : t('INACTIVE'),
+            }),
+        );
     };
 
     const handleResetPassword = (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success(t('Password for :name reset successfully.', { name: selectedUser?.name || '' }));
+        toast.success(
+            t('Password for :name reset successfully.', {
+                name: selectedUser?.name || '',
+            }),
+        );
         setPwdModalOpen(false);
     };
 
@@ -83,30 +109,32 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
         <div className="space-y-6">
             <Head title={t('Staff Accounts — DMart Admin')} />
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
+            <div className="flex flex-col justify-between gap-4 border-b pb-4 sm:flex-row sm:items-center">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                    <h1 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
                         {t('Staff & Team Access')}
                     </h1>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                        {t('Manage cashier accounts for the POS register and administrative store managers')}
+                    <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+                        {t(
+                            'Manage cashier accounts for the POS register and administrative store managers',
+                        )}
                     </p>
                 </div>
 
                 <Button
                     onClick={() => setCreateModalOpen(true)}
                     size="sm"
-                    className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl gap-1.5 shadow-sm text-xs"
+                    className="gap-1.5 rounded-xl bg-purple-600 text-xs text-white shadow-sm hover:bg-purple-700"
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="h-4 w-4" />
                     <span>{t('Create Staff Account')}</span>
                 </Button>
             </div>
 
             {/* Staff Table */}
-            <div className="border rounded-2xl bg-card overflow-hidden shadow-xs">
+            <div className="overflow-hidden rounded-2xl border bg-card shadow-xs">
                 <table className="w-full text-left text-xs">
-                    <thead className="bg-muted/40 border-b text-muted-foreground uppercase text-[10px] tracking-wider font-semibold">
+                    <thead className="border-b bg-muted/40 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                         <tr>
                             <th className="p-3.5">{t('Staff Member')}</th>
                             <th className="p-3.5">{t('Assigned Role')}</th>
@@ -117,35 +145,48 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
                     </thead>
                     <tbody className="divide-y">
                         {staffList.map((user) => (
-                            <tr key={user.id} className="hover:bg-muted/30 transition-colors">
+                            <tr
+                                key={user.id}
+                                className="transition-colors hover:bg-muted/30"
+                            >
                                 <td className="p-3.5">
-                                    <div className="font-semibold text-foreground">{user.name}</div>
-                                    <div className="text-[11px] font-mono text-muted-foreground">{user.email}</div>
+                                    <div className="font-semibold text-foreground">
+                                        {user.name}
+                                    </div>
+                                    <div className="font-mono text-[11px] text-muted-foreground">
+                                        {user.email}
+                                    </div>
                                 </td>
                                 <td className="p-3.5">
                                     <Badge
                                         variant="outline"
-                                        className={`text-[10px] uppercase font-bold gap-1 py-0 ${
+                                        className={`gap-1 py-0 text-[10px] font-bold uppercase ${
                                             user.role === 'admin'
-                                                ? 'bg-purple-50 text-purple-700 border-purple-300 dark:bg-purple-950 dark:text-purple-300'
-                                                : 'bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-950 dark:text-blue-300'
+                                                ? 'border-purple-300 bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300'
+                                                : 'border-blue-300 bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
                                         }`}
                                     >
                                         {user.role === 'admin' ? (
-                                            <Shield className="w-3 h-3" />
+                                            <Shield className="h-3 w-3" />
                                         ) : (
-                                            <Terminal className="w-3 h-3" />
+                                            <Terminal className="h-3 w-3" />
                                         )}
                                         <span>{t(user.role)}</span>
                                     </Badge>
                                 </td>
                                 <td className="p-3.5">
-                                    <StatusBadge status={user.is_active ? 'active' : 'inactive'} />
+                                    <StatusBadge
+                                        status={
+                                            user.is_active
+                                                ? 'active'
+                                                : 'inactive'
+                                        }
+                                    />
                                 </td>
                                 <td className="p-3.5 text-muted-foreground">
                                     {user.created_at}
                                 </td>
-                                <td className="p-3.5 text-right space-x-1">
+                                <td className="space-x-1 p-3.5 text-right">
                                     <Button
                                         type="button"
                                         variant="ghost"
@@ -157,7 +198,7 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
                                         className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
                                         title={t('Reset Password')}
                                     >
-                                        <KeyRound className="w-3.5 h-3.5 mr-1" />
+                                        <KeyRound className="mr-1 h-3.5 w-3.5" />
                                         <span>{t('Password')}</span>
                                     </Button>
 
@@ -168,11 +209,13 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
                                         onClick={() => toggleStatus(user)}
                                         className={`h-7 px-2 text-xs ${
                                             user.is_active
-                                                ? 'text-rose-600 hover:text-rose-700 hover:bg-rose-50'
-                                                : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50'
+                                                ? 'text-rose-600 hover:bg-rose-50 hover:text-rose-700'
+                                                : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700'
                                         }`}
                                     >
-                                        {user.is_active ? t('Deactivate') : t('Activate')}
+                                        {user.is_active
+                                            ? t('Deactivate')
+                                            : t('Activate')}
                                     </Button>
                                 </td>
                             </tr>
@@ -183,29 +226,33 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
 
             {/* Create Staff Modal */}
             <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
-                <DialogContent className="max-w-md p-6 space-y-4">
+                <DialogContent className="max-w-md space-y-4 p-6">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <Users className="w-5 h-5 text-purple-600" />
+                            <Users className="h-5 w-5 text-purple-600" />
                             <span>{t('Add New Staff Account')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <form onSubmit={handleCreateStaff} className="space-y-4">
                         <div className="space-y-1.5">
-                            <Label htmlFor="sName" className="text-xs">{t('Full Name')}</Label>
+                            <Label htmlFor="sName" className="text-xs">
+                                {t('Full Name')}
+                            </Label>
                             <Input
                                 id="sName"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder={t('e.g. Sreymom Cashier')}
-                                className="h-10 text-xs rounded-xl"
+                                className="h-10 rounded-xl text-xs"
                             />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sEmail" className="text-xs">{t('Email Address')}</Label>
+                            <Label htmlFor="sEmail" className="text-xs">
+                                {t('Email Address')}
+                            </Label>
                             <Input
                                 id="sEmail"
                                 type="email"
@@ -213,39 +260,56 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder={t('e.g. sreymom@dmart.test')}
-                                className="h-10 text-xs rounded-xl"
+                                className="h-10 rounded-xl text-xs"
                             />
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sRole" className="text-xs">{t('Role & Permissions')}</Label>
+                            <Label htmlFor="sRole" className="text-xs">
+                                {t('Role & Permissions')}
+                            </Label>
                             <select
                                 id="sRole"
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="w-full h-10 px-3 bg-background border rounded-xl text-xs font-medium focus:ring-1 focus:ring-purple-500"
+                                className="h-10 w-full rounded-xl border bg-background px-3 text-xs font-medium focus:ring-1 focus:ring-purple-500"
                             >
-                                <option value="cashier">{t('Cashier (POS counter only)')}</option>
-                                <option value="admin">{t('Admin (Full Back Office & Inventory Access)')}</option>
+                                <option value="cashier">
+                                    {t('Cashier (POS counter only)')}
+                                </option>
+                                <option value="admin">
+                                    {t(
+                                        'Admin (Full Back Office & Inventory Access)',
+                                    )}
+                                </option>
                             </select>
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sPwd" className="text-xs">{t('Default Password')}</Label>
+                            <Label htmlFor="sPwd" className="text-xs">
+                                {t('Default Password')}
+                            </Label>
                             <Input
                                 id="sPwd"
                                 type="text"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="h-10 text-xs rounded-xl font-mono"
+                                className="h-10 rounded-xl font-mono text-xs"
                             />
                         </div>
 
                         <DialogFooter className="pt-2">
-                            <Button type="button" variant="outline" onClick={() => setCreateModalOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setCreateModalOpen(false)}
+                            >
                                 {t('Cancel')}
                             </Button>
-                            <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white font-bold">
+                            <Button
+                                type="submit"
+                                className="bg-purple-600 font-bold text-white hover:bg-purple-700"
+                            >
                                 {t('Create Account')}
                             </Button>
                         </DialogFooter>
@@ -255,33 +319,45 @@ export default function AdminStaffIndex({ staff: initialStaff = [] }: StaffProps
 
             {/* Password Reset Modal */}
             <Dialog open={pwdModalOpen} onOpenChange={setPwdModalOpen}>
-                <DialogContent className="max-w-sm p-6 space-y-4">
+                <DialogContent className="max-w-sm space-y-4 p-6">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                            <KeyRound className="w-5 h-5 text-purple-600" />
+                            <KeyRound className="h-5 w-5 text-purple-600" />
                             <span>{t('Reset Staff Password')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <form onSubmit={handleResetPassword} className="space-y-4">
                         <div className="text-xs text-muted-foreground">
-                            {t('Reset password for :name (:email).', { name: selectedUser?.name || '', email: selectedUser?.email || '' })}
+                            {t('Reset password for :name (:email).', {
+                                name: selectedUser?.name || '',
+                                email: selectedUser?.email || '',
+                            })}
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="rPwd" className="text-xs">{t('New Temporary Password')}</Label>
+                            <Label htmlFor="rPwd" className="text-xs">
+                                {t('New Temporary Password')}
+                            </Label>
                             <Input
                                 id="rPwd"
                                 defaultValue="newpassword123"
-                                className="h-10 text-xs rounded-xl font-mono"
+                                className="h-10 rounded-xl font-mono text-xs"
                             />
                         </div>
 
                         <DialogFooter className="pt-2">
-                            <Button type="button" variant="outline" onClick={() => setPwdModalOpen(false)}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setPwdModalOpen(false)}
+                            >
                                 {t('Cancel')}
                             </Button>
-                            <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white font-bold">
+                            <Button
+                                type="submit"
+                                className="bg-purple-600 font-bold text-white hover:bg-purple-700"
+                            >
                                 {t('Save Password')}
                             </Button>
                         </DialogFooter>

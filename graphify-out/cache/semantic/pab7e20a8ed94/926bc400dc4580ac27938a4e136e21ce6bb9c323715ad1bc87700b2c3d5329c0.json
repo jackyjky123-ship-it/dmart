@@ -1,1 +1,186 @@
-{"nodes": [{"id": "phase_implementation_roadmap", "label": "Implementation Phases Roadmap", "file_type": "document", "source_file": "Phase.md", "source_location": "L1-L20", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_2_auth", "label": "Phase 2: Auth Portals & Layout Skeleton", "file_type": "concept", "source_file": "Phase.md", "source_location": "L23-L45", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_3_catalog", "label": "Phase 3: Admin Catalog Management", "file_type": "concept", "source_file": "Phase.md", "source_location": "L47-L72", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_4_storefront", "label": "Phase 4: Storefront & Cart", "file_type": "concept", "source_file": "Phase.md", "source_location": "L74-L94", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_5_checkout", "label": "Phase 5: Checkout & Mock Payment", "file_type": "concept", "source_file": "Phase.md", "source_location": "L96-L120", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_6_pos", "label": "Phase 6: POS Terminal", "file_type": "concept", "source_file": "Phase.md", "source_location": "L122-L141", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_7_admin", "label": "Phase 7: Admin Orders & Dashboard", "file_type": "concept", "source_file": "Phase.md", "source_location": "L143-L161", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_8_seeds", "label": "Phase 8: Seed Data & Demo Polish", "file_type": "concept", "source_file": "Phase.md", "source_location": "L163-L181", "source_url": null, "captured_at": null, "author": null, "contributor": null}, {"id": "phase_phase_9_tests", "label": "Phase 9: Hardening & Pest Tests", "file_type": "concept", "source_file": "Phase.md", "source_location": "L183-L206", "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [{"source": "phase_implementation_roadmap", "target": "plan_architecture", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L3", "weight": 1.0}, {"source": "phase_phase_2_auth", "target": "plan_portal_protection", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L23", "weight": 1.0}, {"source": "phase_phase_3_catalog", "target": "plan_stock_service", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L47", "weight": 1.0}, {"source": "phase_phase_4_storefront", "target": "plan_cart_service", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L74", "weight": 1.0}, {"source": "phase_phase_5_checkout", "target": "plan_payment_gateway", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L96", "weight": 1.0}, {"source": "phase_phase_6_pos", "target": "plan_stock_service", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L122", "weight": 1.0}, {"source": "phase_phase_7_admin", "target": "plan_order_lifecycle", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L143", "weight": 1.0}, {"source": "phase_phase_9_tests", "target": "plan_test_plan", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "Phase.md", "source_location": "L183", "weight": 1.0}], "hyperedges": []}
+{
+    "nodes": [
+        {
+            "id": "phase_implementation_roadmap",
+            "label": "Implementation Phases Roadmap",
+            "file_type": "document",
+            "source_file": "Phase.md",
+            "source_location": "L1-L20",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_2_auth",
+            "label": "Phase 2: Auth Portals & Layout Skeleton",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L23-L45",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_3_catalog",
+            "label": "Phase 3: Admin Catalog Management",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L47-L72",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_4_storefront",
+            "label": "Phase 4: Storefront & Cart",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L74-L94",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_5_checkout",
+            "label": "Phase 5: Checkout & Mock Payment",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L96-L120",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_6_pos",
+            "label": "Phase 6: POS Terminal",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L122-L141",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_7_admin",
+            "label": "Phase 7: Admin Orders & Dashboard",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L143-L161",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_8_seeds",
+            "label": "Phase 8: Seed Data & Demo Polish",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L163-L181",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        },
+        {
+            "id": "phase_phase_9_tests",
+            "label": "Phase 9: Hardening & Pest Tests",
+            "file_type": "concept",
+            "source_file": "Phase.md",
+            "source_location": "L183-L206",
+            "source_url": null,
+            "captured_at": null,
+            "author": null,
+            "contributor": null
+        }
+    ],
+    "edges": [
+        {
+            "source": "phase_implementation_roadmap",
+            "target": "plan_architecture",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L3",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_2_auth",
+            "target": "plan_portal_protection",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L23",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_3_catalog",
+            "target": "plan_stock_service",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L47",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_4_storefront",
+            "target": "plan_cart_service",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L74",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_5_checkout",
+            "target": "plan_payment_gateway",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L96",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_6_pos",
+            "target": "plan_stock_service",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L122",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_7_admin",
+            "target": "plan_order_lifecycle",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L143",
+            "weight": 1.0
+        },
+        {
+            "source": "phase_phase_9_tests",
+            "target": "plan_test_plan",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "Phase.md",
+            "source_location": "L183",
+            "weight": 1.0
+        }
+    ],
+    "hyperedges": []
+}

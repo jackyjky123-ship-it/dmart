@@ -21,20 +21,52 @@ export function SalesChart({ data }: SalesChartProps) {
         <div className="w-full space-y-2">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>Revenue over the last 7 days</span>
-                <span className="font-medium text-foreground">Peak: {formatMoney(maxSales)}</span>
+                <span className="font-medium text-foreground">
+                    Peak: {formatMoney(maxSales)}
+                </span>
             </div>
 
-            <div className="relative w-full h-[180px] bg-muted/10 rounded-xl p-2 border">
-                <svg className="w-full h-full overflow-visible" viewBox={`0 0 ${data.length * 50} ${height}`} preserveAspectRatio="none">
+            <div className="relative h-[180px] w-full rounded-xl border bg-muted/10 p-2">
+                <svg
+                    className="h-full w-full overflow-visible"
+                    viewBox={`0 0 ${data.length * 50} ${height}`}
+                    preserveAspectRatio="none"
+                >
                     {/* Background gridlines */}
-                    <line x1="0" y1="0" x2={data.length * 50} y2="0" stroke="currentColor" className="text-border" strokeDasharray="3 3" />
-                    <line x1="0" y1={chartHeight / 2} x2={data.length * 50} y2={chartHeight / 2} stroke="currentColor" className="text-border" strokeDasharray="3 3" />
-                    <line x1="0" y1={chartHeight} x2={data.length * 50} y2={chartHeight} stroke="currentColor" className="text-border" />
+                    <line
+                        x1="0"
+                        y1="0"
+                        x2={data.length * 50}
+                        y2="0"
+                        stroke="currentColor"
+                        className="text-border"
+                        strokeDasharray="3 3"
+                    />
+                    <line
+                        x1="0"
+                        y1={chartHeight / 2}
+                        x2={data.length * 50}
+                        y2={chartHeight / 2}
+                        stroke="currentColor"
+                        className="text-border"
+                        strokeDasharray="3 3"
+                    />
+                    <line
+                        x1="0"
+                        y1={chartHeight}
+                        x2={data.length * 50}
+                        y2={chartHeight}
+                        stroke="currentColor"
+                        className="text-border"
+                    />
 
                     {data.map((item, index) => {
                         const barWidth = 26;
                         const x = index * 50 + (50 - barWidth) / 2;
-                        const barHeight = Math.max(8, (item.sales_cents / maxSales) * (chartHeight - 16));
+                        const barHeight = Math.max(
+                            8,
+                            (item.sales_cents / maxSales) * (chartHeight - 16),
+                        );
                         const y = chartHeight - barHeight;
                         const isToday = index === data.length - 1;
 
@@ -49,8 +81,8 @@ export function SalesChart({ data }: SalesChartProps) {
                                     rx={5}
                                     className={
                                         isToday
-                                            ? 'fill-purple-600 dark:fill-purple-500 hover:fill-purple-700 transition-colors'
-                                            : 'fill-purple-200 dark:fill-purple-950/80 hover:fill-purple-300 dark:hover:fill-purple-900 transition-colors'
+                                            ? 'fill-purple-600 transition-colors hover:fill-purple-700 dark:fill-purple-500'
+                                            : 'fill-purple-200 transition-colors hover:fill-purple-300 dark:fill-purple-950/80 dark:hover:fill-purple-900'
                                     }
                                 />
 
@@ -62,7 +94,7 @@ export function SalesChart({ data }: SalesChartProps) {
                                     x={x + barWidth / 2}
                                     y={height - 8}
                                     textAnchor="middle"
-                                    className={`text-[10px] font-sans ${isToday ? 'fill-purple-600 dark:fill-purple-400 font-bold' : 'fill-muted-foreground'}`}
+                                    className={`font-sans text-[10px] ${isToday ? 'fill-purple-600 font-bold dark:fill-purple-400' : 'fill-muted-foreground'}`}
                                 >
                                     {item.day}
                                 </text>

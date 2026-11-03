@@ -1,1 +1,293 @@
-{"nodes": [{"id": "$graphify-root$_database_factories_paymentfactory_php", "label": "PaymentFactory.php", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L1"}, {"id": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "label": "PaymentFactory", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L14", "_callable": true, "_callable_class": true}, {"id": "factory", "label": "Factory", "file_type": "code", "source_file": "", "source_location": ""}, {"id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "label": ".definition()", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L21", "_callable": true}, {"id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid", "label": ".paid()", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L38", "_callable": true}, {"id": "static", "label": "static", "file_type": "code", "source_file": "", "source_location": "", "origin_file": "$graphify-root$/database/factories/PaymentFactory.php"}, {"id": "$graphify-root$_database_factories_paymentfactory_closure_1", "label": "{closure#1}()", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L40", "_callable": true}, {"id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed", "label": ".failed()", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L49", "_callable": true}, {"id": "$graphify-root$_database_factories_paymentfactory_closure_2", "label": "{closure#2}()", "file_type": "code", "source_file": "database/factories/PaymentFactory.php", "source_location": "L51", "_callable": true}], "edges": [{"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "paymentmethod", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L5", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "paymentstatus", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L6", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "order", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L7", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "payment", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L8", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "factory", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L9", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "relation": "contains", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L14", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "target": "factory", "relation": "inherits", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L14", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "relation": "method", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L21", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid", "relation": "method", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L38", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid", "target": "static", "relation": "references", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L38", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "$graphify-root$_database_factories_paymentfactory_closure_1", "relation": "contains", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L40", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory", "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed", "relation": "method", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L49", "weight": 1.0}, {"source": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed", "target": "static", "relation": "references", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L49", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_database_factories_paymentfactory_php", "target": "$graphify-root$_database_factories_paymentfactory_closure_2", "relation": "contains", "confidence": "EXTRACTED", "source_file": "database/factories/PaymentFactory.php", "source_location": "L51", "weight": 1.0}], "raw_calls": [{"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "factory", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L24", "receiver": "Order", "php_scoped": true}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "uuid", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L27", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "unique", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L27", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "fake", "is_member_call": false, "source_file": "database/factories/PaymentFactory.php", "source_location": "L27", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "numberBetween", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L28", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition", "callee": "fake", "is_member_call": false, "source_file": "database/factories/PaymentFactory.php", "source_location": "L28", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid", "callee": "state", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L40", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_closure_1", "callee": "now", "is_member_call": false, "source_file": "database/factories/PaymentFactory.php", "source_location": "L42", "receiver": null, "php_scoped": false}, {"caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed", "callee": "state", "is_member_call": true, "source_file": "database/factories/PaymentFactory.php", "source_location": "L51", "receiver": "this", "php_scoped": false}]}
+{
+    "nodes": [
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_php",
+            "label": "PaymentFactory.php",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L1"
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "label": "PaymentFactory",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L14",
+            "_callable": true,
+            "_callable_class": true
+        },
+        {
+            "id": "factory",
+            "label": "Factory",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": ""
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "label": ".definition()",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L21",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid",
+            "label": ".paid()",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L38",
+            "_callable": true
+        },
+        {
+            "id": "static",
+            "label": "static",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": "",
+            "origin_file": "$graphify-root$/database/factories/PaymentFactory.php"
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_closure_1",
+            "label": "{closure#1}()",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L40",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed",
+            "label": ".failed()",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L49",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_database_factories_paymentfactory_closure_2",
+            "label": "{closure#2}()",
+            "file_type": "code",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L51",
+            "_callable": true
+        }
+    ],
+    "edges": [
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "paymentmethod",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L5",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "paymentstatus",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L6",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "order",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L7",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "payment",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L8",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "factory",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L9",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L14",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "target": "factory",
+            "relation": "inherits",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L14",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L21",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L38",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid",
+            "target": "static",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L38",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "$graphify-root$_database_factories_paymentfactory_closure_1",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L40",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory",
+            "target": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L49",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed",
+            "target": "static",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L49",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_database_factories_paymentfactory_php",
+            "target": "$graphify-root$_database_factories_paymentfactory_closure_2",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L51",
+            "weight": 1.0
+        }
+    ],
+    "raw_calls": [
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "factory",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L24",
+            "receiver": "Order",
+            "php_scoped": true
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "uuid",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L27",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "unique",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L27",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "fake",
+            "is_member_call": false,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L27",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "numberBetween",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L28",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_definition",
+            "callee": "fake",
+            "is_member_call": false,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L28",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_paid",
+            "callee": "state",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L40",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_closure_1",
+            "callee": "now",
+            "is_member_call": false,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L42",
+            "receiver": null,
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_database_factories_paymentfactory_paymentfactory_failed",
+            "callee": "state",
+            "is_member_call": true,
+            "source_file": "database/factories/PaymentFactory.php",
+            "source_location": "L51",
+            "receiver": "this",
+            "php_scoped": false
+        }
+    ]
+}

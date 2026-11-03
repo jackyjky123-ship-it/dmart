@@ -4,6 +4,7 @@ import { CartProvider, useCart } from '@/hooks/use-cart';
 import { useTranslation } from '@/hooks/use-translation';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { toast } from 'sonner';
 import {
     ShoppingCart,
@@ -74,24 +75,28 @@ function StorefrontHeader() {
     };
 
     return (
-        <header className="sticky top-0 z-40 w-full border-b border-[#262626] bg-[#171717]/95 backdrop-blur-xl text-white shadow-md">
+        <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 text-foreground shadow-md backdrop-blur-xl">
             {/* Top Announcement Bar */}
-            <div className="bg-black text-[#a3a3a3] text-[11px] uppercase tracking-widest py-2 px-4 border-b border-white/10 font-mono">
-                <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 truncate">
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#F25623] animate-pulse" />
-                        <span className="text-white font-medium tracking-wider">
-                            {t('Limited Releases. Exclusive Drops. Demo storefront.')}
+            <div className="border-b border-white/10 bg-black px-4 py-2 font-mono text-[11px] tracking-widest text-neutral-400 uppercase">
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+                    <div className="flex min-w-0 items-center gap-2 overflow-hidden">
+                        <span className="inline-block h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#F25623]" />
+                        <span className="truncate font-medium tracking-wider text-white">
+                            {t(
+                                'Limited Releases. Exclusive Drops. Demo storefront.',
+                            )}
                         </span>
                     </div>
 
-                    <div className="hidden sm:flex items-center gap-4 text-[11px] text-[#a3a3a3]">
+                    <div className="hidden items-center gap-4 text-[11px] text-neutral-400 sm:flex">
                         <span className="flex items-center gap-1.5">
-                            <Truck className="w-3.5 h-3.5 text-[#F25623]" />
+                            <Truck className="h-3.5 w-3.5 text-[#F25623]" />
                             {t('Free shipping over $35')}
                         </span>
                         <span className="text-white/40">|</span>
-                        <span className="text-white font-semibold tracking-wider">USD $</span>
+                        <span className="font-semibold tracking-wider text-white">
+                            USD $
+                        </span>
                         <span className="text-white/40">|</span>
                         <LanguageSwitcher variant="compact" align="end" />
                     </div>
@@ -99,31 +104,31 @@ function StorefrontHeader() {
             </div>
 
             {/* Main Navbar */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+            <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                 {/* Left Navigation */}
-                <nav className="hidden md:flex items-center gap-6 text-xs uppercase tracking-widest font-semibold text-[#a3a3a3]">
+                <nav className="hidden items-center gap-6 text-xs font-semibold tracking-widest text-muted-foreground uppercase md:flex">
                     <Link
                         href="/"
-                        className={`transition-colors hover:text-white ${isCurrent('/', true) ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                        className={`transition-colors hover:text-foreground ${isCurrent('/', true) ? 'border-b-2 border-[#F25623] pb-1 text-foreground' : ''}`}
                     >
                         {t('Home')}
                     </Link>
                     <Link
                         href="/products"
-                        className={`transition-colors hover:text-white ${isCurrent('/products') ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                        className={`transition-colors hover:text-foreground ${isCurrent('/products') ? 'border-b-2 border-[#F25623] pb-1 text-foreground' : ''}`}
                     >
                         {t('Catalog')}
                     </Link>
                     <Link
                         href="/products"
-                        className="transition-colors hover:text-[#F25623] flex items-center gap-1"
+                        className="flex items-center gap-1 transition-colors hover:text-[#F25623]"
                     >
-                        <Flame className="w-3.5 h-3.5 text-[#F25623]" />
+                        <Flame className="h-3.5 w-3.5 text-[#F25623]" />
                         {t('New Drops')}
                     </Link>
                     <Link
                         href="/orders"
-                        className={`transition-colors hover:text-white ${isCurrent('/orders') ? 'text-white border-b-2 border-[#F25623] pb-1' : ''}`}
+                        className={`transition-colors hover:text-foreground ${isCurrent('/orders') ? 'border-b-2 border-[#F25623] pb-1 text-foreground' : ''}`}
                     >
                         {t('Orders')}
                     </Link>
@@ -131,12 +136,12 @@ function StorefrontHeader() {
 
                 {/* Center Brand Logo */}
                 <div className="flex items-center justify-center">
-                    <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-lg bg-[#F25623] text-white flex items-center justify-center font-black text-lg tracking-tighter group-hover:scale-105 transition-transform shadow-md shadow-[#F25623]/20">
+                    <Link href="/" className="group flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F25623] text-lg font-black tracking-tighter text-white shadow-md shadow-[#F25623]/20 transition-transform group-hover:scale-105">
                             D
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-2xl font-black tracking-widest uppercase text-white font-sans">
+                            <span className="font-sans text-2xl font-black tracking-widest text-foreground uppercase">
                                 D<span className="text-[#F25623]">MART</span>
                             </span>
                         </div>
@@ -148,68 +153,113 @@ function StorefrontHeader() {
                     {/* Search bar Desktop */}
                     <form
                         onSubmit={handleSearchSubmit}
-                        className="hidden lg:flex relative items-center"
+                        className="relative hidden items-center lg:flex"
                     >
-                        <Search className="w-3.5 h-3.5 absolute left-3 text-[#737373] pointer-events-none" />
+                        <Search className="pointer-events-none absolute left-3 h-3.5 w-3.5 text-muted-foreground" />
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t('SEARCH CATALOG...')}
-                            className="w-48 xl:w-56 h-8.5 pl-8 pr-3 rounded-full border border-[#2e2e2e] bg-[#222222] text-[11px] text-white placeholder:text-[#737373] placeholder:tracking-wider uppercase focus:outline-none focus:border-[#F25623] transition-all"
+                            className="h-8.5 w-48 rounded-full border border-border bg-muted pr-3 pl-8 text-[11px] text-foreground uppercase transition-all placeholder:tracking-wider placeholder:text-muted-foreground focus:border-[#F25623] focus:outline-none xl:w-56"
                         />
                     </form>
 
+                    <ThemeToggle className="h-8.5 w-8.5 rounded-full border border-border bg-muted text-foreground hover:bg-muted" />
+
                     {/* Portal Switcher */}
                     {canUsePos && (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="hidden sm:inline-flex items-center gap-1.5 text-xs h-8.5 rounded-full border-[#333333] bg-[#222222] text-[#d4d4d4] hover:text-white hover:bg-[#2c2c2c] hover:border-[#F25623]/60"
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="hidden h-8.5 items-center gap-1.5 rounded-full border-border bg-muted text-xs text-foreground hover:border-[#F25623]/60 hover:bg-muted hover:text-foreground sm:inline-flex"
+                                >
+                                    <Store className="h-3.5 w-3.5 text-[#F25623]" />
+                                    <span className="hidden xl:inline">
+                                        {t('Portals')}
+                                    </span>
+                                    <ChevronDown className="h-3 w-3 text-foreground/50" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                                align="end"
+                                className="w-56 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-xl"
                             >
-                                <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                <span className="hidden xl:inline">{t('Portals')}</span>
-                                <ChevronDown className="w-3 h-3 text-white/50" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 shadow-xl border border-[#333] bg-[#1a1a1a] text-white">
-                            <DropdownMenuLabel className="text-[11px] uppercase tracking-wider font-mono text-[#a3a3a3] px-2 py-1.5">
-                                {t('Switch Workspace')}
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-[#2e2e2e]" />
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
-                                <Link href="/" className="flex items-center py-2 px-2.5">
-                                    <ShoppingBag className="w-4 h-4 mr-2.5 text-[#F25623] shrink-0" />
-                                    <div>
-                                        <div className="font-semibold text-xs text-white">{t('Storefront')}</div>
-                                        <div className="text-[10px] text-[#a3a3a3]">{t('Streetwear drops & catalog')}</div>
-                                    </div>
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
-                                <Link href="/pos" className="flex items-center py-2 px-2.5">
-                                    <img src="/images/pos_icon.png" alt="" className="w-4 h-4 mr-2.5 object-contain shrink-0" />
-                                    <div>
-                                        <div className="font-semibold text-xs text-white">{t('POS Cashier Terminal')}</div>
-                                        <div className="text-[10px] text-[#a3a3a3]">{t('In-store register')}</div>
-                                    </div>
-                                </Link>
-                            </DropdownMenuItem>
-                            {canUseAdmin && (
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828] focus:bg-[#282828]">
-                                    <Link href="/admin" className="flex items-center py-2 px-2.5">
-                                        <Shield className="w-4 h-4 mr-2.5 text-purple-400 shrink-0" />
+                                <DropdownMenuLabel className="px-2 py-1.5 font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
+                                    {t('Switch Workspace')}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator className="bg-muted" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/"
+                                        className="flex items-center px-2.5 py-2"
+                                    >
+                                        <ShoppingBag className="mr-2.5 h-4 w-4 shrink-0 text-[#F25623]" />
                                         <div>
-                                            <div className="font-semibold text-xs text-white">{t('Admin Dashboard')}</div>
-                                            <div className="text-[10px] text-[#a3a3a3]">{t('Catalog & order management')}</div>
+                                            <div className="text-xs font-semibold text-foreground">
+                                                {t('Storefront')}
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground">
+                                                {t(
+                                                    'Streetwear drops & catalog',
+                                                )}
+                                            </div>
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
-                            )}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/pos"
+                                        className="flex items-center px-2.5 py-2"
+                                    >
+                                        <img
+                                            src="/images/pos_icon.png"
+                                            alt=""
+                                            className="mr-2.5 h-4 w-4 shrink-0 object-contain"
+                                        />
+                                        <div>
+                                            <div className="text-xs font-semibold text-foreground">
+                                                {t('POS Cashier Terminal')}
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground">
+                                                {t('In-store register')}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </DropdownMenuItem>
+                                {canUseAdmin && (
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                    >
+                                        <Link
+                                            href="/admin"
+                                            className="flex items-center px-2.5 py-2"
+                                        >
+                                            <Shield className="mr-2.5 h-4 w-4 shrink-0 text-purple-400" />
+                                            <div>
+                                                <div className="text-xs font-semibold text-foreground">
+                                                    {t('Admin Dashboard')}
+                                                </div>
+                                                <div className="text-[10px] text-muted-foreground">
+                                                    {t(
+                                                        'Catalog & order management',
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                )}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     )}
 
                     {/* User Profile */}
@@ -219,48 +269,86 @@ function StorefrontHeader() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-8.5 rounded-full px-2 gap-2 text-xs text-white hover:bg-[#262626]"
+                                    className="h-8.5 gap-2 rounded-full px-2 text-xs text-foreground hover:bg-muted"
                                 >
-                                    <div className="w-6 h-6 rounded-full bg-[#F25623] text-white font-bold text-[11px] flex items-center justify-center">
+                                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F25623] text-[11px] font-bold text-white">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="hidden sm:inline font-medium max-w-[90px] truncate">
+                                    <span className="hidden max-w-[90px] truncate font-medium sm:inline">
                                         {user.name}
                                     </span>
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-48 rounded-xl p-1.5 shadow-xl border border-[#333] bg-[#1a1a1a] text-white">
-                                <DropdownMenuLabel className="text-xs px-2 py-1">
-                                    <div className="font-semibold truncate text-white">{user.name}</div>
-                                    <div className="text-[10px] text-[#a3a3a3] font-normal truncate">{user.email}</div>
+                            <DropdownMenuContent
+                                align="end"
+                                className="w-48 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-xl"
+                            >
+                                <DropdownMenuLabel className="px-2 py-1 text-xs">
+                                    <div className="truncate font-semibold text-foreground">
+                                        {user.name}
+                                    </div>
+                                    <div className="truncate text-[10px] font-normal text-muted-foreground">
+                                        {user.email}
+                                    </div>
                                 </DropdownMenuLabel>
-                                <DropdownMenuSeparator className="bg-[#2e2e2e]" />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
-                                    <Link href="/orders" className="flex items-center text-xs text-[#d4d4d4]">
-                                        <ShoppingBag className="w-3.5 h-3.5 mr-2 text-[#a3a3a3]" />
+                                <DropdownMenuSeparator className="bg-muted" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted"
+                                >
+                                    <Link
+                                        href="/orders"
+                                        className="flex items-center text-xs text-foreground"
+                                    >
+                                        <ShoppingBag className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
                                         {t('My Orders')}
                                     </Link>
                                 </DropdownMenuItem>
                                 {user.role === 'admin' && (
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
-                                        <Link href="/admin" className="flex items-center text-xs text-[#F25623] font-medium">
-                                            <Shield className="w-3.5 h-3.5 mr-2" />
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted"
+                                    >
+                                        <Link
+                                            href="/admin"
+                                            className="flex items-center text-xs font-medium text-[#F25623]"
+                                        >
+                                            <Shield className="mr-2 h-3.5 w-3.5" />
                                             {t('Admin Portal')}
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
-                                {(user.role === 'cashier' || user.role === 'admin') && (
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#282828]">
-                                        <Link href="/pos" className="flex items-center text-xs text-white font-medium">
-                                            <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 mr-2 object-contain" />
+                                {(user.role === 'cashier' ||
+                                    user.role === 'admin') && (
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted"
+                                    >
+                                        <Link
+                                            href="/pos"
+                                            className="flex items-center text-xs font-medium text-foreground"
+                                        >
+                                            <img
+                                                src="/images/pos_icon.png"
+                                                alt=""
+                                                className="mr-2 h-3.5 w-3.5 object-contain"
+                                            />
                                             {t('POS Terminal')}
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
-                                <DropdownMenuSeparator className="bg-[#2e2e2e]" />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-destructive focus:text-destructive hover:bg-rose-950/30">
-                                    <Link href="/logout" method="post" as="button" className="w-full flex items-center text-xs">
-                                        <LogOut className="w-3.5 h-3.5 mr-2" />
+                                <DropdownMenuSeparator className="bg-muted" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg text-destructive hover:bg-rose-950/30 focus:text-destructive"
+                                >
+                                    <Link
+                                        href="/logout"
+                                        method="post"
+                                        as="button"
+                                        className="flex w-full items-center text-xs"
+                                    >
+                                        <LogOut className="mr-2 h-3.5 w-3.5" />
                                         {t('Log Out')}
                                     </Link>
                                 </DropdownMenuItem>
@@ -271,10 +359,10 @@ function StorefrontHeader() {
                             asChild
                             variant="ghost"
                             size="sm"
-                            className="hidden sm:inline-flex text-xs h-8.5 rounded-full font-medium text-[#d4d4d4] hover:text-white hover:bg-[#262626]"
+                            className="hidden h-8.5 rounded-full text-xs font-medium text-foreground hover:bg-muted hover:text-foreground sm:inline-flex"
                         >
                             <Link href="/login">
-                                <UserIcon className="w-3.5 h-3.5 mr-1.5 text-[#a3a3a3]" />
+                                <UserIcon className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                                 {t('Account')}
                             </Link>
                         </Button>
@@ -285,12 +373,14 @@ function StorefrontHeader() {
                         asChild
                         variant="orange"
                         size="sm"
-                        className="h-8.5 px-3.5 rounded-full gap-2 font-semibold shadow-md shadow-[#F25623]/25"
+                        className="h-8.5 gap-2 rounded-full px-3.5 font-semibold shadow-md shadow-[#F25623]/25"
                     >
                         <Link href="/cart" className="flex items-center">
-                            <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-                            <span className="hidden sm:inline text-xs font-semibold">{t('BAG')}</span>
-                            <span className="ml-1 inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 rounded-full bg-white text-[#171717] text-[10px] font-black">
+                            <ShoppingCart className="h-3.5 w-3.5 shrink-0" />
+                            <span className="hidden text-xs font-semibold sm:inline">
+                                {t('BAG')}
+                            </span>
+                            <span className="ml-1 inline-flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-black text-[#171717]">
                                 {itemCount}
                             </span>
                         </Link>
@@ -300,56 +390,62 @@ function StorefrontHeader() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="md:hidden h-8.5 w-8.5 rounded-full text-white hover:bg-[#262626]"
+                        className="h-8.5 w-8.5 rounded-full text-foreground hover:bg-muted md:hidden"
                         onClick={() => setMobileOpen(!mobileOpen)}
                         aria-label="Toggle mobile menu"
                     >
-                        {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                        {mobileOpen ? (
+                            <X className="h-5 w-5" />
+                        ) : (
+                            <Menu className="h-5 w-5" />
+                        )}
                     </Button>
                 </div>
             </div>
 
             {/* Mobile Drawer */}
             {mobileOpen && (
-                <div className="md:hidden border-b border-[#2d2d2d] bg-[#171717] px-4 py-4 space-y-4 shadow-2xl">
+                <div className="space-y-4 border-b border-border bg-background px-4 py-4 shadow-2xl md:hidden">
                     <form onSubmit={handleSearchSubmit} className="relative">
-                        <Search className="w-4 h-4 absolute left-3 top-3 text-[#737373] pointer-events-none" />
+                        <Search className="pointer-events-none absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder={t('Search drops & apparel...')}
-                            className="w-full h-10 pl-9 pr-3 rounded-full border border-[#2d2d2d] bg-[#222] text-xs text-white focus:ring-1 focus:ring-[#F25623] focus:outline-none"
+                            className="h-10 w-full rounded-full border border-border bg-muted pr-3 pl-9 text-xs text-foreground focus:ring-1 focus:ring-[#F25623] focus:outline-none"
                         />
                     </form>
 
-                    <nav className="flex flex-col space-y-1 uppercase text-xs tracking-wider font-semibold text-[#a3a3a3]">
+                    <nav className="flex flex-col space-y-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                         <Link
                             href="/"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
+                            className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-foreground hover:bg-muted"
                         >
                             <span>{t('Home')}</span>
                         </Link>
                         <Link
                             href="/products"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
+                            className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-foreground hover:bg-muted"
                         >
                             <span>{t('Catalog')}</span>
                         </Link>
                         <Link
                             href="/cart"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white flex items-center justify-between"
+                            className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-foreground hover:bg-muted"
                         >
                             <span>{t('Shopping Bag')}</span>
-                            <Badge className="bg-[#F25623] text-white text-xs">{itemCount}</Badge>
+                            <Badge className="bg-[#F25623] text-xs text-white">
+                                {itemCount}
+                            </Badge>
                         </Link>
                         <Link
                             href="/orders"
                             onClick={() => setMobileOpen(false)}
-                            className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-white"
+                            className="rounded-xl px-3.5 py-2.5 text-foreground hover:bg-muted"
                         >
                             <span>{t('Orders')}</span>
                         </Link>
@@ -357,7 +453,7 @@ function StorefrontHeader() {
                             <Link
                                 href="/pos"
                                 onClick={() => setMobileOpen(false)}
-                                className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-blue-400"
+                                className="rounded-xl px-3.5 py-2.5 text-blue-400 hover:bg-muted"
                             >
                                 <span>{t('POS Terminal')}</span>
                             </Link>
@@ -366,7 +462,7 @@ function StorefrontHeader() {
                             <Link
                                 href="/admin"
                                 onClick={() => setMobileOpen(false)}
-                                className="px-3.5 py-2.5 rounded-xl hover:bg-[#222] text-purple-400"
+                                className="rounded-xl px-3.5 py-2.5 text-purple-400 hover:bg-muted"
                             >
                                 <span>{t('Admin Portal')}</span>
                             </Link>
@@ -374,8 +470,14 @@ function StorefrontHeader() {
                     </nav>
 
                     {/* Language Selection in Mobile Drawer */}
-                    <div className="pt-3 border-t border-[#2d2d2d] flex items-center justify-between px-2">
-                        <span className="text-xs uppercase tracking-wider text-neutral-400 font-mono">
+                    <div className="flex items-center justify-between border-t border-border px-2 pt-3">
+                        <span className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
+                            {t('Toggle appearance')}
+                        </span>
+                        <ThemeToggle className="h-8.5 w-8.5 rounded-lg border border-border bg-muted text-foreground hover:bg-muted" />
+                    </div>
+                    <div className="flex items-center justify-between border-t border-border px-2 pt-3">
+                        <span className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
                             {t('Language')} / ភាសា
                         </span>
                         <LanguageSwitcher variant="toggle" />
@@ -394,146 +496,230 @@ function StorefrontFooter() {
     const canUseAdmin = user?.role === 'admin';
 
     return (
-        <footer className="border-t border-[#262626] bg-[#111111] text-[#a3a3a3] transition-colors">
+        <footer className="border-t border-border bg-sidebar text-muted-foreground transition-colors">
             {/* Value Propositions Strip */}
-            <div className="border-b border-[#222222] py-8">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="border-b border-border py-8">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 sm:px-6 md:grid-cols-4 lg:px-8">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
-                            <Truck className="w-5 h-5" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#F25623]">
+                            <Truck className="h-5 w-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-white uppercase tracking-wider">{t('Free Shipping')}</div>
-                            <div className="text-[11px] text-[#737373]">{t('On all orders over $35')}</div>
+                            <div className="text-xs font-bold tracking-wider text-foreground uppercase">
+                                {t('Free Shipping')}
+                            </div>
+                            <div className="text-[11px] text-muted-foreground">
+                                {t('On all orders over $35')}
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
-                            <RotateCcw className="w-5 h-5" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#F25623]">
+                            <RotateCcw className="h-5 w-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-white uppercase tracking-wider">{t('Easy 30-Day Returns')}</div>
-                            <div className="text-[11px] text-[#737373]">{t('Hassle-free exchanges')}</div>
+                            <div className="text-xs font-bold tracking-wider text-foreground uppercase">
+                                {t('Easy 30-Day Returns')}
+                            </div>
+                            <div className="text-[11px] text-muted-foreground">
+                                {t('Hassle-free exchanges')}
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
-                            <ShieldCheck className="w-5 h-5" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#F25623]">
+                            <ShieldCheck className="h-5 w-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-white uppercase tracking-wider">{t('100% Authentic Drop')}</div>
-                            <div className="text-[11px] text-[#737373]">{t('Verified original streetwear')}</div>
+                            <div className="text-xs font-bold tracking-wider text-foreground uppercase">
+                                {t('100% Authentic Drop')}
+                            </div>
+                            <div className="text-[11px] text-muted-foreground">
+                                {t('Verified original streetwear')}
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-[#2d2d2d] text-[#F25623] flex items-center justify-center shrink-0">
-                            <Sparkles className="w-5 h-5" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[#F25623]">
+                            <Sparkles className="h-5 w-5" />
                         </div>
                         <div>
-                            <div className="text-xs font-bold text-white uppercase tracking-wider">{t('Limited Releases')}</div>
-                            <div className="text-[11px] text-[#737373]">{t('Exclusive capsule drops')}</div>
+                            <div className="text-xs font-bold tracking-wider text-foreground uppercase">
+                                {t('Limited Releases')}
+                            </div>
+                            <div className="text-[11px] text-muted-foreground">
+                                {t('Exclusive capsule drops')}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Main Footer Links */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
                     <div className="space-y-4 md:col-span-1">
                         <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-md bg-[#F25623] text-white flex items-center justify-center font-black text-sm">
+                            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#F25623] text-sm font-black text-white">
                                 D
                             </div>
-                            <span className="text-xl font-black tracking-widest uppercase text-white font-sans">
+                            <span className="font-sans text-xl font-black tracking-widest text-foreground uppercase">
                                 D<span className="text-[#F25623]">MART</span>
                             </span>
                         </div>
-                        <p className="text-xs text-[#737373] leading-relaxed">
-                            Luxury staples for the modern disruptor. Precision-tailored pieces that break convention and redefine presence. This isn't just fashion—it's a statement.
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                            Luxury staples for the modern disruptor.
+                            Precision-tailored pieces that break convention and
+                            redefine presence. This isn't just fashion—it's a
+                            statement.
                         </p>
                         <div className="pt-2">
-                            <span className="text-[11px] font-mono tracking-widest text-[#F25623] uppercase">
+                            <span className="font-mono text-[11px] tracking-widest text-[#F25623] uppercase">
                                 #DESIGNED-TO-DISRUPT
                             </span>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4 font-mono">
+                        <h4 className="mb-4 font-mono text-xs font-bold tracking-widest text-foreground uppercase">
                             {t('Capsule Drops')}
                         </h4>
-                        <ul className="space-y-2.5 text-xs text-[#a3a3a3]">
-                            <li><Link href="/products?category=hoodies" className="hover:text-[#F25623] transition-colors">{t('Essential Oversized Hoodies')}</Link></li>
-                            <li><Link href="/products?category=tees" className="hover:text-[#F25623] transition-colors">{t('Acid-Wash Graphic Tees')}</Link></li>
-                            <li><Link href="/products?category=outerwear" className="hover:text-[#F25623] transition-colors">{t('Technical Outerwear & Bomber')}</Link></li>
-                            <li><Link href="/products?category=bottoms" className="hover:text-[#F25623] transition-colors">{t('Distressed Denim & Cargo')}</Link></li>
-                            <li><Link href="/products?category=accessories" className="hover:text-[#F25623] transition-colors">{t('Caps, Bags & Accessories')}</Link></li>
+                        <ul className="space-y-2.5 text-xs text-muted-foreground">
+                            <li>
+                                <Link
+                                    href="/products?category=hoodies"
+                                    className="transition-colors hover:text-[#F25623]"
+                                >
+                                    {t('Essential Oversized Hoodies')}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/products?category=tees"
+                                    className="transition-colors hover:text-[#F25623]"
+                                >
+                                    {t('Acid-Wash Graphic Tees')}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/products?category=outerwear"
+                                    className="transition-colors hover:text-[#F25623]"
+                                >
+                                    {t('Technical Outerwear & Bomber')}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/products?category=bottoms"
+                                    className="transition-colors hover:text-[#F25623]"
+                                >
+                                    {t('Distressed Denim & Cargo')}
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/products?category=accessories"
+                                    className="transition-colors hover:text-[#F25623]"
+                                >
+                                    {t('Caps, Bags & Accessories')}
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-4 font-mono">
+                        <h4 className="mb-4 font-mono text-xs font-bold tracking-widest text-foreground uppercase">
                             {t('Workspaces')}
                         </h4>
-                        <ul className="space-y-2.5 text-xs text-[#a3a3a3]">
+                        <ul className="space-y-2.5 text-xs text-muted-foreground">
                             <li>
-                                <Link href="/" className="hover:text-[#F25623] font-medium transition-colors flex items-center gap-2">
-                                    <ShoppingBag className="w-3.5 h-3.5 text-[#F25623]" /> {t('Storefront Showcase')}
+                                <Link
+                                    href="/"
+                                    className="flex items-center gap-2 font-medium transition-colors hover:text-[#F25623]"
+                                >
+                                    <ShoppingBag className="h-3.5 w-3.5 text-[#F25623]" />{' '}
+                                    {t('Storefront Showcase')}
                                 </Link>
                             </li>
                             {canUsePos && (
                                 <li>
-                                    <Link href="/pos" className="hover:text-blue-400 font-medium transition-colors flex items-center gap-2">
-                                        <Terminal className="w-3.5 h-3.5 text-blue-400" /> {t('POS Cashier Register')}
+                                    <Link
+                                        href="/pos"
+                                        className="flex items-center gap-2 font-medium transition-colors hover:text-blue-400"
+                                    >
+                                        <Terminal className="h-3.5 w-3.5 text-blue-400" />{' '}
+                                        {t('POS Cashier Register')}
                                     </Link>
                                 </li>
                             )}
                             {canUseAdmin && (
                                 <li>
-                                    <Link href="/admin" className="hover:text-purple-400 font-medium transition-colors flex items-center gap-2">
-                                        <Shield className="w-3.5 h-3.5 text-purple-400" /> {t('Admin Analytics Portal')}
+                                    <Link
+                                        href="/admin"
+                                        className="flex items-center gap-2 font-medium transition-colors hover:text-purple-400"
+                                    >
+                                        <Shield className="h-3.5 w-3.5 text-purple-400" />{' '}
+                                        {t('Admin Analytics Portal')}
                                     </Link>
                                 </li>
                             )}
                             <li>
-                                <Link href="/cart" className="hover:text-white transition-colors flex items-center gap-2">
-                                    <ShoppingCart className="w-3.5 h-3.5 text-[#a3a3a3]" /> {t('Checkout & Payment')}
+                                <Link
+                                    href="/cart"
+                                    className="flex items-center gap-2 transition-colors hover:text-foreground"
+                                >
+                                    <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground" />{' '}
+                                    {t('Checkout & Payment')}
                                 </Link>
                             </li>
                         </ul>
                     </div>
 
                     <div className="space-y-4">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white font-mono">
+                        <h4 className="font-mono text-xs font-bold tracking-widest text-foreground uppercase">
                             {t('Join The Drop Club')}
                         </h4>
-                        <p className="text-xs text-[#737373]">
+                        <p className="text-xs text-muted-foreground">
                             {t('Follow the catalog for new seeded drops.')}
                         </p>
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                toast.info(t('Newsletter signup is not available in this demo.'));
+                                toast.info(
+                                    t(
+                                        'Newsletter signup is not available in this demo.',
+                                    ),
+                                );
                             }}
                             className="flex items-center gap-2"
                         >
                             <input
                                 type="email"
                                 placeholder={t('ENTER YOUR EMAIL...')}
-                                className="w-full h-9 px-3 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] text-xs text-white placeholder:text-[#666] placeholder:text-[10px] focus:outline-none focus:border-[#F25623]"
+                                className="h-9 w-full rounded-lg border border-border bg-card px-3 text-xs text-foreground placeholder:text-[10px] placeholder:text-muted-foreground focus:border-[#F25623] focus:outline-none"
                             />
-                            <Button type="submit" variant="orange" size="sm" className="h-9 px-3 shrink-0 rounded-lg">
-                                <ArrowRight className="w-3.5 h-3.5" />
+                            <Button
+                                type="submit"
+                                variant="orange"
+                                size="sm"
+                                className="h-9 shrink-0 rounded-lg px-3"
+                            >
+                                <ArrowRight className="h-3.5 w-3.5" />
                             </Button>
                         </form>
                     </div>
                 </div>
 
-                <div className="mt-12 pt-8 border-t border-[#222222] flex flex-col sm:flex-row items-center justify-between text-xs text-[#737373] gap-4">
-                    <p>&copy; {new Date().getFullYear()} DMART STUDIO. ALL RIGHTS RESERVED.</p>
-                    <div className="flex items-center gap-4 text-[11px] font-mono">
-                        <span className="text-[#F25623]">{t('STYLE • VIBE • REFLECT')}</span>
+                <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-xs text-muted-foreground sm:flex-row">
+                    <p>
+                        &copy; {new Date().getFullYear()} DMART STUDIO. ALL
+                        RIGHTS RESERVED.
+                    </p>
+                    <div className="flex items-center gap-4 font-mono text-[11px]">
+                        <span className="text-[#F25623]">
+                            {t('STYLE • VIBE • REFLECT')}
+                        </span>
                         <span>|</span>
                         <span>{t('GLOBAL SHIPPING')}</span>
                     </div>
@@ -543,12 +729,16 @@ function StorefrontFooter() {
     );
 }
 
-export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
+export default function StorefrontLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
         <CartProvider>
-            <div className="dark min-h-screen flex flex-col bg-[#171717] text-white selection:bg-[#F25623] selection:text-white">
+            <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-[#F25623] selection:text-white">
                 <StorefrontHeader />
-                <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
                     {children}
                 </main>
                 <StorefrontFooter />

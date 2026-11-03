@@ -16,17 +16,32 @@ const SIZE_STYLES = {
     xl: { current: 'text-3xl font-extrabold', compare: 'text-base' },
 };
 
-export function Price({ cents, compareAtCents, size = 'md', className }: PriceProps) {
+export function Price({
+    cents,
+    compareAtCents,
+    size = 'md',
+    className,
+}: PriceProps) {
     const hasDiscount = compareAtCents && compareAtCents > cents;
     const styles = SIZE_STYLES[size];
 
     return (
-        <div className={cn('flex items-baseline gap-1.5 flex-wrap', className)}>
-            <span className={cn('text-emerald-700 dark:text-emerald-400', styles.current)}>
+        <div className={cn('flex flex-wrap items-baseline gap-1.5', className)}>
+            <span
+                className={cn(
+                    'text-emerald-700 dark:text-emerald-400',
+                    styles.current,
+                )}
+            >
                 {formatMoney(cents)}
             </span>
             {hasDiscount && (
-                <span className={cn('text-muted-foreground line-through decoration-muted-foreground/60', styles.compare)}>
+                <span
+                    className={cn(
+                        'text-muted-foreground line-through decoration-muted-foreground/60',
+                        styles.compare,
+                    )}
+                >
                     {formatMoney(compareAtCents)}
                 </span>
             )}

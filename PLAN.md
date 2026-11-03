@@ -9,11 +9,11 @@
 
 DMart is a local-only grocery/mini-mart demo with three portals:
 
-| Portal | Who | What they do |
-|---|---|---|
-| Storefront | `customer` (and guests browsing) | Browse products, cart, checkout, mock KHQR payment, order history |
-| POS | `cashier` | Search products, build a sale, take cash or mock QR, print an 80mm receipt |
-| Back office | `admin` | Products, categories, staff, stock, orders, shipping status, dashboard, settings |
+| Portal      | Who                              | What they do                                                                     |
+| ----------- | -------------------------------- | -------------------------------------------------------------------------------- |
+| Storefront  | `customer` (and guests browsing) | Browse products, cart, checkout, mock KHQR payment, order history                |
+| POS         | `cashier`                        | Search products, build a sale, take cash or mock QR, print an 80mm receipt       |
+| Back office | `admin`                          | Products, categories, staff, stock, orders, shipping status, dashboard, settings |
 
 It is a portfolio/student project. There is **no deployment**, **no real payment**, and **no real email**.
 
@@ -37,30 +37,30 @@ It is a portfolio/student project. There is **no deployment**, **no real payment
 
 ## 2. Decisions locked in the interview
 
-| Topic | Decision |
-|---|---|
-| Store domain | Grocery / mini-mart, name **DMart** |
-| Roles | One role per user: `customer`, `cashier`, `admin` |
-| Staff accounts | Admin creates cashier/admin accounts; customers self-register |
-| Login | Separate `/login`, `/admin/login`, `/pos/login` pages, **one auth guard** with role checks |
-| Guest access | Browse freely; login required at checkout |
-| Orders | One `orders` table, `channel = online \| pos` |
-| POS payments | Cash (tendered + change) and mock KHQR |
-| Receipt | 80mm browser-print layout via `window.print()` |
-| Inventory | Shared pool; decrement on payment success / POS completion, transactional |
-| Fulfillment | Admin only; cashier sees only their own POS sales |
-| Shipping | Flat fee + free-shipping threshold; manual tracking number/carrier text; no carrier API |
-| Cart | Session cart for guests, DB cart for authenticated users, merged on login |
-| Product images | Up to 5 per product, local disk, no resizing, compare-at price supported |
-| Image fallback | Colored tile with the product's first letter |
-| Admin dashboard | 4 KPI cards, 7-day revenue SVG chart, recent orders, top products |
-| Deletion | Soft-delete products; snapshot order line items and addresses |
-| Stock | `stock_movements` ledger + current balance on products |
-| Storefront | Home, product list (search/filter/sort/pagination), detail, cart, checkout, orders |
-| Address | Typed fresh at every checkout and snapshotted onto the order |
-| Design | Warm grocery palette (amber/emerald), dark mode, storefront mobile-first |
-| Quality bar | ~15–25 Pest feature tests covering the risky paths |
-| Hosting | None. Runs locally via `php artisan serve` + `npm run dev` |
+| Topic           | Decision                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| Store domain    | Grocery / mini-mart, name **DMart**                                                        |
+| Roles           | One role per user: `customer`, `cashier`, `admin`                                          |
+| Staff accounts  | Admin creates cashier/admin accounts; customers self-register                              |
+| Login           | Separate `/login`, `/admin/login`, `/pos/login` pages, **one auth guard** with role checks |
+| Guest access    | Browse freely; login required at checkout                                                  |
+| Orders          | One `orders` table, `channel = online \| pos`                                              |
+| POS payments    | Cash (tendered + change) and mock KHQR                                                     |
+| Receipt         | 80mm browser-print layout via `window.print()`                                             |
+| Inventory       | Shared pool; decrement on payment success / POS completion, transactional                  |
+| Fulfillment     | Admin only; cashier sees only their own POS sales                                          |
+| Shipping        | Flat fee + free-shipping threshold; manual tracking number/carrier text; no carrier API    |
+| Cart            | Session cart for guests, DB cart for authenticated users, merged on login                  |
+| Product images  | Up to 5 per product, local disk, no resizing, compare-at price supported                   |
+| Image fallback  | Colored tile with the product's first letter                                               |
+| Admin dashboard | 4 KPI cards, 7-day revenue SVG chart, recent orders, top products                          |
+| Deletion        | Soft-delete products; snapshot order line items and addresses                              |
+| Stock           | `stock_movements` ledger + current balance on products                                     |
+| Storefront      | Home, product list (search/filter/sort/pagination), detail, cart, checkout, orders         |
+| Address         | Typed fresh at every checkout and snapshotted onto the order                               |
+| Design          | Warm grocery palette (amber/emerald), dark mode, storefront mobile-first                   |
+| Quality bar     | ~15–25 Pest feature tests covering the risky paths                                         |
+| Hosting         | None. Runs locally via `php artisan serve` + `npm run dev`                                 |
 
 ---
 
@@ -105,14 +105,14 @@ React page (Inertia) → Wayfinder route function → Laravel route
 
 ### Portal protection
 
-| Middleware | Applied to |
-|---|---|
-| `auth` | Checkout, payment, orders, all portals |
-| `role:customer` | Customer-only account pages (optional; ownership policies are the real gate) |
-| `role:cashier` | `/pos/*` |
-| `role:admin` | `/admin/*` |
-| `active` | All authenticated routes; inactive users are logged out with an error |
-| `throttle:checkout`, `throttle:payment` | Checkout and payment endpoints |
+| Middleware                              | Applied to                                                                   |
+| --------------------------------------- | ---------------------------------------------------------------------------- |
+| `auth`                                  | Checkout, payment, orders, all portals                                       |
+| `role:customer`                         | Customer-only account pages (optional; ownership policies are the real gate) |
+| `role:cashier`                          | `/pos/*`                                                                     |
+| `role:admin`                            | `/admin/*`                                                                   |
+| `active`                                | All authenticated routes; inactive users are logged out with an error        |
+| `throttle:checkout`, `throttle:payment` | Checkout and payment endpoints                                               |
 
 Login enforcement: `/admin/login` and `/pos/login` render the same auth page with a `portal` prop. The form posts to Fortify's `/login` with a hidden `portal` field. `Fortify::authenticateUsing()` rejects a user whose role doesn't match the portal, and inactive users are rejected too. A custom `LoginResponse` redirects admins to `/admin`, cashiers to `/pos`, customers to `/` (or the intended URL).
 
@@ -175,14 +175,14 @@ pos:     completed (created paid, paid_at set)
 
 ### Enums (`app/Enums`)
 
-| Enum | Cases |
-|---|---|
-| `UserRole` | `Customer`, `Cashier`, `Admin` |
-| `OrderChannel` | `Online`, `Pos` |
-| `OrderStatus` | `PendingPayment`, `Paid`, `Processing`, `Shipped`, `Delivered`, `Completed`, `Cancelled` |
-| `PaymentMethod` | `Cash`, `Khqr` |
-| `PaymentStatus` | `Pending`, `Paid`, `Failed`, `Cancelled` |
-| `StockMovementType` | `Sale`, `Restock`, `Adjustment`, `Return` |
+| Enum                | Cases                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| `UserRole`          | `Customer`, `Cashier`, `Admin`                                                           |
+| `OrderChannel`      | `Online`, `Pos`                                                                          |
+| `OrderStatus`       | `PendingPayment`, `Paid`, `Processing`, `Shipped`, `Delivered`, `Completed`, `Cancelled` |
+| `PaymentMethod`     | `Cash`, `Khqr`                                                                           |
+| `PaymentStatus`     | `Pending`, `Paid`, `Failed`, `Cancelled`                                                 |
+| `StockMovementType` | `Sale`, `Restock`, `Adjustment`, `Return`                                                |
 
 Follow the project rule: TitleCase enum keys. Cast enums on models.
 
@@ -296,75 +296,75 @@ Follow the project rule: TitleCase enum keys. Cast enums on models.
 
 ### Public / guest
 
-| Method | URI | Name | Handler |
-|---|---|---|---|
-| GET | `/` | `home` | `Storefront\HomeController@index` |
-| GET | `/products` | `products.index` | `Storefront\ProductController@index` |
-| GET | `/products/{product:slug}` | `products.show` | `Storefront\ProductController@show` |
-| GET | `/cart` | `cart.index` | `Storefront\CartController@index` |
-| POST | `/cart/items` | `cart.items.store` | `Storefront\CartController@store` |
-| PATCH | `/cart/items/{product}` | `cart.items.update` | `Storefront\CartController@update` |
-| DELETE | `/cart/items/{product}` | `cart.items.destroy` | `Storefront\CartController@destroy` |
+| Method | URI                        | Name                 | Handler                              |
+| ------ | -------------------------- | -------------------- | ------------------------------------ |
+| GET    | `/`                        | `home`               | `Storefront\HomeController@index`    |
+| GET    | `/products`                | `products.index`     | `Storefront\ProductController@index` |
+| GET    | `/products/{product:slug}` | `products.show`      | `Storefront\ProductController@show`  |
+| GET    | `/cart`                    | `cart.index`         | `Storefront\CartController@index`    |
+| POST   | `/cart/items`              | `cart.items.store`   | `Storefront\CartController@store`    |
+| PATCH  | `/cart/items/{product}`    | `cart.items.update`  | `Storefront\CartController@update`   |
+| DELETE | `/cart/items/{product}`    | `cart.items.destroy` | `Storefront\CartController@destroy`  |
 
 Cart routes use the session cart for guests and the DB cart for authenticated users.
 
 ### Auth
 
-| Method | URI | Notes |
-|---|---|---|
-| GET | `/login`, `/register` | Fortify views (customer portal) |
-| GET | `/admin/login` | Same page, `portal=admin` |
-| GET | `/pos/login` | Same page, `portal=cashier` |
-| POST | `/login` | Fortify; hidden `portal` field enforced by `authenticateUsing` |
-| POST | `/logout` | Fortify |
+| Method | URI                   | Notes                                                          |
+| ------ | --------------------- | -------------------------------------------------------------- |
+| GET    | `/login`, `/register` | Fortify views (customer portal)                                |
+| GET    | `/admin/login`        | Same page, `portal=admin`                                      |
+| GET    | `/pos/login`          | Same page, `portal=cashier`                                    |
+| POST   | `/login`              | Fortify; hidden `portal` field enforced by `authenticateUsing` |
+| POST   | `/logout`             | Fortify                                                        |
 
 Already-authenticated users who hit the wrong portal login are redirected to their own portal.
 
 ### Customer (auth, active)
 
-| Method | URI | Name |
-|---|---|---|
-| GET | `/checkout` | `checkout.index` |
-| POST | `/checkout` | `checkout.store` (`throttle:checkout`) |
-| GET | `/payment/{order}` | `payment.show` (owner only) |
-| POST | `/payment/{order}/simulate` | `payment.simulate` (`throttle:payment`) |
-| GET | `/orders` | `orders.index` |
-| GET | `/orders/{order}` | `orders.show` (owner only) |
-| POST | `/orders/{order}/cancel` | `orders.cancel` (owner, pending only) |
+| Method | URI                         | Name                                    |
+| ------ | --------------------------- | --------------------------------------- |
+| GET    | `/checkout`                 | `checkout.index`                        |
+| POST   | `/checkout`                 | `checkout.store` (`throttle:checkout`)  |
+| GET    | `/payment/{order}`          | `payment.show` (owner only)             |
+| POST   | `/payment/{order}/simulate` | `payment.simulate` (`throttle:payment`) |
+| GET    | `/orders`                   | `orders.index`                          |
+| GET    | `/orders/{order}`           | `orders.show` (owner only)              |
+| POST   | `/orders/{order}/cancel`    | `orders.cancel` (owner, pending only)   |
 
 ### Cashier (auth, active, `role:cashier`)
 
-| Method | URI | Name |
-|---|---|---|
-| GET | `/pos` | `pos.index` |
-| GET | `/pos/products` | `pos.products.search` (JSON, `?q=`; max 20) |
-| POST | `/pos/sales` | `pos.sales.store` |
-| GET | `/pos/sales` | `pos.sales.index` (own sales) |
-| GET | `/pos/sales/{order}/receipt` | `pos.sales.receipt` (own sale or admin) |
+| Method | URI                          | Name                                        |
+| ------ | ---------------------------- | ------------------------------------------- |
+| GET    | `/pos`                       | `pos.index`                                 |
+| GET    | `/pos/products`              | `pos.products.search` (JSON, `?q=`; max 20) |
+| POST   | `/pos/sales`                 | `pos.sales.store`                           |
+| GET    | `/pos/sales`                 | `pos.sales.index` (own sales)               |
+| GET    | `/pos/sales/{order}/receipt` | `pos.sales.receipt` (own sale or admin)     |
 
 ### Admin (auth, active, `role:admin`, prefix `/admin`)
 
-| Method | URI | Name |
-|---|---|---|
-| GET | `/admin` | `admin.dashboard` |
-| Resource | `/admin/categories` | `admin.categories.*` (except show) |
-| Resource | `/admin/products` | `admin.products.*` (except show) |
-| POST | `/admin/products/{product}/images` | `admin.products.images.store` |
-| DELETE | `/admin/products/{product}/images/{image}` | `admin.products.images.destroy` |
-| PATCH | `/admin/products/{product}/images/{image}/primary` | `admin.products.images.primary` |
-| GET | `/admin/orders` | `admin.orders.index` |
-| GET | `/admin/orders/{order}` | `admin.orders.show` |
-| PATCH | `/admin/orders/{order}/status` | `admin.orders.status` |
-| POST | `/admin/orders/{order}/cancel` | `admin.orders.cancel` |
-| GET | `/admin/stock` | `admin.stock.index` |
-| POST | `/admin/products/{product}/stock` | `admin.stock.store` |
-| GET | `/admin/staff` | `admin.staff.index` |
-| POST | `/admin/staff` | `admin.staff.store` |
-| PATCH | `/admin/staff/{user}` | `admin.staff.update` |
-| PATCH | `/admin/staff/{user}/status` | `admin.staff.status` |
-| PATCH | `/admin/staff/{user}/password` | `admin.staff.password` |
-| GET | `/admin/settings` | `admin.settings.edit` |
-| PATCH | `/admin/settings` | `admin.settings.update` |
+| Method   | URI                                                | Name                               |
+| -------- | -------------------------------------------------- | ---------------------------------- |
+| GET      | `/admin`                                           | `admin.dashboard`                  |
+| Resource | `/admin/categories`                                | `admin.categories.*` (except show) |
+| Resource | `/admin/products`                                  | `admin.products.*` (except show)   |
+| POST     | `/admin/products/{product}/images`                 | `admin.products.images.store`      |
+| DELETE   | `/admin/products/{product}/images/{image}`         | `admin.products.images.destroy`    |
+| PATCH    | `/admin/products/{product}/images/{image}/primary` | `admin.products.images.primary`    |
+| GET      | `/admin/orders`                                    | `admin.orders.index`               |
+| GET      | `/admin/orders/{order}`                            | `admin.orders.show`                |
+| PATCH    | `/admin/orders/{order}/status`                     | `admin.orders.status`              |
+| POST     | `/admin/orders/{order}/cancel`                     | `admin.orders.cancel`              |
+| GET      | `/admin/stock`                                     | `admin.stock.index`                |
+| POST     | `/admin/products/{product}/stock`                  | `admin.stock.store`                |
+| GET      | `/admin/staff`                                     | `admin.staff.index`                |
+| POST     | `/admin/staff`                                     | `admin.staff.store`                |
+| PATCH    | `/admin/staff/{user}`                              | `admin.staff.update`               |
+| PATCH    | `/admin/staff/{user}/status`                       | `admin.staff.status`               |
+| PATCH    | `/admin/staff/{user}/password`                     | `admin.staff.password`             |
+| GET      | `/admin/settings`                                  | `admin.settings.edit`              |
+| PATCH    | `/admin/settings`                                  | `admin.settings.update`            |
 
 Route files: `routes/web.php` keeps the home route and includes `routes/storefront.php`, `routes/customer.php`, `routes/pos.php`, `routes/admin.php`. Use route groups, names, and middleware in each file. `/dashboard` becomes a role-based redirect (kept for compatibility with the starter kit).
 
@@ -378,9 +378,9 @@ Route files: `routes/web.php` keeps the home route and includes `routes/storefro
 - `app/Http/Middleware/EnsureUserIsActive.php` — alias `active`; logs out and redirects with an error if `is_active` is false.
 - Register both in `bootstrap/app.php`.
 - Extend `HandleInertiaRequests::share()` with:
-  - `auth.user` including `role`
-  - `cartCount` (auth DB cart or guest session)
-  - `flash.toast` is handled by Inertia 3's `Inertia::flash()`; no extra prop needed.
+    - `auth.user` including `role`
+    - `cartCount` (auth DB cart or guest session)
+    - `flash.toast` is handled by Inertia 3's `Inertia::flash()`; no extra prop needed.
 
 ### Controllers (`app/Http/Controllers`)
 
@@ -407,13 +407,13 @@ Route files: `routes/web.php` keeps the home route and includes `routes/storefro
 
 ### Services (`app/Services`)
 
-| Service | Responsibility |
-|---|---|
-| `CartService` | Resolve guest session cart vs DB cart, add/update/remove, merge on login, totals, stock caps |
-| `OrderService` | Create online order, create POS sale, transition status, cancel, order numbers |
-| `StockService` | Decrement/increment/adjust, ledger writes, low-stock checks |
-| `PaymentService` | Create intent, confirm payment, idempotent completion, failure handling |
-| `DashboardService` | KPI queries, 7-day revenue series, top products |
+| Service            | Responsibility                                                                               |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `CartService`      | Resolve guest session cart vs DB cart, add/update/remove, merge on login, totals, stock caps |
+| `OrderService`     | Create online order, create POS sale, transition status, cancel, order numbers               |
+| `StockService`     | Decrement/increment/adjust, ledger writes, low-stock checks                                  |
+| `PaymentService`   | Create intent, confirm payment, idempotent completion, failure handling                      |
+| `DashboardService` | KPI queries, 7-day revenue series, top products                                              |
 
 ### Policies
 
@@ -447,11 +447,11 @@ Remove the `welcome` special case once `/` renders a storefront page.
 
 ### New layouts
 
-| Layout | Contents |
-|---|---|
-| `layouts/storefront-layout.tsx` | Header with logo, nav, search, cart badge, user menu; footer; dark-mode toggle; mobile menu |
-| `layouts/admin-layout.tsx` | Sidebar (Dashboard, Products, Categories, Orders, Stock, Staff, Settings), top bar, breadcrumbs, user menu |
-| `layouts/pos-layout.tsx` | Minimal full-width shell, cashier name, logout; no sidebar |
+| Layout                          | Contents                                                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `layouts/storefront-layout.tsx` | Header with logo, nav, search, cart badge, user menu; footer; dark-mode toggle; mobile menu                |
+| `layouts/admin-layout.tsx`      | Sidebar (Dashboard, Products, Categories, Orders, Stock, Staff, Settings), top bar, breadcrumbs, user menu |
+| `layouts/pos-layout.tsx`        | Minimal full-width shell, cashier name, logout; no sidebar                                                 |
 
 Reuse the starter kit's `ui/sidebar`, `dropdown-menu`, `breadcrumb`, `button`, `card`, and `sonner` components.
 
@@ -642,13 +642,13 @@ Work in this order. Each phase ends with a working app and passing tests.
 
 ## 12. Seed data
 
-| Seeder | Contents |
-|---|---|
-| `DemoUserSeeder` | `admin@dmart.test`, `cashier@dmart.test`, `customer@dmart.test` — password `password`; 2 extra customers |
-| `DemoCategorySeeder` | 8 categories: Beverages, Snacks, Bakery, Dairy, Household, Personal Care, Frozen, Produce |
-| `ProductSeeder` | 40 products across categories, realistic names/SKUs/prices, some with compare-at prices, a few inactive, some low stock |
-| `DemoOrderSeeder` | ~30 orders: online in `pending_payment`/`paid`/`processing`/`shipped`/`delivered`/`cancelled` and POS `completed`; spread over 30 days; matching order items, payments, and stock movements |
-| `DemoSettingsSeeder` | Store name/address/phone, shipping fee `$2.00`, free threshold `$50.00`, low-stock threshold `5` |
+| Seeder               | Contents                                                                                                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DemoUserSeeder`     | `admin@dmart.test`, `cashier@dmart.test`, `customer@dmart.test` — password `password`; 2 extra customers                                                                                    |
+| `DemoCategorySeeder` | 8 categories: Beverages, Snacks, Bakery, Dairy, Household, Personal Care, Frozen, Produce                                                                                                   |
+| `ProductSeeder`      | 40 products across categories, realistic names/SKUs/prices, some with compare-at prices, a few inactive, some low stock                                                                     |
+| `DemoOrderSeeder`    | ~30 orders: online in `pending_payment`/`paid`/`processing`/`shipped`/`delivered`/`cancelled` and POS `completed`; spread over 30 days; matching order items, payments, and stock movements |
+| `DemoSettingsSeeder` | Store name/address/phone, shipping fee `$2.00`, free threshold `$50.00`, low-stock threshold `5`                                                                                            |
 
 Image strategy: a small curated map of royalty-free URLs per category; `Http::timeout(5)` download into `storage/app/public/products`; on failure the product simply has no image and the UI shows the letter tile. Attribution URLs are recorded in a seeder comment.
 
@@ -660,19 +660,19 @@ The seeder must be idempotent enough for repeated local runs (`migrate:fresh --s
 
 New feature tests:
 
-| File | Covers |
-|---|---|
-| `tests/Feature/Auth/RoleAccessTest.php` | Guest redirected; customer blocked from admin/POS; cashier blocked from admin; admin allowed; inactive user rejected |
-| `tests/Feature/Auth/PortalLoginTest.php` | Each portal accepts only its role; correct landing redirects |
-| `tests/Feature/Storefront/CartTest.php` | Guest cart add/update/remove; merge on login; quantity capped at stock |
-| `tests/Feature/Storefront/CheckoutTest.php` | Creates pending order; snapshots address/items; shipping fee and free threshold; client totals ignored; stock unchanged before payment |
-| `tests/Feature/Payments/MockPaymentTest.php` | Simulate marks paid and decrements once; duplicate simulate is idempotent; insufficient stock cancels; non-owner forbidden; cancel pending order works |
-| `tests/Feature/Pos/SaleTest.php` | Cash sale totals/change; QR sale; out-of-stock rejected; under-tendered cash rejected; cashier sees only own sales; non-cashier forbidden |
-| `tests/Feature/Admin/ProductManagementTest.php` | CRUD, slug/SKU uniqueness, image upload/primary/delete, soft delete, stock ledger, category delete guard, authorization |
-| `tests/Feature/Admin/OrderFulfillmentTest.php` | Valid transitions, invalid transition rejected, tracking saved, cancellation restocks paid orders, customer cannot change status |
-| `tests/Feature/Admin/StaffTest.php` | Create cashier/admin, deactivate, cannot deactivate self, password reset, customer forbidden |
-| `tests/Feature/Admin/SettingsTest.php` | Update shipping settings; validation; storefront totals change |
-| `tests/Feature/Admin/DashboardTest.php` | KPI values, 7-day series length/fill, top products ordering |
+| File                                            | Covers                                                                                                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tests/Feature/Auth/RoleAccessTest.php`         | Guest redirected; customer blocked from admin/POS; cashier blocked from admin; admin allowed; inactive user rejected                                   |
+| `tests/Feature/Auth/PortalLoginTest.php`        | Each portal accepts only its role; correct landing redirects                                                                                           |
+| `tests/Feature/Storefront/CartTest.php`         | Guest cart add/update/remove; merge on login; quantity capped at stock                                                                                 |
+| `tests/Feature/Storefront/CheckoutTest.php`     | Creates pending order; snapshots address/items; shipping fee and free threshold; client totals ignored; stock unchanged before payment                 |
+| `tests/Feature/Payments/MockPaymentTest.php`    | Simulate marks paid and decrements once; duplicate simulate is idempotent; insufficient stock cancels; non-owner forbidden; cancel pending order works |
+| `tests/Feature/Pos/SaleTest.php`                | Cash sale totals/change; QR sale; out-of-stock rejected; under-tendered cash rejected; cashier sees only own sales; non-cashier forbidden              |
+| `tests/Feature/Admin/ProductManagementTest.php` | CRUD, slug/SKU uniqueness, image upload/primary/delete, soft delete, stock ledger, category delete guard, authorization                                |
+| `tests/Feature/Admin/OrderFulfillmentTest.php`  | Valid transitions, invalid transition rejected, tracking saved, cancellation restocks paid orders, customer cannot change status                       |
+| `tests/Feature/Admin/StaffTest.php`             | Create cashier/admin, deactivate, cannot deactivate self, password reset, customer forbidden                                                           |
+| `tests/Feature/Admin/SettingsTest.php`          | Update shipping settings; validation; storefront totals change                                                                                         |
+| `tests/Feature/Admin/DashboardTest.php`         | KPI values, 7-day series length/fill, top products ordering                                                                                            |
 
 Rules:
 

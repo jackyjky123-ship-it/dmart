@@ -28,7 +28,9 @@ export default function Security(props: Props) {
                 <Heading
                     variant="small"
                     title={t('Update password')}
-                    description={t('Ensure your account is using a long, random password to stay secure')}
+                    description={t(
+                        'Ensure your account is using a long, random password to stay secure',
+                    )}
                 />
 
                 <Form
@@ -73,7 +75,9 @@ export default function Security(props: Props) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">{t('New password')}</Label>
+                                <Label htmlFor="password">
+                                    {t('New password')}
+                                </Label>
 
                                 <PasswordInput
                                     id="password"

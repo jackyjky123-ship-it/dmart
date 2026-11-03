@@ -62,7 +62,10 @@ export function AppSidebar() {
 
             <SidebarFooter>
                 <div className="px-2 py-1.5 group-data-[collapsible=icon]:hidden">
-                    <LanguageSwitcher variant="toggle" className="w-full justify-center" />
+                    <LanguageSwitcher
+                        variant="toggle"
+                        className="w-full justify-center"
+                    />
                 </div>
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />

@@ -1,1 +1,352 @@
-{"nodes": [{"id": "$graphify-root$_app_models_order_php", "label": "Order.php", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L1"}, {"id": "$graphify-root$_app_models_order_order", "label": "Order", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L43", "_callable": true, "_callable_class": true}, {"id": "model", "label": "Model", "file_type": "code", "source_file": "", "source_location": ""}, {"id": "hasfactory", "label": "HasFactory", "file_type": "code", "source_file": "", "source_location": ""}, {"id": "$graphify-root$_app_models_order_order_casts", "label": ".casts()", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L77", "_callable": true}, {"id": "$graphify-root$_app_models_order_order_user", "label": ".user()", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L98", "_callable": true}, {"id": "belongsto", "label": "BelongsTo", "file_type": "code", "source_file": "", "source_location": "", "origin_file": "$graphify-root$/app/Models/Order.php"}, {"id": "$graphify-root$_app_models_order_order_cashier", "label": ".cashier()", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L106", "_callable": true}, {"id": "$graphify-root$_app_models_order_order_items", "label": ".items()", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L114", "_callable": true}, {"id": "hasmany", "label": "HasMany", "file_type": "code", "source_file": "", "source_location": "", "origin_file": "$graphify-root$/app/Models/Order.php"}, {"id": "$graphify-root$_app_models_order_order_payments", "label": ".payments()", "file_type": "code", "source_file": "app/Models/Order.php", "source_location": "L122", "_callable": true}], "edges": [{"source": "$graphify-root$_app_models_order_php", "target": "orderchannel", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L5", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "orderstatus", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L6", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "paymentmethod", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L7", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "orderfactory", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L8", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "fillable", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L9", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "hasfactory", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L10", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "model", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L11", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "belongsto", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L12", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "hasmany", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L13", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "carbon", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L14", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_php", "target": "$graphify-root$_app_models_order_order", "relation": "contains", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L43", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order", "target": "model", "relation": "inherits", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L67", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order", "target": "hasfactory", "relation": "mixes_in", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L70", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order", "target": "$graphify-root$_app_models_order_order_casts", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L77", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order", "target": "$graphify-root$_app_models_order_order_user", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L98", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order_user", "target": "belongsto", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L98", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_order_order", "target": "$graphify-root$_app_models_order_order_cashier", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L106", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order_cashier", "target": "belongsto", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L106", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_order_order", "target": "$graphify-root$_app_models_order_order_items", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L114", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order_items", "target": "hasmany", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L114", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_order_order", "target": "$graphify-root$_app_models_order_order_payments", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L122", "weight": 1.0}, {"source": "$graphify-root$_app_models_order_order_payments", "target": "hasmany", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/Order.php", "source_location": "L122", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_order_order_cashier", "target": "$graphify-root$_app_models_order_order_user", "relation": "references_constant", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "app/Models/Order.php", "source_location": "L108", "weight": 1.0}], "raw_calls": [{"caller_nid": "$graphify-root$_app_models_order_order_user", "callee": "belongsTo", "is_member_call": true, "source_file": "app/Models/Order.php", "source_location": "L100", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_app_models_order_order_cashier", "callee": "belongsTo", "is_member_call": true, "source_file": "app/Models/Order.php", "source_location": "L108", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_app_models_order_order_items", "callee": "hasMany", "is_member_call": true, "source_file": "app/Models/Order.php", "source_location": "L116", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_app_models_order_order_payments", "callee": "hasMany", "is_member_call": true, "source_file": "app/Models/Order.php", "source_location": "L124", "receiver": "this", "php_scoped": false}]}
+{
+    "nodes": [
+        {
+            "id": "$graphify-root$_app_models_order_php",
+            "label": "Order.php",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L1"
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order",
+            "label": "Order",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L43",
+            "_callable": true,
+            "_callable_class": true
+        },
+        {
+            "id": "model",
+            "label": "Model",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": ""
+        },
+        {
+            "id": "hasfactory",
+            "label": "HasFactory",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": ""
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order_casts",
+            "label": ".casts()",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L77",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order_user",
+            "label": ".user()",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L98",
+            "_callable": true
+        },
+        {
+            "id": "belongsto",
+            "label": "BelongsTo",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": "",
+            "origin_file": "$graphify-root$/app/Models/Order.php"
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order_cashier",
+            "label": ".cashier()",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L106",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order_items",
+            "label": ".items()",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L114",
+            "_callable": true
+        },
+        {
+            "id": "hasmany",
+            "label": "HasMany",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": "",
+            "origin_file": "$graphify-root$/app/Models/Order.php"
+        },
+        {
+            "id": "$graphify-root$_app_models_order_order_payments",
+            "label": ".payments()",
+            "file_type": "code",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L122",
+            "_callable": true
+        }
+    ],
+    "edges": [
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "orderchannel",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L5",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "orderstatus",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L6",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "paymentmethod",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L7",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "orderfactory",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L8",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "fillable",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L9",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "hasfactory",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L10",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "model",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L11",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "belongsto",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L12",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "hasmany",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L13",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "carbon",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L14",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_php",
+            "target": "$graphify-root$_app_models_order_order",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L43",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "model",
+            "relation": "inherits",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L67",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "hasfactory",
+            "relation": "mixes_in",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L70",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "$graphify-root$_app_models_order_order_casts",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L77",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "$graphify-root$_app_models_order_order_user",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L98",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order_user",
+            "target": "belongsto",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L98",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "$graphify-root$_app_models_order_order_cashier",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L106",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order_cashier",
+            "target": "belongsto",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L106",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "$graphify-root$_app_models_order_order_items",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L114",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order_items",
+            "target": "hasmany",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L114",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order",
+            "target": "$graphify-root$_app_models_order_order_payments",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L122",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order_payments",
+            "target": "hasmany",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/Order.php",
+            "source_location": "L122",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_order_order_cashier",
+            "target": "$graphify-root$_app_models_order_order_user",
+            "relation": "references_constant",
+            "confidence": "EXTRACTED",
+            "confidence_score": 1.0,
+            "source_file": "app/Models/Order.php",
+            "source_location": "L108",
+            "weight": 1.0
+        }
+    ],
+    "raw_calls": [
+        {
+            "caller_nid": "$graphify-root$_app_models_order_order_user",
+            "callee": "belongsTo",
+            "is_member_call": true,
+            "source_file": "app/Models/Order.php",
+            "source_location": "L100",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_app_models_order_order_cashier",
+            "callee": "belongsTo",
+            "is_member_call": true,
+            "source_file": "app/Models/Order.php",
+            "source_location": "L108",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_app_models_order_order_items",
+            "callee": "hasMany",
+            "is_member_call": true,
+            "source_file": "app/Models/Order.php",
+            "source_location": "L116",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_app_models_order_order_payments",
+            "callee": "hasMany",
+            "is_member_call": true,
+            "source_file": "app/Models/Order.php",
+            "source_location": "L124",
+            "receiver": "this",
+            "php_scoped": false
+        }
+    ]
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { useAppearance } from '@/hooks/use-appearance';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 import {
@@ -14,13 +14,10 @@ import {
     Tags,
     Settings,
     Store,
-    Terminal,
     Menu,
     X,
     Search,
     Calendar,
-    Sun,
-    Moon,
     ChevronDown,
     LogOut,
     PanelLeftClose,
@@ -65,34 +62,43 @@ const NAV_ITEMS = [
 
 function getPageMeta(path: string) {
     if (path === '/admin') return { title: 'Dashboard', icon: LayoutDashboard };
-    if (path.startsWith('/admin/orders')) return { title: 'Orders', icon: ShoppingBag };
-    if (path.startsWith('/admin/products')) return { title: 'Products', icon: Package };
-    if (path.startsWith('/admin/stock')) return { title: 'Stock & Inventory', icon: BarChart3 };
-    if (path.startsWith('/admin/categories')) return { title: 'Categories', icon: Tags };
+    if (path.startsWith('/admin/orders'))
+        return { title: 'Orders', icon: ShoppingBag };
+    if (path.startsWith('/admin/products'))
+        return { title: 'Products', icon: Package };
+    if (path.startsWith('/admin/stock'))
+        return { title: 'Stock & Inventory', icon: BarChart3 };
+    if (path.startsWith('/admin/categories'))
+        return { title: 'Categories', icon: Tags };
     if (path.startsWith('/admin/staff')) return { title: 'Staff', icon: Users };
-    if (path.startsWith('/admin/settings')) return { title: 'Settings', icon: Settings };
+    if (path.startsWith('/admin/settings'))
+        return { title: 'Settings', icon: Settings };
     return { title: 'Admin', icon: LayoutDashboard };
 }
 
-function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavProps) {
+function AdminSidebar({
+    currentPath,
+    onNavClick,
+    onToggleCollapse,
+}: AdminNavProps) {
     const { t } = useTranslation();
 
     return (
-        <aside className="w-64 border-r border-[#242424] bg-[#141414] text-white flex flex-col h-full shrink-0 select-none">
+        <aside className="flex h-full w-64 shrink-0 flex-col border-r border-border bg-sidebar text-foreground select-none">
             {/* Brand Header */}
-            <div className="h-16 px-5 border-b border-[#242424] flex items-center justify-between">
-                <Link href="/admin" className="flex items-center gap-3 group">
-                    <div className="w-8 h-8 rounded-lg bg-[#F25623] text-white flex items-center justify-center font-black text-sm shadow-md shadow-[#F25623]/25 group-hover:scale-105 transition-transform">
+            <div className="flex h-16 items-center justify-between border-b border-border px-5">
+                <Link href="/admin" className="group flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F25623] text-sm font-black text-white shadow-md shadow-[#F25623]/25 transition-transform group-hover:scale-105">
                         D
                     </div>
                     <div>
-                        <div className="font-bold tracking-tight text-white text-sm flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-foreground">
                             <span>DMART</span>
-                            <span className="text-[#F25623] font-mono text-[10px] font-semibold px-1.5 py-0.2 rounded bg-[#F25623]/10 border border-[#F25623]/20">
+                            <span className="py-0.2 rounded border border-[#F25623]/20 bg-[#F25623]/10 px-1.5 font-mono text-[10px] font-semibold text-[#F25623]">
                                 ADMIN
                             </span>
                         </div>
-                        <div className="text-[10px] text-zinc-400 font-mono tracking-wider">
+                        <div className="font-mono text-[10px] tracking-wider text-muted-foreground">
                             {t('Back Office Console')}
                         </div>
                     </div>
@@ -103,80 +109,88 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
                         variant="ghost"
                         size="icon-xs"
                         onClick={onToggleCollapse}
-                        className="text-zinc-400 hover:text-white hover:bg-[#242424] border border-[#2d2d2d] rounded-lg h-7 w-7 hidden lg:flex items-center justify-center transition-colors"
+                        className="hidden h-7 w-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:flex"
                         title={t('Close sidebar (⌘B)')}
                         aria-label={t('Close sidebar')}
                     >
-                        <PanelLeftClose className="w-4 h-4" />
+                        <PanelLeftClose className="h-4 w-4" />
                     </Button>
                 )}
             </div>
 
             {/* Navigation links */}
-            <div className="flex-1 overflow-y-auto px-4 py-5 space-y-1">
+            <div className="flex-1 space-y-1 overflow-y-auto px-4 py-5">
                 {NAV_ITEMS.map((item) => {
                     const Icon = item.icon;
-                    const isActive = item.exact ? currentPath === item.href : currentPath.startsWith(item.href);
+                    const isActive = item.exact
+                        ? currentPath === item.href
+                        : currentPath.startsWith(item.href);
 
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
                             onClick={onNavClick}
-                            className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
+                            className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all duration-150 ${
                                 isActive
-                                    ? 'bg-[#222222] text-[#F25623] border border-[#333333] shadow-inner'
-                                    : 'text-zinc-400 hover:text-white hover:bg-[#1a1a1a]'
+                                    ? 'border border-border bg-muted text-[#F25623] shadow-inner'
+                                    : 'text-muted-foreground hover:bg-card hover:text-foreground'
                             }`}
                         >
                             <span className="flex items-center gap-3">
-                                <Icon className={`w-4 h-4 ${isActive ? 'text-[#F25623]' : 'text-zinc-500'}`} />
+                                <Icon
+                                    className={`h-4 w-4 ${isActive ? 'text-[#F25623]' : 'text-muted-foreground'}`}
+                                />
                                 <span>{t(item.label)}</span>
                             </span>
                         </Link>
                     );
                 })}
 
-                <div className="pt-4 border-t border-[#222222] my-3 space-y-1">
+                <div className="my-3 space-y-1 border-t border-border pt-4">
                     <Link
                         href="/admin/settings"
                         onClick={onNavClick}
-                        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                        className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all ${
                             currentPath.startsWith('/admin/settings')
-                                ? 'bg-[#222222] text-[#F25623] border border-[#333333]'
-                                : 'text-zinc-400 hover:text-white hover:bg-[#1a1a1a]'
+                                ? 'border border-border bg-muted text-[#F25623]'
+                                : 'text-muted-foreground hover:bg-card hover:text-foreground'
                         }`}
                     >
-                        <Settings className="w-4 h-4 text-zinc-500" />
+                        <Settings className="h-4 w-4 text-muted-foreground" />
                         <span>{t('Settings')}</span>
                     </Link>
                 </div>
             </div>
 
             {/* Quick Portals & Language in Sidebar */}
-            <div className="p-4 border-t border-[#242424] bg-[#111111] space-y-2.5">
+            <div className="space-y-2.5 border-t border-border bg-sidebar p-4">
                 <div className="flex items-center justify-between pb-1">
-                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
+                    <span className="font-mono text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
                         {t('Language')}
                     </span>
                     <LanguageSwitcher variant="toggle" />
                 </div>
-                <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider font-mono">
+                <div className="font-mono text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
                     {t('Quick Portals')}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <Link
                         href="/"
-                        className="flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-semibold bg-[#1c1c1c] border border-[#2d2d2d] hover:border-[#F25623] hover:text-[#F25623] transition-colors text-white"
+                        className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-[#F25623] hover:text-[#F25623]"
                     >
-                        <Store className="w-3.5 h-3.5 text-[#F25623]" />
+                        <Store className="h-3.5 w-3.5 text-[#F25623]" />
                         <span>{t('Storefront')}</span>
                     </Link>
                     <Link
                         href="/pos"
-                        className="flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-semibold bg-[#1c1c1c] border border-[#2d2d2d] hover:border-[#F25623] hover:text-[#F25623] transition-colors text-white"
+                        className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-[#F25623] hover:text-[#F25623]"
                     >
-                        <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 object-contain" />
+                        <img
+                            src="/images/pos_icon.png"
+                            alt=""
+                            className="h-3.5 w-3.5 object-contain"
+                        />
                         <span>{t('POS Term')}</span>
                     </Link>
                 </div>
@@ -185,12 +199,16 @@ function AdminSidebar({ currentPath, onNavClick, onToggleCollapse }: AdminNavPro
     );
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const { url, props } = usePage<AdminPageProps>();
-    const { resolvedAppearance, updateAppearance } = useAppearance();
     const { t } = useTranslation();
 
-    const initialOpen = typeof props.sidebarOpen === 'boolean' ? props.sidebarOpen : true;
+    const initialOpen =
+        typeof props.sidebarOpen === 'boolean' ? props.sidebarOpen : true;
     const [sidebarOpen, setSidebarOpen] = useState(initialOpen);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [search, setSearch] = useState('');
@@ -238,23 +256,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/admin/orders', search.trim() ? { search: search.trim() } : {});
-    };
-
-    const toggleTheme = () => {
-        updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
+        router.get(
+            '/admin/orders',
+            search.trim() ? { search: search.trim() } : {},
+        );
     };
 
     return (
-        <div className="dark min-h-screen flex bg-[#171717] text-white selection:bg-[#F25623] selection:text-white">
+        <div className="flex min-h-screen bg-background text-foreground selection:bg-[#F25623] selection:text-white">
             {/* Desktop Collapsible Sidebar */}
             <div
                 className={cn(
-                    'hidden lg:block shrink-0 sticky top-0 h-screen transition-[width] duration-300 ease-in-out z-20',
-                    sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'
+                    'sticky top-0 z-20 hidden h-screen shrink-0 transition-[width] duration-300 ease-in-out lg:block',
+                    sidebarOpen ? 'w-64' : 'w-0 overflow-hidden',
                 )}
             >
-                <div className="w-64 h-full">
+                <div className="h-full w-64">
                     <AdminSidebar
                         currentPath={url}
                         onToggleCollapse={toggleSidebar}
@@ -265,28 +282,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Mobile Drawer */}
             {mobileOpen && (
                 <div className="fixed inset-0 z-50 flex lg:hidden">
-                    <div className="fixed inset-0 bg-black/80 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
-                    <div className="relative w-64 max-w-[80vw] bg-[#141414] z-50 flex flex-col h-full shadow-2xl">
+                    <div
+                        className="fixed inset-0 bg-black/80 backdrop-blur-xs"
+                        onClick={() => setMobileOpen(false)}
+                    />
+                    <div className="relative z-50 flex h-full w-64 max-w-[80vw] flex-col bg-background shadow-2xl">
                         <div className="absolute top-4 right-4">
-                            <Button variant="ghost" size="icon-sm" onClick={() => setMobileOpen(false)} className="text-white hover:bg-[#242424]">
-                                <X className="w-4 h-4" />
+                            <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                onClick={() => setMobileOpen(false)}
+                                className="text-foreground hover:bg-muted"
+                            >
+                                <X className="h-4 w-4" />
                             </Button>
                         </div>
-                        <AdminSidebar currentPath={url} onNavClick={() => setMobileOpen(false)} />
+                        <AdminSidebar
+                            currentPath={url}
+                            onNavClick={() => setMobileOpen(false)}
+                        />
                     </div>
                 </div>
             )}
 
             {/* Main Area */}
-            <div className="flex-1 flex flex-col min-w-0 transition-all duration-300">
+            <div className="flex min-w-0 flex-1 flex-col transition-all duration-300">
                 {/* Admin Navbar */}
-                <header className="h-16 border-b border-[#242424] bg-[#171717]/95 backdrop-blur-xl px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 sticky top-0 z-30">
+                <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/95 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
                     {/* Left: Breadcrumb with conditional sidebar toggle icon */}
                     <div className="flex items-center gap-2.5 sm:gap-3">
                         <Button
                             variant="ghost"
                             size="icon-sm"
-                            className="lg:hidden text-zinc-300 hover:text-white hover:bg-[#242424] rounded-lg h-8.5 w-8.5"
+                            className="h-8.5 w-8.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground lg:hidden"
                             onClick={toggleSidebar}
                             aria-label={t('Toggle sidebar')}
                         >
@@ -297,8 +325,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             {/* Breadcrumb icon: hidden when sidebar is open on desktop, shown when closed */}
                             <div
                                 className={cn(
-                                    'transition-all duration-200 ease-in-out overflow-hidden flex items-center',
-                                    sidebarOpen ? 'lg:w-0 lg:opacity-0 lg:pointer-events-none lg:-mr-2.5' : 'w-8 opacity-100'
+                                    'flex items-center overflow-hidden transition-all duration-200 ease-in-out',
+                                    sidebarOpen
+                                        ? 'lg:pointer-events-none lg:-mr-2.5 lg:w-0 lg:opacity-0'
+                                        : 'w-8 opacity-100',
                                 )}
                             >
                                 <button
@@ -306,37 +336,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                     onClick={toggleSidebar}
                                     title={t('Open sidebar (⌘B)')}
                                     aria-label={t('Open sidebar')}
-                                    className="group w-8 h-8 rounded-lg bg-[#222222] border border-[#2d2d2d] hover:border-[#F25623]/60 hover:bg-[#282828] flex items-center justify-center text-[#F25623] shadow-inner shrink-0 cursor-pointer transition-all"
+                                    className="group flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-border bg-muted text-[#F25623] shadow-inner transition-all hover:border-[#F25623]/60 hover:bg-muted"
                                 >
-                                    <PageIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    <PageIcon className="h-4 w-4 transition-transform group-hover:scale-110" />
                                 </button>
                             </div>
 
-                            <h1 className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                            <h1 className="text-xs font-bold tracking-tight text-foreground sm:text-sm">
                                 {t(pageMeta.title)}
                             </h1>
                         </div>
                     </div>
 
                     {/* Center: Sleek Quick Search */}
-                    <div className="hidden md:flex items-center flex-1 max-w-xs mx-auto">
-                        <form onSubmit={handleSearch} className="relative w-full">
-                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                    <div className="mx-auto hidden max-w-xs flex-1 items-center md:flex">
+                        <form
+                            onSubmit={handleSearch}
+                            className="relative w-full"
+                        >
+                            <Search className="pointer-events-none absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
                             <input
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder={t('Quick search orders...')}
-                                className="w-full h-8.5 pl-8.5 pr-3 rounded-lg border border-[#2d2d2d] bg-[#202020] text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#F25623] transition-colors"
+                                className="h-8.5 w-full rounded-lg border border-border bg-muted pr-3 pl-8.5 text-xs text-foreground transition-colors placeholder:text-muted-foreground focus:border-[#F25623] focus:outline-none"
                             />
                         </form>
                     </div>
 
                     {/* Right: Date, Portals, Theme & User Menu */}
-                    <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 text-xs">
+                    <div className="flex shrink-0 items-center gap-2 text-xs sm:gap-2.5">
                         {/* Live Date Pill */}
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#202020] border border-[#2d2d2d] text-xs text-zinc-300 font-mono">
-                            <Calendar className="w-3.5 h-3.5 text-[#F25623]" />
+                        <div className="hidden items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground sm:flex">
+                            <Calendar className="h-3.5 w-3.5 text-[#F25623]" />
                             <span>{props.today ?? t('Today')}</span>
                         </div>
 
@@ -349,34 +382,67 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-8.5 px-2.5 rounded-lg border border-[#2d2d2d] bg-[#202020] text-zinc-300 hover:text-white hover:bg-[#282828] text-xs gap-1.5"
+                                    className="h-8.5 gap-1.5 rounded-lg border border-border bg-muted px-2.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
                                     title={t('Switch workspace portal')}
                                 >
-                                    <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                    <span className="hidden xl:inline">{t('Portals')}</span>
-                                    <ChevronDown className="w-3 h-3 text-zinc-400" />
+                                    <Store className="h-3.5 w-3.5 text-[#F25623]" />
+                                    <span className="hidden xl:inline">
+                                        {t('Portals')}
+                                    </span>
+                                    <ChevronDown className="h-3 w-3 text-muted-foreground" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
-                                <DropdownMenuLabel className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 px-2.5 py-1.5">
+                            <DropdownMenuContent
+                                align="end"
+                                className="w-56 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-2xl"
+                            >
+                                <DropdownMenuLabel className="px-2.5 py-1.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                                     {t('Switch Portal')}
                                 </DropdownMenuLabel>
-                                <DropdownMenuSeparator className="bg-[#282828]" />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                    <Link href="/" className="flex items-center gap-2.5 py-2 px-2.5">
-                                        <Store className="w-4 h-4 text-[#F25623] shrink-0" />
+                                <DropdownMenuSeparator className="bg-muted" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/"
+                                        className="flex items-center gap-2.5 px-2.5 py-2"
+                                    >
+                                        <Store className="h-4 w-4 shrink-0 text-[#F25623]" />
                                         <div>
-                                            <div className="font-semibold text-xs text-white">{t('Storefront')}</div>
-                                            <div className="text-[10px] text-zinc-400">{t('Streetwear drops & catalog')}</div>
+                                            <div className="text-xs font-semibold text-foreground">
+                                                {t('Storefront')}
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground">
+                                                {t(
+                                                    'Streetwear drops & catalog',
+                                                )}
+                                            </div>
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                    <Link href="/pos" className="flex items-center gap-2.5 py-2 px-2.5">
-                                        <img src="/images/pos_icon.png" alt="" className="w-4 h-4 object-contain shrink-0" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/pos"
+                                        className="flex items-center gap-2.5 px-2.5 py-2"
+                                    >
+                                        <img
+                                            src="/images/pos_icon.png"
+                                            alt=""
+                                            className="h-4 w-4 shrink-0 object-contain"
+                                        />
                                         <div>
-                                            <div className="font-semibold text-xs text-white">{t('POS Cashier Terminal')}</div>
-                                            <div className="text-[10px] text-zinc-400">{t('Cashier register & checkout')}</div>
+                                            <div className="text-xs font-semibold text-foreground">
+                                                {t('POS Cashier Terminal')}
+                                            </div>
+                                            <div className="text-[10px] text-muted-foreground">
+                                                {t(
+                                                    'Cashier register & checkout',
+                                                )}
+                                            </div>
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
@@ -384,73 +450,102 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </DropdownMenu>
 
                         {/* Theme Toggle */}
-                        <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={toggleTheme}
-                            className="rounded-lg text-zinc-400 hover:text-white hover:bg-[#282828] border border-[#2d2d2d] bg-[#202020] h-8.5 w-8.5"
-                            aria-label={t('Toggle appearance')}
-                        >
-                            {resolvedAppearance === 'dark' ? (
-                                <Sun className="h-4 w-4 text-amber-400" />
-                            ) : (
-                                <Moon className="h-4 w-4 text-zinc-400" />
-                            )}
-                        </Button>
+                        <ThemeToggle className="h-8.5 w-8.5 border border-border bg-muted text-muted-foreground hover:bg-muted hover:text-foreground" />
 
                         {/* Admin User Menu */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <button
                                     type="button"
-                                    className="flex items-center gap-2 pl-1.5 sm:pl-2 pr-2 sm:pr-2.5 py-1 rounded-lg border border-[#2d2d2d] bg-[#202020] hover:bg-[#282828] transition-colors focus:outline-none"
+                                    className="flex items-center gap-2 rounded-lg border border-border bg-muted py-1 pr-2 pl-1.5 transition-colors hover:bg-muted focus:outline-none sm:pr-2.5 sm:pl-2"
                                 >
-                                    <div className="w-6.5 h-6.5 rounded-md bg-[#F25623] text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                                        {(user?.name ?? 'A').charAt(0).toUpperCase()}
+                                    <div className="flex h-6.5 w-6.5 items-center justify-center rounded-md bg-[#F25623] text-xs font-bold text-white shadow-xs">
+                                        {(user?.name ?? 'A')
+                                            .charAt(0)
+                                            .toUpperCase()}
                                     </div>
-                                    <div className="text-left hidden sm:block">
-                                        <div className="text-xs font-semibold text-white leading-tight max-w-[100px] truncate">
+                                    <div className="hidden text-left sm:block">
+                                        <div className="max-w-[100px] truncate text-xs leading-tight font-semibold text-foreground">
                                             {user?.name ?? t('Admin')}
                                         </div>
-                                        <div className="text-[9px] text-[#F25623] font-mono leading-none">
+                                        <div className="font-mono text-[9px] leading-none text-[#F25623]">
                                             {t('ADMIN')}
                                         </div>
                                     </div>
-                                    <ChevronDown className="w-3 h-3 text-zinc-400 hidden sm:block" />
+                                    <ChevronDown className="hidden h-3 w-3 text-muted-foreground sm:block" />
                                 </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
-                                <div className="px-3 py-2 border-b border-[#282828]">
-                                    <p className="text-xs font-semibold text-white truncate">{user?.name ?? t('Admin User')}</p>
-                                    <p className="text-[10px] text-zinc-400 truncate">{user?.email ?? 'admin@dmart.test'}</p>
-                                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-[#F25623]/20 text-[#F25623] border border-[#F25623]/30">
+                            <DropdownMenuContent
+                                align="end"
+                                className="w-56 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-2xl"
+                            >
+                                <div className="border-b border-border px-3 py-2">
+                                    <p className="truncate text-xs font-semibold text-foreground">
+                                        {user?.name ?? t('Admin User')}
+                                    </p>
+                                    <p className="truncate text-[10px] text-muted-foreground">
+                                        {user?.email ?? 'admin@dmart.test'}
+                                    </p>
+                                    <span className="mt-1 inline-block rounded border border-[#F25623]/30 bg-[#F25623]/20 px-1.5 py-0.5 font-mono text-[9px] font-bold text-[#F25623]">
                                         {t('SYSTEM ADMINISTRATOR')}
                                     </span>
                                 </div>
                                 <div className="py-1">
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                        <Link href="/admin/settings" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                            <Settings className="w-3.5 h-3.5 text-zinc-400" />
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                    >
+                                        <Link
+                                            href="/admin/settings"
+                                            className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                        >
+                                            <Settings className="h-3.5 w-3.5 text-muted-foreground" />
                                             <span>{t('Store Settings')}</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                        <Link href="/pos" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                            <img src="/images/pos_icon.png" alt="" className="w-3.5 h-3.5 object-contain" />
-                                            <span>{t('Launch POS Terminal')}</span>
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                    >
+                                        <Link
+                                            href="/pos"
+                                            className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                        >
+                                            <img
+                                                src="/images/pos_icon.png"
+                                                alt=""
+                                                className="h-3.5 w-3.5 object-contain"
+                                            />
+                                            <span>
+                                                {t('Launch POS Terminal')}
+                                            </span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                        <Link href="/" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                            <Store className="w-3.5 h-3.5 text-[#F25623]" />
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                    >
+                                        <Link
+                                            href="/"
+                                            className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                        >
+                                            <Store className="h-3.5 w-3.5 text-[#F25623]" />
                                             <span>{t('View Storefront')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 </div>
-                                <DropdownMenuSeparator className="bg-[#282828]" />
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 focus:bg-rose-950/30">
-                                    <Link href="/logout" method="post" as="button" className="w-full flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                        <LogOut className="w-3.5 h-3.5" />
+                                <DropdownMenuSeparator className="bg-muted" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg text-rose-400 hover:bg-rose-950/30 hover:text-rose-300 focus:bg-rose-950/30"
+                                >
+                                    <Link
+                                        href="/logout"
+                                        method="post"
+                                        as="button"
+                                        className="flex w-full items-center gap-2 px-2.5 py-1.5 text-xs"
+                                    >
+                                        <LogOut className="h-3.5 w-3.5" />
                                         <span>{t('Sign Out')}</span>
                                     </Link>
                                 </DropdownMenuItem>
@@ -459,7 +554,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
                 </header>
 
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+                <main className="mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6 lg:p-8">
                     {children}
                 </main>
             </div>

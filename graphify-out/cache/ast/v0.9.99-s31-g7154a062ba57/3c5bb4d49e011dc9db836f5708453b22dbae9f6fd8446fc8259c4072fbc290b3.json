@@ -1,1 +1,268 @@
-{"nodes": [{"id": "$graphify-root$_app_models_stockmovement_php", "label": "StockMovement.php", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L1"}, {"id": "$graphify-root$_app_models_stockmovement_stockmovement", "label": "StockMovement", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L24", "_callable": true, "_callable_class": true}, {"id": "model", "label": "Model", "file_type": "code", "source_file": "", "source_location": ""}, {"id": "hasfactory", "label": "HasFactory", "file_type": "code", "source_file": "", "source_location": ""}, {"id": "$graphify-root$_app_models_stockmovement_stockmovement_casts", "label": ".casts()", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L42", "_callable": true}, {"id": "$graphify-root$_app_models_stockmovement_stockmovement_product", "label": ".product()", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L53", "_callable": true}, {"id": "belongsto", "label": "BelongsTo", "file_type": "code", "source_file": "", "source_location": "", "origin_file": "$graphify-root$/app/Models/StockMovement.php"}, {"id": "$graphify-root$_app_models_stockmovement_stockmovement_user", "label": ".user()", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L61", "_callable": true}, {"id": "$graphify-root$_app_models_stockmovement_stockmovement_order", "label": ".order()", "file_type": "code", "source_file": "app/Models/StockMovement.php", "source_location": "L69", "_callable": true}], "edges": [{"source": "$graphify-root$_app_models_stockmovement_php", "target": "stockmovementtype", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L5", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "stockmovementfactory", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L6", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "fillable", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L7", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "hasfactory", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L8", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "model", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L9", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "belongsto", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L10", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "carbon", "relation": "imports", "context": "import", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L11", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_php", "target": "$graphify-root$_app_models_stockmovement_stockmovement", "relation": "contains", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L24", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "model", "relation": "inherits", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L32", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "hasfactory", "relation": "mixes_in", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L35", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "$graphify-root$_app_models_stockmovement_stockmovement_casts", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L42", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "$graphify-root$_app_models_stockmovement_stockmovement_product", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L53", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement_product", "target": "belongsto", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L53", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "$graphify-root$_app_models_stockmovement_stockmovement_user", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L61", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement_user", "target": "belongsto", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L61", "weight": 1.0, "context": "return_type"}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement", "target": "$graphify-root$_app_models_stockmovement_stockmovement_order", "relation": "method", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L69", "weight": 1.0}, {"source": "$graphify-root$_app_models_stockmovement_stockmovement_order", "target": "belongsto", "relation": "references", "confidence": "EXTRACTED", "source_file": "app/Models/StockMovement.php", "source_location": "L69", "weight": 1.0, "context": "return_type"}], "raw_calls": [{"caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_product", "callee": "belongsTo", "is_member_call": true, "source_file": "app/Models/StockMovement.php", "source_location": "L55", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_user", "callee": "belongsTo", "is_member_call": true, "source_file": "app/Models/StockMovement.php", "source_location": "L63", "receiver": "this", "php_scoped": false}, {"caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_order", "callee": "belongsTo", "is_member_call": true, "source_file": "app/Models/StockMovement.php", "source_location": "L71", "receiver": "this", "php_scoped": false}]}
+{
+    "nodes": [
+        {
+            "id": "$graphify-root$_app_models_stockmovement_php",
+            "label": "StockMovement.php",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L1"
+        },
+        {
+            "id": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "label": "StockMovement",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L24",
+            "_callable": true,
+            "_callable_class": true
+        },
+        {
+            "id": "model",
+            "label": "Model",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": ""
+        },
+        {
+            "id": "hasfactory",
+            "label": "HasFactory",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": ""
+        },
+        {
+            "id": "$graphify-root$_app_models_stockmovement_stockmovement_casts",
+            "label": ".casts()",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L42",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_app_models_stockmovement_stockmovement_product",
+            "label": ".product()",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L53",
+            "_callable": true
+        },
+        {
+            "id": "belongsto",
+            "label": "BelongsTo",
+            "file_type": "code",
+            "source_file": "",
+            "source_location": "",
+            "origin_file": "$graphify-root$/app/Models/StockMovement.php"
+        },
+        {
+            "id": "$graphify-root$_app_models_stockmovement_stockmovement_user",
+            "label": ".user()",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L61",
+            "_callable": true
+        },
+        {
+            "id": "$graphify-root$_app_models_stockmovement_stockmovement_order",
+            "label": ".order()",
+            "file_type": "code",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L69",
+            "_callable": true
+        }
+    ],
+    "edges": [
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "stockmovementtype",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L5",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "stockmovementfactory",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L6",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "fillable",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L7",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "hasfactory",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L8",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "model",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L9",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "belongsto",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L10",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "carbon",
+            "relation": "imports",
+            "context": "import",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L11",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_php",
+            "target": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L24",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "model",
+            "relation": "inherits",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L32",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "hasfactory",
+            "relation": "mixes_in",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L35",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "$graphify-root$_app_models_stockmovement_stockmovement_casts",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L42",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "$graphify-root$_app_models_stockmovement_stockmovement_product",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L53",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement_product",
+            "target": "belongsto",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L53",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "$graphify-root$_app_models_stockmovement_stockmovement_user",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L61",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement_user",
+            "target": "belongsto",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L61",
+            "weight": 1.0,
+            "context": "return_type"
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement",
+            "target": "$graphify-root$_app_models_stockmovement_stockmovement_order",
+            "relation": "method",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L69",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_models_stockmovement_stockmovement_order",
+            "target": "belongsto",
+            "relation": "references",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L69",
+            "weight": 1.0,
+            "context": "return_type"
+        }
+    ],
+    "raw_calls": [
+        {
+            "caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_product",
+            "callee": "belongsTo",
+            "is_member_call": true,
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L55",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_user",
+            "callee": "belongsTo",
+            "is_member_call": true,
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L63",
+            "receiver": "this",
+            "php_scoped": false
+        },
+        {
+            "caller_nid": "$graphify-root$_app_models_stockmovement_stockmovement_order",
+            "callee": "belongsTo",
+            "is_member_call": true,
+            "source_file": "app/Models/StockMovement.php",
+            "source_location": "L71",
+            "receiver": "this",
+            "php_scoped": false
+        }
+    ]
+}

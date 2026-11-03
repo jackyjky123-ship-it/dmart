@@ -16,7 +16,15 @@ import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 
 // Heatmap scale
-const HEATMAP_HOURS = ['9 am', '10 am', '11 am', '12 pm', '1 pm', '2 pm', '3 pm'];
+const HEATMAP_HOURS = [
+    '9 am',
+    '10 am',
+    '11 am',
+    '12 pm',
+    '1 pm',
+    '2 pm',
+    '3 pm',
+];
 const HEATMAP_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 // 7x7 heatmap data replicating admin_dashboard_ref.png pattern (cross in center with heavy density)
@@ -50,7 +58,7 @@ function getCellColor(val: number) {
     if (val >= 200) {
         return 'bg-[#431407] text-white/60'; // Deep dark burnt
     }
-    return 'bg-[#222222] text-white/30'; // Base idle
+    return 'bg-muted text-foreground/30'; // Base idle
 }
 
 const TOP_PRODUCTS = [
@@ -103,104 +111,116 @@ const SALES_BY_COUNTRY = [
 
 export default function AdminDashboard() {
     const { t } = useTranslation();
-    const [hoveredCell, setHoveredCell] = useState<{ hour: string; day: string; val: number } | null>(null);
+    const [hoveredCell, setHoveredCell] = useState<{
+        hour: string;
+        day: string;
+        val: number;
+    } | null>(null);
 
     return (
-        <div className="space-y-6 text-white pb-12">
+        <div className="space-y-6 pb-12 text-foreground">
             <Head title={t('Metric Flow — Analytics Dashboard')} />
 
             {/* 1. TOP KPI METRIC CARDS ROW (From admin_dashboard_ref.png) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Total Revenue */}
-                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-md transition-colors hover:border-border">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Total Revenue')}</span>
-                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
-                            <ArrowUpRight className="w-3 h-3" /> +12.5%
+                        <span className="text-xs font-medium text-muted-foreground">
+                            {t('Total Revenue')}
+                        </span>
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-[#818cf8]/15 px-2 py-0.5 text-[11px] font-bold text-[#818cf8]">
+                            <ArrowUpRight className="h-3 w-3" /> +12.5%
                         </span>
                     </div>
-                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-1.5 font-sans">
+                    <div className="flex items-center gap-1.5 font-sans text-2xl font-black tracking-tight text-foreground sm:text-3xl">
                         <span className="text-[#F25623]">$</span> 24,500
                     </div>
-                    <div className="text-[10px] text-[#737373] font-mono">
+                    <div className="font-mono text-[10px] text-muted-foreground">
                         {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* Total Order */}
-                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-md transition-colors hover:border-border">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Total Order')}</span>
-                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
-                            <ArrowUpRight className="w-3 h-3" /> +8.2%
+                        <span className="text-xs font-medium text-muted-foreground">
+                            {t('Total Order')}
+                        </span>
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-[#818cf8]/15 px-2 py-0.5 text-[11px] font-bold text-[#818cf8]">
+                            <ArrowUpRight className="h-3 w-3" /> +8.2%
                         </span>
                     </div>
-                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                    <div className="font-sans text-2xl font-black tracking-tight text-foreground sm:text-3xl">
                         1,240
                     </div>
-                    <div className="text-[10px] text-[#737373] font-mono">
+                    <div className="font-mono text-[10px] text-muted-foreground">
                         {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* New Customer */}
-                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-md transition-colors hover:border-border">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">{t('New customer')}</span>
-                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 bg-rose-500/15 px-2 py-0.5 rounded-full">
-                            <ArrowDownRight className="w-3 h-3" /> -4.3%
+                        <span className="text-xs font-medium text-muted-foreground">
+                            {t('New customer')}
+                        </span>
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-rose-500/15 px-2 py-0.5 text-[11px] font-bold text-rose-400">
+                            <ArrowDownRight className="h-3 w-3" /> -4.3%
                         </span>
                     </div>
-                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                    <div className="font-sans text-2xl font-black tracking-tight text-foreground sm:text-3xl">
                         320
                     </div>
-                    <div className="text-[10px] text-[#737373] font-mono">
+                    <div className="font-mono text-[10px] text-muted-foreground">
                         {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
 
                 {/* Conversion Rate */}
-                <div className="rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-3 shadow-md hover:border-[#383838] transition-colors">
+                <div className="space-y-3 rounded-2xl border border-border bg-card p-5 shadow-md transition-colors hover:border-border">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs text-[#a3a3a3] font-medium">{t('Conversion rate')}</span>
-                        <span className="inline-flex items-center gap-0.5 text-[11px] font-bold text-[#818cf8] bg-[#818cf8]/15 px-2 py-0.5 rounded-full">
-                            <ArrowUpRight className="w-3 h-3" /> +2.1%
+                        <span className="text-xs font-medium text-muted-foreground">
+                            {t('Conversion rate')}
+                        </span>
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-[#818cf8]/15 px-2 py-0.5 text-[11px] font-bold text-[#818cf8]">
+                            <ArrowUpRight className="h-3 w-3" /> +2.1%
                         </span>
                     </div>
-                    <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+                    <div className="font-sans text-2xl font-black tracking-tight text-foreground sm:text-3xl">
                         3.2 %
                     </div>
-                    <div className="text-[10px] text-[#737373] font-mono">
+                    <div className="font-mono text-[10px] text-muted-foreground">
                         {t('From Jun 01, 2024 To Jun 29, 2024')}
                     </div>
                 </div>
             </div>
 
             {/* 2. MID ANALYTICS ROW: ORDERS BY TIME HEATMAP + MONTHLY SALES CHART */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
                 {/* Left: Orders by time (5 cols) */}
-                <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-md lg:col-span-5">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-white tracking-tight">
+                        <h3 className="text-sm font-bold tracking-tight text-foreground">
                             {t('Orders by time')}
                         </h3>
 
                         {/* Legend */}
-                        <div className="flex items-center gap-2 text-[10px] text-[#888] font-mono">
+                        <div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
                             <div className="flex items-center gap-1">
-                                <span className="w-2 h-2 rounded-full bg-[#431407]" />
+                                <span className="h-2 w-2 rounded-full bg-[#431407]" />
                                 <span>200&gt;</span>
                             </div>
                             <div className="flex items-center gap-1">
-                                <span className="w-2 h-2 rounded-full bg-[#7c2d12]" />
+                                <span className="h-2 w-2 rounded-full bg-[#7c2d12]" />
                                 <span>500&gt;</span>
                             </div>
                             <div className="flex items-center gap-1">
-                                <span className="w-2 h-2 rounded-full bg-[#d9481a]" />
+                                <span className="h-2 w-2 rounded-full bg-[#d9481a]" />
                                 <span>1,000&gt;</span>
                             </div>
                             <div className="flex items-center gap-1">
-                                <span className="w-2 h-2 rounded-full bg-[#F25623]" />
+                                <span className="h-2 w-2 rounded-full bg-[#F25623]" />
                                 <span>2,000&gt;</span>
                             </div>
                         </div>
@@ -208,13 +228,16 @@ export default function AdminDashboard() {
 
                     {/* Heatmap Matrix Table */}
                     <div className="pt-2">
-                        <div className="grid grid-cols-8 gap-1.5 text-center items-center">
+                        <div className="grid grid-cols-8 items-center gap-1.5 text-center">
                             {/* Empty top-left cell */}
-                            <div className="text-[10px] font-mono text-[#666]" />
+                            <div className="font-mono text-[10px] text-muted-foreground" />
 
                             {/* Column Days Header */}
                             {HEATMAP_DAYS.map((day) => (
-                                <div key={day} className="text-[10px] font-mono text-[#888]">
+                                <div
+                                    key={day}
+                                    className="font-mono text-[10px] text-muted-foreground"
+                                >
                                     {t(day)}
                                 </div>
                             ))}
@@ -222,7 +245,7 @@ export default function AdminDashboard() {
                             {/* Row per hour */}
                             {HEATMAP_HOURS.map((hr, rIdx) => (
                                 <React.Fragment key={hr}>
-                                    <div className="text-[10px] font-mono text-[#888] text-right pr-1">
+                                    <div className="pr-1 text-right font-mono text-[10px] text-muted-foreground">
                                         {t(hr)}
                                     </div>
 
@@ -231,16 +254,32 @@ export default function AdminDashboard() {
                                         return (
                                             <div
                                                 key={`${hr}-${day}`}
-                                                onMouseEnter={() => setHoveredCell({ hour: hr, day, val })}
-                                                onMouseLeave={() => setHoveredCell(null)}
+                                                onMouseEnter={() =>
+                                                    setHoveredCell({
+                                                        hour: hr,
+                                                        day,
+                                                        val,
+                                                    })
+                                                }
+                                                onMouseLeave={() =>
+                                                    setHoveredCell(null)
+                                                }
                                                 className={cn(
-                                                    'aspect-square rounded-md transition-transform duration-150 cursor-pointer flex items-center justify-center text-[9px] font-mono',
+                                                    'flex aspect-square cursor-pointer items-center justify-center rounded-md font-mono text-[9px] transition-transform duration-150',
                                                     getCellColor(val),
-                                                    hoveredCell?.hour === hr && hoveredCell?.day === day
-                                                        ? 'scale-115 ring-2 ring-white z-10'
-                                                        : 'hover:scale-105'
+                                                    hoveredCell?.hour === hr &&
+                                                        hoveredCell?.day === day
+                                                        ? 'z-10 scale-115 ring-2 ring-foreground'
+                                                        : 'hover:scale-105',
                                                 )}
-                                                title={t(':day at :hour: :val orders', { day: t(day), hour: t(hr), val })}
+                                                title={t(
+                                                    ':day at :hour: :val orders',
+                                                    {
+                                                        day: t(day),
+                                                        hour: t(hr),
+                                                        val,
+                                                    },
+                                                )}
                                             />
                                         );
                                     })}
@@ -249,11 +288,15 @@ export default function AdminDashboard() {
                         </div>
 
                         {/* Interactive Status Footer */}
-                        <div className="mt-3 text-[11px] text-[#737373] font-mono flex items-center justify-between">
+                        <div className="mt-3 flex items-center justify-between font-mono text-[11px] text-muted-foreground">
                             <span>{t('Peak Rush: 11 am – 1 pm')}</span>
                             {hoveredCell ? (
-                                <span className="text-[#F25623] font-bold">
-                                    {t(':day :hour: :val orders', { day: t(hoveredCell.day), hour: t(hoveredCell.hour), val: hoveredCell.val })}
+                                <span className="font-bold text-[#F25623]">
+                                    {t(':day :hour: :val orders', {
+                                        day: t(hoveredCell.day),
+                                        hour: t(hoveredCell.hour),
+                                        val: hoveredCell.val,
+                                    })}
                                 </span>
                             ) : (
                                 <span>{t('Hover cell for exact count')}</span>
@@ -263,41 +306,68 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Right: Monthly Sales performance Chart (7 cols) */}
-                <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md flex flex-col justify-between">
+                <div className="flex flex-col justify-between space-y-4 rounded-2xl border border-border bg-card p-5 shadow-md lg:col-span-7">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-white tracking-tight">
+                        <h3 className="text-sm font-bold tracking-tight text-foreground">
                             {t('Monthly Sales performance')}
                         </h3>
 
                         {/* Chart Legend */}
-                        <div className="flex items-center gap-4 text-xs font-mono">
-                            <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
-                                <span className="w-3 h-0.5 bg-[#F25623]" /> {t('Sales')}
+                        <div className="flex items-center gap-4 font-mono text-xs">
+                            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                <span className="h-0.5 w-3 bg-[#F25623]" />{' '}
+                                {t('Sales')}
                             </span>
-                            <span className="flex items-center gap-1.5 text-xs text-[#a3a3a3]">
-                                <span className="w-3 h-0.5 bg-[#818cf8]" /> {t('Target')}
+                            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                <span className="h-0.5 w-3 bg-[#818cf8]" />{' '}
+                                {t('Target')}
                             </span>
                         </div>
                     </div>
 
                     {/* SVG Chart Graphic */}
-                    <div className="relative w-full h-56 pt-2">
+                    <div className="relative h-56 w-full pt-2">
                         {/* Grid lines & Y-axis labels */}
-                        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] font-mono text-[#666]">
-                            {['6000', '4500', '3000', '1500', '0'].map((val) => (
-                                <div key={val} className="w-full flex items-center gap-3">
-                                    <span className="w-7 text-right">{val}</span>
-                                    <div className="flex-1 border-b border-[#262626]" />
-                                </div>
-                            ))}
+                        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between font-mono text-[10px] text-muted-foreground">
+                            {['6000', '4500', '3000', '1500', '0'].map(
+                                (val) => (
+                                    <div
+                                        key={val}
+                                        className="flex w-full items-center gap-3"
+                                    >
+                                        <span className="w-7 text-right">
+                                            {val}
+                                        </span>
+                                        <div className="flex-1 border-b border-border" />
+                                    </div>
+                                ),
+                            )}
                         </div>
 
                         {/* SVG Dual Curves */}
-                        <svg className="absolute inset-0 w-full h-full pl-10 pr-4 pb-6 overflow-visible" viewBox="0 0 600 200" preserveAspectRatio="none">
+                        <svg
+                            className="absolute inset-0 h-full w-full overflow-visible pr-4 pb-6 pl-10"
+                            viewBox="0 0 600 200"
+                            preserveAspectRatio="none"
+                        >
                             <defs>
-                                <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#F25623" stopOpacity="0.25" />
-                                    <stop offset="100%" stopColor="#F25623" stopOpacity="0" />
+                                <linearGradient
+                                    id="salesGrad"
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+                                    <stop
+                                        offset="0%"
+                                        stopColor="#F25623"
+                                        stopOpacity="0.25"
+                                    />
+                                    <stop
+                                        offset="100%"
+                                        stopColor="#F25623"
+                                        stopOpacity="0"
+                                    />
                                 </linearGradient>
                             </defs>
 
@@ -337,112 +407,174 @@ export default function AdminDashboard() {
                             />
 
                             {/* Points on April guide */}
-                            <circle cx="390" cy="50" r="4" fill="#F25623" stroke="#fff" strokeWidth="2" />
-                            <circle cx="390" cy="120" r="4" fill="#818cf8" stroke="#fff" strokeWidth="2" />
+                            <circle
+                                cx="390"
+                                cy="50"
+                                r="4"
+                                fill="#F25623"
+                                stroke="#fff"
+                                strokeWidth="2"
+                            />
+                            <circle
+                                cx="390"
+                                cy="120"
+                                r="4"
+                                fill="#818cf8"
+                                stroke="#fff"
+                                strokeWidth="2"
+                            />
                         </svg>
 
                         {/* Interactive Tooltip Card on April (replicating design_ref) */}
-                        <div className="absolute top-14 right-20 sm:right-28 bg-[#111111]/95 border border-[#333] rounded-xl p-3 shadow-xl backdrop-blur-md text-[11px] space-y-1 z-20 pointer-events-none">
-                            <div className="font-mono text-[#a3a3a3] font-bold">{t('April 1, 2025')}</div>
-                            <div className="flex items-center justify-between gap-4">
-                                <span className="flex items-center gap-1.5 text-white">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F25623]" /> {t('Total sales')}
-                                </span>
-                                <span className="font-mono font-bold text-white">4790</span>
+                        <div className="pointer-events-none absolute top-14 right-20 z-20 space-y-1 rounded-xl border border-border bg-sidebar/95 p-3 text-[11px] shadow-xl backdrop-blur-md sm:right-28">
+                            <div className="font-mono font-bold text-muted-foreground">
+                                {t('April 1, 2025')}
                             </div>
                             <div className="flex items-center justify-between gap-4">
-                                <span className="flex items-center gap-1.5 text-[#a3a3a3]">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" /> {t('Target sales')}
+                                <span className="flex items-center gap-1.5 text-foreground">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-[#F25623]" />{' '}
+                                    {t('Total sales')}
                                 </span>
-                                <span className="font-mono font-bold text-[#818cf8]">3830</span>
+                                <span className="font-mono font-bold text-foreground">
+                                    4790
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between gap-4">
+                                <span className="flex items-center gap-1.5 text-muted-foreground">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-[#818cf8]" />{' '}
+                                    {t('Target sales')}
+                                </span>
+                                <span className="font-mono font-bold text-[#818cf8]">
+                                    3830
+                                </span>
                             </div>
                         </div>
 
                         {/* X-axis months */}
-                        <div className="absolute bottom-0 left-10 right-4 flex justify-between text-[10px] font-mono text-[#888]">
-                            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m) => (
-                                <span key={m}>{t(m)}</span>
-                            ))}
+                        <div className="absolute right-4 bottom-0 left-10 flex justify-between font-mono text-[10px] text-muted-foreground">
+                            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map(
+                                (m) => (
+                                    <span key={m}>{t(m)}</span>
+                                ),
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* 3. BOTTOM ROW: SALES BY COUNTRY + TOP PRODUCT SALES */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
                 {/* Left: Sales by Country (5 cols) */}
-                <div className="lg:col-span-5 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-md lg:col-span-5">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-white tracking-tight">
+                        <h3 className="text-sm font-bold tracking-tight text-foreground">
                             {t('Sales by Country')}
                         </h3>
-                        <button type="button" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
+                        <button
+                            type="button"
+                            className="font-mono text-xs text-muted-foreground transition-colors hover:text-[#F25623]"
+                        >
                             {t('View All')}
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-3 pt-1">
+                    <div className="grid grid-cols-2 gap-3 pt-1 sm:grid-cols-3 lg:grid-cols-2">
                         {SALES_BY_COUNTRY.map((country) => (
                             <div
                                 key={country.name}
-                                className="p-3 rounded-xl bg-[#222222] border border-[#2d2d2d] hover:border-[#F25623]/60 transition-colors space-y-1"
+                                className="space-y-1 rounded-xl border border-border bg-muted p-3 transition-colors hover:border-[#F25623]/60"
                             >
-                                <div className="text-xl leading-none">{country.flag}</div>
-                                <div className="text-xs font-bold text-white truncate">{t(country.name)}</div>
-                                <div className="text-[10px] font-mono text-[#888]">{country.products.replace('Products', t('Products'))}</div>
+                                <div className="text-xl leading-none">
+                                    {country.flag}
+                                </div>
+                                <div className="truncate text-xs font-bold text-foreground">
+                                    {t(country.name)}
+                                </div>
+                                <div className="font-mono text-[10px] text-muted-foreground">
+                                    {country.products.replace(
+                                        'Products',
+                                        t('Products'),
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Right: Top Product Sales (7 cols) */}
-                <div className="lg:col-span-7 rounded-2xl border border-[#262626] bg-[#1a1a1a] p-5 space-y-4 shadow-md">
+                <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-md lg:col-span-7">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-bold text-white tracking-tight">
+                        <h3 className="text-sm font-bold tracking-tight text-foreground">
                             {t('Top Product Sales')}
                         </h3>
-                        <Link href="/admin/products" className="text-xs font-mono text-[#888] hover:text-[#F25623] transition-colors">
+                        <Link
+                            href="/admin/products"
+                            className="font-mono text-xs text-muted-foreground transition-colors hover:text-[#F25623]"
+                        >
                             {t('View All')}
                         </Link>
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse text-xs">
+                        <table className="w-full border-collapse text-left text-xs">
                             <thead>
-                                <tr className="border-b border-[#262626] text-[10px] font-mono uppercase tracking-wider text-[#737373]">
-                                    <th className="pb-3 font-semibold">{t('PRODUCT')}</th>
-                                    <th className="pb-3 font-semibold">{t('REVENUE')}</th>
-                                    <th className="pb-3 font-semibold">{t('SALES')}</th>
-                                    <th className="pb-3 font-semibold">{t('GROWTH')}</th>
-                                    <th className="pb-3 font-semibold">{t('REVIEWS')}</th>
-                                    <th className="pb-3 font-semibold">{t('VIEWS')}</th>
+                                <tr className="border-b border-border font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                                    <th className="pb-3 font-semibold">
+                                        {t('PRODUCT')}
+                                    </th>
+                                    <th className="pb-3 font-semibold">
+                                        {t('REVENUE')}
+                                    </th>
+                                    <th className="pb-3 font-semibold">
+                                        {t('SALES')}
+                                    </th>
+                                    <th className="pb-3 font-semibold">
+                                        {t('GROWTH')}
+                                    </th>
+                                    <th className="pb-3 font-semibold">
+                                        {t('REVIEWS')}
+                                    </th>
+                                    <th className="pb-3 font-semibold">
+                                        {t('VIEWS')}
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#242424]">
+                            <tbody className="divide-y divide-border">
                                 {TOP_PRODUCTS.map((prod) => (
-                                    <tr key={prod.name} className="hover:bg-[#222222]/60 transition-colors">
-                                        <td className="py-3.5 font-semibold text-white">
+                                    <tr
+                                        key={prod.name}
+                                        className="transition-colors hover:bg-muted/60"
+                                    >
+                                        <td className="py-3.5 font-semibold text-foreground">
                                             {prod.name}
                                         </td>
-                                        <td className="py-3.5 font-mono text-white font-medium">
+                                        <td className="py-3.5 font-mono font-medium text-foreground">
                                             {prod.revenue}
                                         </td>
-                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                        <td className="py-3.5 font-mono text-muted-foreground">
                                             {prod.sales}
                                         </td>
                                         <td className="py-3.5 font-mono font-bold">
-                                            <span className={cn(
-                                                'inline-flex items-center gap-0.5',
-                                                prod.growthPositive ? 'text-[#818cf8]' : 'text-rose-400'
-                                            )}>
-                                                {prod.growthPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                                            <span
+                                                className={cn(
+                                                    'inline-flex items-center gap-0.5',
+                                                    prod.growthPositive
+                                                        ? 'text-[#818cf8]'
+                                                        : 'text-rose-400',
+                                                )}
+                                            >
+                                                {prod.growthPositive ? (
+                                                    <ArrowUpRight className="h-3 w-3" />
+                                                ) : (
+                                                    <ArrowDownRight className="h-3 w-3" />
+                                                )}
                                                 {prod.growth}
                                             </span>
                                         </td>
-                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                        <td className="py-3.5 font-mono text-muted-foreground">
                                             {prod.reviews}
                                         </td>
-                                        <td className="py-3.5 font-mono text-[#a3a3a3]">
+                                        <td className="py-3.5 font-mono text-muted-foreground">
                                             {prod.views}
                                         </td>
                                     </tr>

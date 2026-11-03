@@ -58,10 +58,10 @@ export function QuantityStepper({
     return (
         <div
             className={cn(
-                'inline-flex items-center border rounded-lg overflow-hidden bg-background shadow-xs',
+                'inline-flex items-center overflow-hidden rounded-lg border bg-background shadow-xs',
                 sizeClasses.container,
-                disabled && 'opacity-50 pointer-events-none',
-                className
+                disabled && 'pointer-events-none opacity-50',
+                className,
             )}
         >
             <Button
@@ -70,15 +70,18 @@ export function QuantityStepper({
                 size="icon"
                 onClick={handleDecrement}
                 disabled={value <= min || disabled}
-                className={cn('rounded-none hover:bg-muted text-muted-foreground', sizeClasses.btn)}
+                className={cn(
+                    'rounded-none text-muted-foreground hover:bg-muted',
+                    sizeClasses.btn,
+                )}
                 aria-label="Decrease quantity"
             >
                 <Minus className={sizeClasses.icon} />
             </Button>
             <span
                 className={cn(
-                    'font-medium text-center tabular-nums select-none flex items-center justify-center',
-                    sizeClasses.input
+                    'flex items-center justify-center text-center font-medium tabular-nums select-none',
+                    sizeClasses.input,
                 )}
             >
                 {value}
@@ -89,7 +92,10 @@ export function QuantityStepper({
                 size="icon"
                 onClick={handleIncrement}
                 disabled={value >= max || disabled}
-                className={cn('rounded-none hover:bg-muted text-muted-foreground', sizeClasses.btn)}
+                className={cn(
+                    'rounded-none text-muted-foreground hover:bg-muted',
+                    sizeClasses.btn,
+                )}
                 aria-label="Increase quantity"
             >
                 <Plus className={sizeClasses.icon} />

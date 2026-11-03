@@ -1,155 +1,642 @@
 <h2>DMart UI-First Strategy & Portals Preview</h2>
-<p class="subtitle">You requested building the complete visual UI before implementing the backend and business logic. Review the portal layouts below and choose how you'd like us to sequence the UI delivery.</p>
+<p class="subtitle">
+    You requested building the complete visual UI before implementing the
+    backend and business logic. Review the portal layouts below and choose how
+    you'd like us to sequence the UI delivery.
+</p>
 
 <div class="section">
-  <div class="label">Portal Visual Wireframes</div>
-  <div class="cards">
-    <!-- Storefront Card -->
-    <div class="card">
-      <div class="card-image" style="background: #ecfdf5; padding: 12px; display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; align-items: stretch; font-size: 11px;">
-        <div style="background: #059669; color: white; padding: 6px 10px; border-radius: 6px; display: flex; justify-content: space-between; font-weight: bold;">
-          <span>DMart Groceries</span>
-          <span>🛒 Cart (2)</span>
+    <div class="label">Portal Visual Wireframes</div>
+    <div class="cards">
+        <!-- Storefront Card -->
+        <div class="card">
+            <div
+                class="card-image"
+                style="
+                    background: #ecfdf5;
+                    padding: 12px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    justify-content: flex-start;
+                    align-items: stretch;
+                    font-size: 11px;
+                "
+            >
+                <div
+                    style="
+                        background: #059669;
+                        color: white;
+                        padding: 6px 10px;
+                        border-radius: 6px;
+                        display: flex;
+                        justify-content: space-between;
+                        font-weight: bold;
+                    "
+                >
+                    <span>DMart Groceries</span>
+                    <span>🛒 Cart (2)</span>
+                </div>
+                <div
+                    style="
+                        background: white;
+                        border: 1px solid #d1fae5;
+                        border-radius: 6px;
+                        padding: 6px 8px;
+                        color: #6b7280;
+                        font-size: 10px;
+                    "
+                >
+                    🔍 Search fresh groceries, drinks, bakery...
+                </div>
+                <div style="display: flex; gap: 6px; overflow-x: hidden">
+                    <span
+                        style="
+                            background: #10b981;
+                            color: white;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 9px;
+                            font-weight: 600;
+                        "
+                        >All</span
+                    >
+                    <span
+                        style="
+                            background: #e5e7eb;
+                            color: #374151;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 9px;
+                        "
+                        >Produce</span
+                    >
+                    <span
+                        style="
+                            background: #e5e7eb;
+                            color: #374151;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 9px;
+                        "
+                        >Bakery</span
+                    >
+                    <span
+                        style="
+                            background: #e5e7eb;
+                            color: #374151;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            font-size: 9px;
+                        "
+                        >Drinks</span
+                    >
+                </div>
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 6px;
+                    "
+                >
+                    <div
+                        style="
+                            background: white;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 6px;
+                            padding: 6px;
+                            text-align: center;
+                        "
+                    >
+                        <div
+                            style="
+                                background: #dbeafe;
+                                color: #1d4ed8;
+                                font-weight: bold;
+                                border-radius: 4px;
+                                height: 36px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 12px;
+                            "
+                        >
+                            M
+                        </div>
+                        <div
+                            style="
+                                font-weight: 600;
+                                font-size: 10px;
+                                margin-top: 4px;
+                            "
+                        >
+                            Whole Milk 1L
+                        </div>
+                        <div
+                            style="
+                                color: #059669;
+                                font-weight: 700;
+                                font-size: 10px;
+                            "
+                        >
+                            $2.50
+                        </div>
+                        <button
+                            style="
+                                background: #059669;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                padding: 2px 6px;
+                                font-size: 9px;
+                                margin-top: 4px;
+                                width: 100%;
+                            "
+                        >
+                            + Add
+                        </button>
+                    </div>
+                    <div
+                        style="
+                            background: white;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 6px;
+                            padding: 6px;
+                            text-align: center;
+                        "
+                    >
+                        <div
+                            style="
+                                background: #fef3c7;
+                                color: #b45309;
+                                font-weight: bold;
+                                border-radius: 4px;
+                                height: 36px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 12px;
+                            "
+                        >
+                            B
+                        </div>
+                        <div
+                            style="
+                                font-weight: 600;
+                                font-size: 10px;
+                                margin-top: 4px;
+                            "
+                        >
+                            Fresh Baguette
+                        </div>
+                        <div
+                            style="
+                                color: #059669;
+                                font-weight: 700;
+                                font-size: 10px;
+                            "
+                        >
+                            $1.20
+                        </div>
+                        <button
+                            style="
+                                background: #059669;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                padding: 2px 6px;
+                                font-size: 9px;
+                                margin-top: 4px;
+                                width: 100%;
+                            "
+                        >
+                            + Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3>1. Storefront Portal</h3>
+                <p>
+                    Mobile-first customer experience: category filters,
+                    responsive product grid with initial-letter fallbacks,
+                    slide-over cart, checkout form, and mock KHQR payment
+                    banner.
+                </p>
+            </div>
         </div>
-        <div style="background: white; border: 1px solid #d1fae5; border-radius: 6px; padding: 6px 8px; color: #6b7280; font-size: 10px;">
-          🔍 Search fresh groceries, drinks, bakery...
-        </div>
-        <div style="display: flex; gap: 6px; overflow-x: hidden;">
-          <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 12px; font-size: 9px; font-weight: 600;">All</span>
-          <span style="background: #e5e7eb; color: #374151; padding: 2px 8px; border-radius: 12px; font-size: 9px;">Produce</span>
-          <span style="background: #e5e7eb; color: #374151; padding: 2px 8px; border-radius: 12px; font-size: 9px;">Bakery</span>
-          <span style="background: #e5e7eb; color: #374151; padding: 2px 8px; border-radius: 12px; font-size: 9px;">Drinks</span>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 6px; text-align: center;">
-            <div style="background: #dbeafe; color: #1d4ed8; font-weight: bold; border-radius: 4px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 12px;">M</div>
-            <div style="font-weight: 600; font-size: 10px; margin-top: 4px;">Whole Milk 1L</div>
-            <div style="color: #059669; font-weight: 700; font-size: 10px;">$2.50</div>
-            <button style="background: #059669; color: white; border: none; border-radius: 4px; padding: 2px 6px; font-size: 9px; margin-top: 4px; width: 100%;">+ Add</button>
-          </div>
-          <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 6px; text-align: center;">
-            <div style="background: #fef3c7; color: #b45309; font-weight: bold; border-radius: 4px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 12px;">B</div>
-            <div style="font-weight: 600; font-size: 10px; margin-top: 4px;">Fresh Baguette</div>
-            <div style="color: #059669; font-weight: 700; font-size: 10px;">$1.20</div>
-            <button style="background: #059669; color: white; border: none; border-radius: 4px; padding: 2px 6px; font-size: 9px; margin-top: 4px; width: 100%;">+ Add</button>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h3>1. Storefront Portal</h3>
-        <p>Mobile-first customer experience: category filters, responsive product grid with initial-letter fallbacks, slide-over cart, checkout form, and mock KHQR payment banner.</p>
-      </div>
-    </div>
 
-    <!-- POS Card -->
-    <div class="card">
-      <div class="card-image" style="background: #f8fafc; padding: 12px; display: flex; gap: 8px; justify-content: space-between; align-items: stretch; font-size: 10px;">
-        <div style="flex: 1.2; display: flex; flex-direction: column; gap: 6px;">
-          <div style="background: #1e293b; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 10px;">
-            POS Terminal (Cashier: Dara)
-          </div>
-          <div style="background: white; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 6px; font-size: 9px;">
-            Search SKU or name...
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 4px; padding: 4px; text-align: center;">
-              <span style="font-weight: 600;">Milk 1L</span><br><span style="color: #059669; font-weight: bold;">$2.50</span>
+        <!-- POS Card -->
+        <div class="card">
+            <div
+                class="card-image"
+                style="
+                    background: #f8fafc;
+                    padding: 12px;
+                    display: flex;
+                    gap: 8px;
+                    justify-content: space-between;
+                    align-items: stretch;
+                    font-size: 10px;
+                "
+            >
+                <div
+                    style="
+                        flex: 1.2;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 6px;
+                    "
+                >
+                    <div
+                        style="
+                            background: #1e293b;
+                            color: white;
+                            padding: 4px 8px;
+                            border-radius: 4px;
+                            font-weight: bold;
+                            font-size: 10px;
+                        "
+                    >
+                        POS Terminal (Cashier: Dara)
+                    </div>
+                    <div
+                        style="
+                            background: white;
+                            border: 1px solid #cbd5e1;
+                            border-radius: 4px;
+                            padding: 4px 6px;
+                            font-size: 9px;
+                        "
+                    >
+                        Search SKU or name...
+                    </div>
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 4px;
+                        "
+                    >
+                        <div
+                            style="
+                                background: white;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 4px;
+                                padding: 4px;
+                                text-align: center;
+                            "
+                        >
+                            <span style="font-weight: 600">Milk 1L</span
+                            ><br /><span
+                                style="color: #059669; font-weight: bold"
+                                >$2.50</span
+                            >
+                        </div>
+                        <div
+                            style="
+                                background: white;
+                                border: 1px solid #e2e8f0;
+                                border-radius: 4px;
+                                padding: 4px;
+                                text-align: center;
+                            "
+                        >
+                            <span style="font-weight: 600">Eggs 10x</span
+                            ><br /><span
+                                style="color: #059669; font-weight: bold"
+                                >$3.00</span
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="
+                        flex: 0.9;
+                        background: white;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 4px;
+                        padding: 6px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                    "
+                >
+                    <div>
+                        <div
+                            style="
+                                font-weight: bold;
+                                border-bottom: 1px solid #e2e8f0;
+                                padding-bottom: 2px;
+                                font-size: 9px;
+                            "
+                        >
+                            Current Ticket #042
+                        </div>
+                        <div
+                            style="
+                                font-size: 8px;
+                                margin-top: 4px;
+                                color: #475569;
+                            "
+                        >
+                            1x Milk 1L - $2.50
+                        </div>
+                        <div style="font-size: 8px; color: #475569">
+                            1x Eggs 10x - $3.00
+                        </div>
+                    </div>
+                    <div
+                        style="border-top: 1px dashed #cbd5e1; padding-top: 4px"
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                font-weight: bold;
+                                font-size: 10px;
+                            "
+                        >
+                            <span>Total:</span><span>$5.50</span>
+                        </div>
+                        <div style="display: flex; gap: 4px; margin-top: 4px">
+                            <button
+                                style="
+                                    flex: 1;
+                                    background: #059669;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 3px;
+                                    font-size: 8px;
+                                    padding: 2px;
+                                "
+                            >
+                                Cash
+                            </button>
+                            <button
+                                style="
+                                    flex: 1;
+                                    background: #2563eb;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 3px;
+                                    font-size: 8px;
+                                    padding: 2px;
+                                "
+                            >
+                                QR
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 4px; padding: 4px; text-align: center;">
-              <span style="font-weight: 600;">Eggs 10x</span><br><span style="color: #059669; font-weight: bold;">$3.00</span>
+            <div class="card-body">
+                <h3>2. Cashier POS</h3>
+                <p>
+                    Split-screen counter interface: rapid catalog lookup,
+                    running sale ticket, cash tendered / change calculator, mock
+                    KHQR modal, and printable 80mm thermal receipt.
+                </p>
             </div>
-          </div>
         </div>
-        <div style="flex: 0.9; background: white; border: 1px solid #e2e8f0; border-radius: 4px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="font-weight: bold; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; font-size: 9px;">Current Ticket #042</div>
-            <div style="font-size: 8px; margin-top: 4px; color: #475569;">1x Milk 1L - $2.50</div>
-            <div style="font-size: 8px; color: #475569;">1x Eggs 10x - $3.00</div>
-          </div>
-          <div style="border-top: 1px dashed #cbd5e1; padding-top: 4px;">
-            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 10px;">
-              <span>Total:</span><span>$5.50</span>
-            </div>
-            <div style="display: flex; gap: 4px; margin-top: 4px;">
-              <button style="flex: 1; background: #059669; color: white; border: none; border-radius: 3px; font-size: 8px; padding: 2px;">Cash</button>
-              <button style="flex: 1; background: #2563eb; color: white; border: none; border-radius: 3px; font-size: 8px; padding: 2px;">QR</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h3>2. Cashier POS</h3>
-        <p>Split-screen counter interface: rapid catalog lookup, running sale ticket, cash tendered / change calculator, mock KHQR modal, and printable 80mm thermal receipt.</p>
-      </div>
-    </div>
 
-    <!-- Admin Card -->
-    <div class="card">
-      <div class="card-image" style="background: #f1f5f9; padding: 12px; display: flex; gap: 8px; justify-content: flex-start; align-items: stretch; font-size: 10px;">
-        <div style="width: 55px; background: #0f172a; color: #94a3b8; border-radius: 4px; padding: 6px 4px; display: flex; flex-direction: column; gap: 4px; font-size: 8px;">
-          <div style="color: white; font-weight: bold; font-size: 9px; margin-bottom: 2px;">DMart</div>
-          <div style="color: white; background: #1e293b; padding: 2px 4px; border-radius: 2px;">Dashboard</div>
-          <div>Products</div>
-          <div>Orders</div>
-          <div>Stock</div>
-          <div>Staff</div>
+        <!-- Admin Card -->
+        <div class="card">
+            <div
+                class="card-image"
+                style="
+                    background: #f1f5f9;
+                    padding: 12px;
+                    display: flex;
+                    gap: 8px;
+                    justify-content: flex-start;
+                    align-items: stretch;
+                    font-size: 10px;
+                "
+            >
+                <div
+                    style="
+                        width: 55px;
+                        background: #0f172a;
+                        color: #94a3b8;
+                        border-radius: 4px;
+                        padding: 6px 4px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                        font-size: 8px;
+                    "
+                >
+                    <div
+                        style="
+                            color: white;
+                            font-weight: bold;
+                            font-size: 9px;
+                            margin-bottom: 2px;
+                        "
+                    >
+                        DMart
+                    </div>
+                    <div
+                        style="
+                            color: white;
+                            background: #1e293b;
+                            padding: 2px 4px;
+                            border-radius: 2px;
+                        "
+                    >
+                        Dashboard
+                    </div>
+                    <div>Products</div>
+                    <div>Orders</div>
+                    <div>Stock</div>
+                    <div>Staff</div>
+                </div>
+                <div
+                    style="
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 6px;
+                    "
+                >
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 4px;
+                        "
+                    >
+                        <div
+                            style="
+                                background: white;
+                                border-radius: 4px;
+                                padding: 4px;
+                                border: 1px solid #e2e8f0;
+                            "
+                        >
+                            <div style="color: #64748b; font-size: 7px">
+                                Today's Sales
+                            </div>
+                            <div
+                                style="
+                                    font-weight: bold;
+                                    font-size: 10px;
+                                    color: #059669;
+                                "
+                            >
+                                $418.50
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                background: white;
+                                border-radius: 4px;
+                                padding: 4px;
+                                border: 1px solid #e2e8f0;
+                            "
+                        >
+                            <div style="color: #64748b; font-size: 7px">
+                                Pending Orders
+                            </div>
+                            <div
+                                style="
+                                    font-weight: bold;
+                                    font-size: 10px;
+                                    color: #d97706;
+                                "
+                            >
+                                5
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        style="
+                            background: white;
+                            border-radius: 4px;
+                            padding: 6px;
+                            border: 1px solid #e2e8f0;
+                            flex: 1;
+                        "
+                    >
+                        <div
+                            style="
+                                font-weight: 600;
+                                font-size: 8px;
+                                margin-bottom: 3px;
+                            "
+                        >
+                            7-Day Sales Trend
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                align-items: flex-end;
+                                gap: 4px;
+                                height: 26px;
+                                padding-top: 4px;
+                            "
+                        >
+                            <div
+                                style="
+                                    flex: 1;
+                                    background: #93c5fd;
+                                    height: 40%;
+                                    border-radius: 2px 2px 0 0;
+                                "
+                            ></div>
+                            <div
+                                style="
+                                    flex: 1;
+                                    background: #93c5fd;
+                                    height: 65%;
+                                    border-radius: 2px 2px 0 0;
+                                "
+                            ></div>
+                            <div
+                                style="
+                                    flex: 1;
+                                    background: #93c5fd;
+                                    height: 50%;
+                                    border-radius: 2px 2px 0 0;
+                                "
+                            ></div>
+                            <div
+                                style="
+                                    flex: 1;
+                                    background: #93c5fd;
+                                    height: 80%;
+                                    border-radius: 2px 2px 0 0;
+                                "
+                            ></div>
+                            <div
+                                style="
+                                    flex: 1;
+                                    background: #3b82f6;
+                                    height: 100%;
+                                    border-radius: 2px 2px 0 0;
+                                "
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3>3. Admin Back Office</h3>
+                <p>
+                    Comprehensive store management: KPI metric cards, SVG sales
+                    trend chart, product & image management, stock adjustments
+                    ledger, and order fulfillment status pipeline.
+                </p>
+            </div>
         </div>
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-            <div style="background: white; border-radius: 4px; padding: 4px; border: 1px solid #e2e8f0;">
-              <div style="color: #64748b; font-size: 7px;">Today's Sales</div>
-              <div style="font-weight: bold; font-size: 10px; color: #059669;">$418.50</div>
-            </div>
-            <div style="background: white; border-radius: 4px; padding: 4px; border: 1px solid #e2e8f0;">
-              <div style="color: #64748b; font-size: 7px;">Pending Orders</div>
-              <div style="font-weight: bold; font-size: 10px; color: #d97706;">5</div>
-            </div>
-          </div>
-          <div style="background: white; border-radius: 4px; padding: 6px; border: 1px solid #e2e8f0; flex: 1;">
-            <div style="font-weight: 600; font-size: 8px; margin-bottom: 3px;">7-Day Sales Trend</div>
-            <div style="display: flex; align-items: flex-end; gap: 4px; height: 26px; padding-top: 4px;">
-              <div style="flex: 1; background: #93c5fd; height: 40%; border-radius: 2px 2px 0 0;"></div>
-              <div style="flex: 1; background: #93c5fd; height: 65%; border-radius: 2px 2px 0 0;"></div>
-              <div style="flex: 1; background: #93c5fd; height: 50%; border-radius: 2px 2px 0 0;"></div>
-              <div style="flex: 1; background: #93c5fd; height: 80%; border-radius: 2px 2px 0 0;"></div>
-              <div style="flex: 1; background: #3b82f6; height: 100%; border-radius: 2px 2px 0 0;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <h3>3. Admin Back Office</h3>
-        <p>Comprehensive store management: KPI metric cards, SVG sales trend chart, product & image management, stock adjustments ledger, and order fulfillment status pipeline.</p>
-      </div>
     </div>
-  </div>
 </div>
 
 <div class="section">
-  <div class="label">Choose Your Preferred UI-First Implementation Flow</div>
-  <div class="options">
-    <div class="option" data-choice="a" onclick="toggleSelect(this)">
-      <div class="letter">A</div>
-      <div class="content">
-        <h3>All Three Portals with Realistic Static Props First (Recommended)</h3>
-        <p>Build the complete layouts, pages, and components for Storefront, POS, and Admin upfront using static/mock Inertia props. You can immediately click through all 3 portals and verify their responsive appearance and workflow before we write any backend migrations or business logic.</p>
-      </div>
-    </div>
+    <div class="label">Choose Your Preferred UI-First Implementation Flow</div>
+    <div class="options">
+        <div class="option" data-choice="a" onclick="toggleSelect(this)">
+            <div class="letter">A</div>
+            <div class="content">
+                <h3>
+                    All Three Portals with Realistic Static Props First
+                    (Recommended)
+                </h3>
+                <p>
+                    Build the complete layouts, pages, and components for
+                    Storefront, POS, and Admin upfront using static/mock Inertia
+                    props. You can immediately click through all 3 portals and
+                    verify their responsive appearance and workflow before we
+                    write any backend migrations or business logic.
+                </p>
+            </div>
+        </div>
 
-    <div class="option" data-choice="b" onclick="toggleSelect(this)">
-      <div class="letter">B</div>
-      <div class="content">
-        <h3>Storefront UI → POS UI → Admin UI in Sequence</h3>
-        <p>Focus on one portal at a time: complete the Storefront screens and mock checkout first, review and adjust styling, then build the POS terminal UI, and finish with the Admin back-office screens.</p>
-      </div>
-    </div>
+        <div class="option" data-choice="b" onclick="toggleSelect(this)">
+            <div class="letter">B</div>
+            <div class="content">
+                <h3>Storefront UI → POS UI → Admin UI in Sequence</h3>
+                <p>
+                    Focus on one portal at a time: complete the Storefront
+                    screens and mock checkout first, review and adjust styling,
+                    then build the POS terminal UI, and finish with the Admin
+                    back-office screens.
+                </p>
+            </div>
+        </div>
 
-    <div class="option" data-choice="c" onclick="toggleSelect(this)">
-      <div class="letter">C</div>
-      <div class="content">
-        <h3>POS Counter Terminal UI First</h3>
-        <p>Start directly with the cashier POS screen (item grid, running ticket, tendered cash calculator, receipt popup) since it is the densest and most interaction-heavy interface of the project.</p>
-      </div>
+        <div class="option" data-choice="c" onclick="toggleSelect(this)">
+            <div class="letter">C</div>
+            <div class="content">
+                <h3>POS Counter Terminal UI First</h3>
+                <p>
+                    Start directly with the cashier POS screen (item grid,
+                    running ticket, tendered cash calculator, receipt popup)
+                    since it is the densest and most interaction-heavy interface
+                    of the project.
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

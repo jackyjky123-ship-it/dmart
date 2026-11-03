@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { useAppearance } from '@/hooks/use-appearance';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { useTranslation } from '@/hooks/use-translation';
 import {
     Terminal,
-    Sun,
-    Moon,
     Clock,
     History,
     Store,
@@ -41,7 +39,6 @@ interface PosPageAuthProps {
 }
 
 export default function PosLayout({ children }: { children: React.ReactNode }) {
-    const { resolvedAppearance, updateAppearance } = useAppearance();
     const [currentTime, setCurrentTime] = useState('');
     const [currentDate, setCurrentDate] = useState('');
     const { url, props } = usePage<PosPageAuthProps>();
@@ -60,14 +57,14 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
-                })
+                }),
             );
             setCurrentDate(
                 now.toLocaleDateString(dateLocale, {
                     weekday: 'short',
                     month: 'short',
                     day: 'numeric',
-                })
+                }),
             );
         };
         updateTime();
@@ -75,82 +72,89 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
         return () => clearInterval(interval);
     }, [isKhmer]);
 
-    const toggleTheme = () => {
-        updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
-    };
-
     return (
-        <div className="min-h-screen flex flex-col bg-[#141414] text-white font-sans antialiased selection:bg-[#F25623] selection:text-white">
+        <div className="flex min-h-screen flex-col bg-background font-sans text-foreground antialiased selection:bg-[#F25623] selection:text-white">
             {/* Top Bar for POS */}
-            <header className="h-14 bg-[#171717] text-white px-3 sm:px-5 flex items-center justify-between border-b border-[#262626] shadow-sm shrink-0 z-30">
+            <header className="z-30 flex h-14 shrink-0 items-center justify-between border-b border-border bg-background px-3 text-foreground shadow-sm sm:px-5">
                 {/* Left: Terminal Brand & Status */}
-                <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-                    <Link href="/pos" className="flex items-center gap-2.5 group">
-                        <div className="w-9 h-9 rounded-lg bg-[#202020] border border-[#2d2d2d] flex items-center justify-center p-1 shadow-md shadow-[#F25623]/15 group-hover:scale-105 group-hover:border-[#F25623]/60 transition-all shrink-0 overflow-hidden">
+                <div className="flex shrink-0 items-center gap-3 sm:gap-4">
+                    <Link
+                        href="/pos"
+                        className="group flex items-center gap-2.5"
+                    >
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted p-1 shadow-md shadow-[#F25623]/15 transition-all group-hover:scale-105 group-hover:border-[#F25623]/60">
                             <img
                                 src="/images/pos_icon.png"
                                 alt="DMART POS Logo"
-                                className="w-full h-full object-contain"
+                                className="h-full w-full object-contain"
                             />
                         </div>
                         <div className="flex flex-col">
                             <div className="flex items-baseline gap-1.5 leading-none">
-                                <span className="font-black tracking-wider uppercase text-white text-sm sm:text-base font-sans">
-                                    DMART <span className="text-[#F25623]">POS</span>
+                                <span className="font-sans text-sm font-black tracking-wider text-foreground uppercase sm:text-base">
+                                    DMART{' '}
+                                    <span className="text-[#F25623]">POS</span>
                                 </span>
-                                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#242424] text-zinc-300 border border-[#333]">
+                                <span className="hidden items-center rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-bold text-muted-foreground sm:inline-flex">
                                     {t('REG #01')}
                                 </span>
                             </div>
-                            <span className="text-[10px] text-zinc-400 font-mono mt-0.5 hidden xs:block">
+                            <span className="xs:block mt-0.5 hidden font-mono text-[10px] text-muted-foreground">
                                 {t('Counter Sales Terminal')}
                             </span>
                         </div>
                     </Link>
 
-                    <div className="h-5 w-px bg-[#2a2a2a] hidden md:block" />
+                    <div className="hidden h-5 w-px bg-muted md:block" />
 
                     {/* Online sync indicator */}
-                    <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#202020] border border-[#2d2d2d] text-[11px] text-zinc-400 font-mono">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50" />
+                    <div className="hidden items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 font-mono text-[11px] text-muted-foreground md:flex">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50" />
                         <span>{t('Instant Sync')}</span>
                     </div>
                 </div>
 
                 {/* Center: Mode Segmented Switcher */}
                 <div className="flex items-center justify-center">
-                    <nav className="flex items-center bg-[#202020] p-1 rounded-xl border border-[#2d2d2d] shadow-inner" aria-label={t('Terminal Navigation')}>
+                    <nav
+                        className="flex items-center rounded-xl border border-border bg-muted p-1 shadow-inner"
+                        aria-label={t('Terminal Navigation')}
+                    >
                         <Link
                             href="/pos"
-                            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all sm:px-4 ${
                                 url === '/pos'
                                     ? 'bg-[#F25623] text-white shadow-sm shadow-[#F25623]/30'
-                                    : 'text-zinc-400 hover:text-white hover:bg-[#282828]'
+                                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`}
                         >
-                            <Terminal className="w-3.5 h-3.5" />
+                            <Terminal className="h-3.5 w-3.5" />
                             <span>{t('Cash Register')}</span>
                         </Link>
                         <Link
                             href="/pos/sales"
-                            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all sm:px-4 ${
                                 url.startsWith('/pos/sales')
                                     ? 'bg-[#F25623] text-white shadow-sm shadow-[#F25623]/30'
-                                    : 'text-zinc-400 hover:text-white hover:bg-[#282828]'
+                                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`}
                         >
-                            <History className="w-3.5 h-3.5" />
+                            <History className="h-3.5 w-3.5" />
                             <span>{t('Sales History')}</span>
                         </Link>
                     </nav>
                 </div>
 
                 {/* Right: Clock, Portals, Theme & Cashier Profile */}
-                <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 text-xs">
+                <div className="flex shrink-0 items-center gap-2 text-xs sm:gap-2.5">
                     {/* Live Clock & Date */}
-                    <div className="hidden lg:flex items-center gap-2 text-zinc-300 font-mono text-xs bg-[#202020] border border-[#2d2d2d] px-3 py-1.5 rounded-lg shadow-inner">
-                        <Clock className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span>{currentDate ? `${currentDate} • ${currentTime}` : currentTime || '00:00:00'}</span>
+                    <div className="hidden items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground shadow-inner lg:flex">
+                        <Clock className="h-3.5 w-3.5 text-[#F25623]" />
+                        <span>
+                            {currentDate
+                                ? `${currentDate} • ${currentTime}`
+                                : currentTime || '00:00:00'}
+                        </span>
                     </div>
 
                     {/* Language Switcher */}
@@ -162,34 +166,59 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-8.5 px-2.5 rounded-lg border border-[#2d2d2d] bg-[#202020] text-zinc-300 hover:text-white hover:bg-[#282828] text-xs gap-1.5"
+                                className="h-8.5 gap-1.5 rounded-lg border border-border bg-muted px-2.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
                                 title={t('Switch workspace portal')}
                             >
-                                <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                <span className="hidden xl:inline">{t('Portals')}</span>
-                                <ChevronDown className="w-3 h-3 text-zinc-400" />
+                                <Store className="h-3.5 w-3.5 text-[#F25623]" />
+                                <span className="hidden xl:inline">
+                                    {t('Portals')}
+                                </span>
+                                <ChevronDown className="h-3 w-3 text-muted-foreground" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
-                            <DropdownMenuLabel className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 px-2.5 py-1.5">
+                        <DropdownMenuContent
+                            align="end"
+                            className="w-56 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-2xl"
+                        >
+                            <DropdownMenuLabel className="px-2.5 py-1.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                                 {t('Switch Portal')}
                             </DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-[#282828]" />
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                <Link href="/" className="flex items-center gap-2.5 py-2 px-2.5">
-                                    <ShoppingBag className="w-4 h-4 text-[#F25623] shrink-0" />
+                            <DropdownMenuSeparator className="bg-muted" />
+                            <DropdownMenuItem
+                                asChild
+                                className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                            >
+                                <Link
+                                    href="/"
+                                    className="flex items-center gap-2.5 px-2.5 py-2"
+                                >
+                                    <ShoppingBag className="h-4 w-4 shrink-0 text-[#F25623]" />
                                     <div>
-                                        <div className="font-semibold text-xs text-white">{t('Storefront')}</div>
-                                        <div className="text-[10px] text-zinc-400">{t('Streetwear drops & shop')}</div>
+                                        <div className="text-xs font-semibold text-foreground">
+                                            {t('Storefront')}
+                                        </div>
+                                        <div className="text-[10px] text-muted-foreground">
+                                            {t('Streetwear drops & shop')}
+                                        </div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                <Link href="/admin" className="flex items-center gap-2.5 py-2 px-2.5">
-                                    <Shield className="w-4 h-4 text-purple-400 shrink-0" />
+                            <DropdownMenuItem
+                                asChild
+                                className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                            >
+                                <Link
+                                    href="/admin"
+                                    className="flex items-center gap-2.5 px-2.5 py-2"
+                                >
+                                    <Shield className="h-4 w-4 shrink-0 text-purple-400" />
                                     <div>
-                                        <div className="font-semibold text-xs text-white">{t('Admin Console')}</div>
-                                        <div className="text-[10px] text-zinc-400">{t('Management & inventory')}</div>
+                                        <div className="text-xs font-semibold text-foreground">
+                                            {t('Admin Console')}
+                                        </div>
+                                        <div className="text-[10px] text-muted-foreground">
+                                            {t('Management & inventory')}
+                                        </div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
@@ -197,76 +226,101 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                     </DropdownMenu>
 
                     {/* Theme Toggle */}
-                    <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={toggleTheme}
-                        className="rounded-lg text-zinc-400 hover:text-white hover:bg-[#282828] border border-[#2d2d2d] bg-[#202020] h-8.5 w-8.5"
-                        aria-label={t('Toggle appearance')}
-                    >
-                        {resolvedAppearance === 'dark' ? (
-                            <Sun className="h-4 w-4 text-amber-400" />
-                        ) : (
-                            <Moon className="h-4 w-4 text-zinc-400" />
-                        )}
-                    </Button>
+                    <ThemeToggle className="h-8.5 w-8.5 border border-border bg-muted text-muted-foreground hover:bg-muted hover:text-foreground" />
 
                     {/* Cashier Account Dropdown */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <button
                                 type="button"
-                                className="flex items-center gap-2 pl-1.5 sm:pl-2 pr-2 sm:pr-2.5 py-1 rounded-lg border border-[#2d2d2d] bg-[#202020] hover:bg-[#282828] transition-colors focus:outline-none"
+                                className="flex items-center gap-2 rounded-lg border border-border bg-muted py-1 pr-2 pl-1.5 transition-colors hover:bg-muted focus:outline-none sm:pr-2.5 sm:pl-2"
                             >
-                                <div className="w-6.5 h-6.5 rounded-md bg-[#F25623] text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                                    {(cashierName || 'C').charAt(0).toUpperCase()}
+                                <div className="flex h-6.5 w-6.5 items-center justify-center rounded-md bg-[#F25623] text-xs font-bold text-white shadow-xs">
+                                    {(cashierName || 'C')
+                                        .charAt(0)
+                                        .toUpperCase()}
                                 </div>
-                                <div className="text-left hidden sm:block">
-                                    <div className="text-xs font-semibold text-white leading-tight max-w-[100px] truncate">
+                                <div className="hidden text-left sm:block">
+                                    <div className="max-w-[100px] truncate text-xs leading-tight font-semibold text-foreground">
                                         {cashierName}
                                     </div>
-                                    <div className="text-[9px] text-[#F25623] font-mono leading-none uppercase">
+                                    <div className="font-mono text-[9px] leading-none text-[#F25623] uppercase">
                                         {role}
                                     </div>
                                 </div>
-                                <ChevronDown className="w-3 h-3 text-zinc-400 hidden sm:block" />
+                                <ChevronDown className="hidden h-3 w-3 text-muted-foreground sm:block" />
                             </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
-                            <div className="px-3 py-2 border-b border-[#282828]">
-                                <p className="text-xs font-semibold text-white truncate">{cashierName}</p>
-                                <p className="text-[10px] text-zinc-400 truncate">{user?.email || 'cashier@dmart.test'}</p>
+                        <DropdownMenuContent
+                            align="end"
+                            className="w-56 rounded-xl border border-border bg-card p-1.5 text-foreground shadow-2xl"
+                        >
+                            <div className="border-b border-border px-3 py-2">
+                                <p className="truncate text-xs font-semibold text-foreground">
+                                    {cashierName}
+                                </p>
+                                <p className="truncate text-[10px] text-muted-foreground">
+                                    {user?.email || 'cashier@dmart.test'}
+                                </p>
                                 <div className="mt-1.5 flex items-center gap-1.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                    <span className="text-[10px] font-mono text-zinc-400">{t('Terminal 01 Shift Active')}</span>
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                    <span className="font-mono text-[10px] text-muted-foreground">
+                                        {t('Terminal 01 Shift Active')}
+                                    </span>
                                 </div>
                             </div>
                             <div className="py-1">
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                    <Link href="/pos/sales" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                        <History className="w-3.5 h-3.5 text-zinc-400" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/pos/sales"
+                                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                    >
+                                        <History className="h-3.5 w-3.5 text-muted-foreground" />
                                         <span>{t('Shift Sales History')}</span>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                    <Link href="/" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                        <Store className="w-3.5 h-3.5 text-zinc-400" />
+                                <DropdownMenuItem
+                                    asChild
+                                    className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                >
+                                    <Link
+                                        href="/"
+                                        className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                    >
+                                        <Store className="h-3.5 w-3.5 text-muted-foreground" />
                                         <span>{t('Storefront')}</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 {role === 'admin' && (
-                                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
-                                        <Link href="/admin" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                            <Shield className="w-3.5 h-3.5 text-purple-400" />
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer rounded-lg hover:bg-muted focus:bg-muted"
+                                    >
+                                        <Link
+                                            href="/admin"
+                                            className="flex items-center gap-2 px-2.5 py-1.5 text-xs"
+                                        >
+                                            <Shield className="h-3.5 w-3.5 text-purple-400" />
                                             <span>{t('Admin Console')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
                             </div>
-                            <DropdownMenuSeparator className="bg-[#282828]" />
-                            <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 focus:bg-rose-950/30">
-                                <Link href="/logout" method="post" as="button" className="w-full flex items-center gap-2 text-xs py-1.5 px-2.5">
-                                    <LogOut className="w-3.5 h-3.5" />
+                            <DropdownMenuSeparator className="bg-muted" />
+                            <DropdownMenuItem
+                                asChild
+                                className="cursor-pointer rounded-lg text-rose-400 hover:bg-rose-950/30 hover:text-rose-300 focus:bg-rose-950/30"
+                            >
+                                <Link
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                    className="flex w-full items-center gap-2 px-2.5 py-1.5 text-xs"
+                                >
+                                    <LogOut className="h-3.5 w-3.5" />
                                     <span>{t('End Shift & Sign Out')}</span>
                                 </Link>
                             </DropdownMenuItem>
@@ -276,7 +330,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
             </header>
 
             {/* Main content fills viewport */}
-            <main className="flex-1 flex overflow-hidden">{children}</main>
+            <main className="flex flex-1 overflow-hidden">{children}</main>
         </div>
     );
 }

@@ -26,7 +26,7 @@ export default function AuthCardLayout({
     return (
         <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
             {/* Top-Right Language Switcher */}
-            <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+            <div className="absolute top-4 right-4 z-20 sm:top-6 sm:right-6">
                 <LanguageSwitcher variant="compact" align="end" />
             </div>
 
@@ -36,15 +36,19 @@ export default function AuthCardLayout({
                     className="flex items-center gap-2 self-center font-medium"
                 >
                     <div className="flex h-9 w-9 items-center justify-center">
-                        <AppLogoIcon className="size-9 fill-current text-black dark:text-white" />
+                        <AppLogoIcon className="size-9 fill-current text-black dark:text-foreground" />
                     </div>
                 </Link>
 
                 <div className="flex flex-col gap-6">
                     <Card className="rounded-xl">
                         <CardHeader className="px-10 pt-8 pb-0 text-center">
-                            <CardTitle className="text-xl">{title ? t(title) : title}</CardTitle>
-                            <CardDescription>{description ? t(description) : description}</CardDescription>
+                            <CardTitle className="text-xl">
+                                {title ? t(title) : title}
+                            </CardTitle>
+                            <CardDescription>
+                                {description ? t(description) : description}
+                            </CardDescription>
                         </CardHeader>
                         <CardContent className="px-10 py-8">
                             {children}

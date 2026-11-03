@@ -1,1 +1,80 @@
-{"nodes": [{"id": "$graphify-root$_app_enums_userrole_php", "label": "UserRole.php", "file_type": "code", "source_file": "app/Enums/UserRole.php", "source_location": "L1"}, {"id": "$graphify-root$_app_enums_userrole_userrole", "label": "UserRole", "file_type": "code", "source_file": "app/Enums/UserRole.php", "source_location": "L5", "_callable": true, "_callable_class": true}, {"id": "$graphify-root$_app_enums_userrole_userrole_customer", "label": "Customer", "file_type": "code", "source_file": "app/Enums/UserRole.php", "source_location": "L7"}, {"id": "$graphify-root$_app_enums_userrole_userrole_cashier", "label": "Cashier", "file_type": "code", "source_file": "app/Enums/UserRole.php", "source_location": "L8"}, {"id": "$graphify-root$_app_enums_userrole_userrole_admin", "label": "Admin", "file_type": "code", "source_file": "app/Enums/UserRole.php", "source_location": "L9"}], "edges": [{"source": "$graphify-root$_app_enums_userrole_php", "target": "$graphify-root$_app_enums_userrole_userrole", "relation": "contains", "confidence": "EXTRACTED", "source_file": "app/Enums/UserRole.php", "source_location": "L5", "weight": 1.0}, {"source": "$graphify-root$_app_enums_userrole_userrole", "target": "$graphify-root$_app_enums_userrole_userrole_customer", "relation": "case_of", "confidence": "EXTRACTED", "source_file": "app/Enums/UserRole.php", "source_location": "L7", "weight": 1.0}, {"source": "$graphify-root$_app_enums_userrole_userrole", "target": "$graphify-root$_app_enums_userrole_userrole_cashier", "relation": "case_of", "confidence": "EXTRACTED", "source_file": "app/Enums/UserRole.php", "source_location": "L8", "weight": 1.0}, {"source": "$graphify-root$_app_enums_userrole_userrole", "target": "$graphify-root$_app_enums_userrole_userrole_admin", "relation": "case_of", "confidence": "EXTRACTED", "source_file": "app/Enums/UserRole.php", "source_location": "L9", "weight": 1.0}], "raw_calls": []}
+{
+    "nodes": [
+        {
+            "id": "$graphify-root$_app_enums_userrole_php",
+            "label": "UserRole.php",
+            "file_type": "code",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L1"
+        },
+        {
+            "id": "$graphify-root$_app_enums_userrole_userrole",
+            "label": "UserRole",
+            "file_type": "code",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L5",
+            "_callable": true,
+            "_callable_class": true
+        },
+        {
+            "id": "$graphify-root$_app_enums_userrole_userrole_customer",
+            "label": "Customer",
+            "file_type": "code",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L7"
+        },
+        {
+            "id": "$graphify-root$_app_enums_userrole_userrole_cashier",
+            "label": "Cashier",
+            "file_type": "code",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L8"
+        },
+        {
+            "id": "$graphify-root$_app_enums_userrole_userrole_admin",
+            "label": "Admin",
+            "file_type": "code",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L9"
+        }
+    ],
+    "edges": [
+        {
+            "source": "$graphify-root$_app_enums_userrole_php",
+            "target": "$graphify-root$_app_enums_userrole_userrole",
+            "relation": "contains",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L5",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_enums_userrole_userrole",
+            "target": "$graphify-root$_app_enums_userrole_userrole_customer",
+            "relation": "case_of",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L7",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_enums_userrole_userrole",
+            "target": "$graphify-root$_app_enums_userrole_userrole_cashier",
+            "relation": "case_of",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L8",
+            "weight": 1.0
+        },
+        {
+            "source": "$graphify-root$_app_enums_userrole_userrole",
+            "target": "$graphify-root$_app_enums_userrole_userrole_admin",
+            "relation": "case_of",
+            "confidence": "EXTRACTED",
+            "source_file": "app/Enums/UserRole.php",
+            "source_location": "L9",
+            "weight": 1.0
+        }
+    ],
+    "raw_calls": []
+}

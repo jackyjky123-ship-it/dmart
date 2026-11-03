@@ -9,11 +9,11 @@ interface ProductThumbProps {
 }
 
 const PALETTE = [
-    { bg: 'bg-[#222222]', text: 'text-[#F25623]' },
-    { bg: 'bg-[#1e1e1e]', text: 'text-white' },
-    { bg: 'bg-[#262626]', text: 'text-amber-400' },
-    { bg: 'bg-[#1c1c1c]', text: 'text-[#F25623]' },
-    { bg: 'bg-[#242424]', text: 'text-zinc-300' },
+    { bg: 'bg-muted', text: 'text-[#F25623]' },
+    { bg: 'bg-card', text: 'text-foreground' },
+    { bg: 'bg-muted', text: 'text-amber-400' },
+    { bg: 'bg-card', text: 'text-[#F25623]' },
+    { bg: 'bg-muted', text: 'text-muted-foreground' },
 ];
 
 function getPalette(name: string) {
@@ -33,14 +33,29 @@ const SIZE_CLASSES = {
     full: 'w-full h-full text-4xl rounded-xl',
 };
 
-export function ProductThumb({ name, imageUrl, size = 'md', className }: ProductThumbProps) {
+export function ProductThumb({
+    name,
+    imageUrl,
+    size = 'md',
+    className,
+}: ProductThumbProps) {
     const letter = (name?.trim()?.[0] || 'D').toUpperCase();
     const theme = getPalette(name || '');
 
     if (imageUrl) {
         return (
-            <div className={cn('relative overflow-hidden flex items-center justify-center bg-[#202020]', SIZE_CLASSES[size], className)}>
-                <img src={imageUrl} alt={name} className="h-full w-full object-cover" />
+            <div
+                className={cn(
+                    'relative flex items-center justify-center overflow-hidden bg-muted',
+                    SIZE_CLASSES[size],
+                    className,
+                )}
+            >
+                <img
+                    src={imageUrl}
+                    alt={name}
+                    className="h-full w-full object-cover"
+                />
             </div>
         );
     }
@@ -48,11 +63,11 @@ export function ProductThumb({ name, imageUrl, size = 'md', className }: Product
     return (
         <div
             className={cn(
-                'flex items-center justify-center font-black tracking-tight select-none shadow-inner border border-white/5 font-mono',
+                'flex items-center justify-center border border-foreground/5 font-mono font-black tracking-tight shadow-inner select-none',
                 theme.bg,
                 theme.text,
                 SIZE_CLASSES[size],
-                className
+                className,
             )}
         >
             {letter}

@@ -17,7 +17,9 @@ export default function Appearance() {
                 <Heading
                     variant="small"
                     title={t('Appearance settings')}
-                    description={t('Update the appearance settings for your account')}
+                    description={t(
+                        'Update the appearance settings for your account',
+                    )}
                 />
                 <AppearanceTabs />
             </div>

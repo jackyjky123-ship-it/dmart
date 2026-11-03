@@ -62,16 +62,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     const addToCart = (product: CartProduct, quantity = 1) => {
         setItems((prev) => {
-            const existing = prev.find((item) => item.product.id === product.id);
+            const existing = prev.find(
+                (item) => item.product.id === product.id,
+            );
             if (existing) {
-                const newQty = Math.min(existing.quantity + quantity, product.stock);
+                const newQty = Math.min(
+                    existing.quantity + quantity,
+                    product.stock,
+                );
                 toast.success(`Updated ${product.name} quantity to ${newQty}`);
                 return prev.map((item) =>
-                    item.product.id === product.id ? { ...item, quantity: newQty } : item
+                    item.product.id === product.id
+                        ? { ...item, quantity: newQty }
+                        : item,
                 );
             }
             toast.success(`Added ${product.name} to cart`);
-            return [...prev, { id: product.id, product, quantity: Math.min(quantity, product.stock) }];
+            return [
+                ...prev,
+                {
+                    id: product.id,
+                    product,
+                    quantity: Math.min(quantity, product.stock),
+                },
+            ];
         });
     };
 
@@ -87,7 +101,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     return { ...item, quantity: clamped };
                 }
                 return item;
-            })
+            }),
         );
     };
 
@@ -106,10 +120,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
 
     const itemCount = items.reduce((acc, item) => acc + item.quantity, 0);
-    const subtotalCents = items.reduce((acc, item) => acc + item.product.price_cents * item.quantity, 0);
-    const shippingFeeCents = subtotalCents >= FREE_SHIPPING_THRESHOLD || subtotalCents === 0 ? 0 : FLAT_SHIPPING_FEE;
+    const subtotalCents = items.reduce(
+        (acc, item) => acc + item.product.price_cents * item.quantity,
+        0,
+    );
+    const shippingFeeCents =
+        subtotalCents >= FREE_SHIPPING_THRESHOLD || subtotalCents === 0
+            ? 0
+            : FLAT_SHIPPING_FEE;
     const totalCents = subtotalCents + shippingFeeCents;
-    const progressToFreeShipping = Math.min(100, Math.round((subtotalCents / FREE_SHIPPING_THRESHOLD) * 100));
+    const progressToFreeShipping = Math.min(
+        100,
+        Math.round((subtotalCents / FREE_SHIPPING_THRESHOLD) * 100),
+    );
 
     return (
         <CartContext.Provider

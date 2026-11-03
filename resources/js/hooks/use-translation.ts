@@ -1,6 +1,10 @@
 import { useCallback, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
-import type { I18nPageProps, Replacements, TranslateFunction } from '@/types/i18n';
+import type {
+    I18nPageProps,
+    Replacements,
+    TranslateFunction,
+} from '@/types/i18n';
 
 /**
  * Interpolates placeholder parameters in a string.
@@ -12,15 +16,17 @@ export function interpolate(text: string, replacements?: Replacements): string {
     }
 
     let result = text;
-    const entries = Object.entries(replacements).sort((a, b) => b[0].length - a[0].length);
+    const entries = Object.entries(replacements).sort(
+        (a, b) => b[0].length - a[0].length,
+    );
 
     for (const [rawKey, value] of entries) {
         const val = String(value ?? '');
         const key = rawKey.startsWith(':')
             ? rawKey.slice(1)
             : rawKey.startsWith('{') && rawKey.endsWith('}')
-                ? rawKey.slice(1, -1)
-                : rawKey;
+              ? rawKey.slice(1, -1)
+              : rawKey;
 
         // Replace both :key and {key} tokens
         result = result.split(`:${key}`).join(val).split(`{${key}}`).join(val);
@@ -36,15 +42,16 @@ export function interpolate(text: string, replacements?: Replacements): string {
 export function translate(
     key: string,
     replacements?: Replacements,
-    translations?: Record<string, string>
+    translations?: Record<string, string>,
 ): string {
     if (!key) {
         return '';
     }
 
-    const raw = translations && typeof translations[key] === 'string'
-        ? translations[key]
-        : key;
+    const raw =
+        translations && typeof translations[key] === 'string'
+            ? translations[key]
+            : key;
 
     return interpolate(raw, replacements);
 }
@@ -69,17 +76,25 @@ export interface UseTranslationReturn {
 export function useTranslation(): UseTranslationReturn {
     const { props } = usePage<I18nPageProps>();
 
-    const locale = typeof props.locale === 'string' && props.locale ? props.locale : 'en';
-    const locales = (props.locales && typeof props.locales === 'object'
-        ? props.locales
-        : { en: 'English', km: 'ភាសាខ្មែរ' }) as Record<string, string>;
-    const translations = (props.translations && typeof props.translations === 'object'
-        ? props.translations
-        : {}) as Record<string, string>;
+    const locale =
+        typeof props.locale === 'string' && props.locale ? props.locale : 'en';
+    const locales = (
+        props.locales && typeof props.locales === 'object'
+            ? props.locales
+            : { en: 'English', km: 'ភាសាខ្មែរ' }
+    ) as Record<string, string>;
+    const translations = (
+        props.translations && typeof props.translations === 'object'
+            ? props.translations
+            : {}
+    ) as Record<string, string>;
 
     // Keep <html lang="..."> in sync with the current locale
     useEffect(() => {
-        if (typeof document !== 'undefined' && document.documentElement.lang !== locale) {
+        if (
+            typeof document !== 'undefined' &&
+            document.documentElement.lang !== locale
+        ) {
             document.documentElement.lang = locale;
         }
     }, [locale]);
@@ -88,7 +103,7 @@ export function useTranslation(): UseTranslationReturn {
         (key: string, replacements?: Replacements): string => {
             return translate(key, replacements, translations);
         },
-        [translations]
+        [translations],
     );
 
     return {

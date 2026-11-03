@@ -20,24 +20,27 @@ type Props = {
 export default function Login({ status, canResetPassword, portal }: Props) {
     const { t } = useTranslation();
 
-    const title = portal === 'admin'
-        ? t('Admin Sign In')
-        : portal === 'cashier'
-        ? t('Cashier Sign In')
-        : t('Log in to DMart');
+    const title =
+        portal === 'admin'
+            ? t('Admin Sign In')
+            : portal === 'cashier'
+              ? t('Cashier Sign In')
+              : t('Log in to DMart');
 
     return (
         <>
             <Head title={title} />
 
             <div className="mb-4 text-center">
-                <h1 className="text-xl font-bold tracking-tight text-foreground">{title}</h1>
+                <h1 className="text-xl font-bold tracking-tight text-foreground">
+                    {title}
+                </h1>
                 <p className="text-sm text-muted-foreground">
                     {portal === 'admin'
                         ? t('Administrative credentials required')
                         : portal === 'cashier'
-                        ? t('Staff cashier credentials required')
-                        : t('Enter your email and password below')}
+                          ? t('Staff cashier credentials required')
+                          : t('Enter your email and password below')}
                 </p>
             </div>
 
@@ -48,11 +51,15 @@ export default function Login({ status, canResetPassword, portal }: Props) {
             >
                 {({ processing, errors }) => (
                     <>
-                        {portal && <input type="hidden" name="portal" value={portal} />}
+                        {portal && (
+                            <input type="hidden" name="portal" value={portal} />
+                        )}
 
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">{t('Email address')}</Label>
+                                <Label htmlFor="email">
+                                    {t('Email address')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -68,7 +75,9 @@ export default function Login({ status, canResetPassword, portal }: Props) {
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">{t('Password')}</Label>
+                                    <Label htmlFor="password">
+                                        {t('Password')}
+                                    </Label>
                                     {canResetPassword && !portal && (
                                         <TextLink
                                             href={request()}
@@ -96,13 +105,21 @@ export default function Login({ status, canResetPassword, portal }: Props) {
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">{t('Remember me')}</Label>
+                                <Label htmlFor="remember">
+                                    {t('Remember me')}
+                                </Label>
                             </div>
 
                             <Button
                                 type="submit"
                                 size="lg"
-                                variant={portal === 'admin' ? 'default' : portal === 'cashier' ? 'default' : 'emerald'}
+                                variant={
+                                    portal === 'admin'
+                                        ? 'default'
+                                        : portal === 'cashier'
+                                          ? 'default'
+                                          : 'emerald'
+                                }
                                 className="mt-2 w-full font-bold shadow-md"
                                 tabIndex={4}
                                 loading={processing}
