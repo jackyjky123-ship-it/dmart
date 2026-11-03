@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Montserrat:wght@800;900&display=swap');
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
@@ -13,6 +13,8 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    --font-khmer: 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif;
 
     --font-script:
         'Caveat', 'Dancing Script', 'Brush Script MT', 'Segoe Script', cursive;
@@ -66,6 +68,14 @@
 
     --color-brand-orange: #F25623;
     --color-brand-black: #171717;
+}
+
+html[lang="km"],
+html[lang^="km-"] {
+    --font-sans: 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+    font-family: var(--font-sans);
 }
 
 :root {
