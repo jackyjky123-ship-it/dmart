@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@800;900&display=swap');
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
@@ -12,6 +13,9 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    --font-script:
+        'Caveat', 'Dancing Script', 'Brush Script MT', 'Segoe Script', cursive;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -163,3 +167,8 @@
 .animate-marquee:hover {
     animation-play-state: paused;
 }
+
+.font-script {
+    font-family: 'Caveat', 'Dancing Script', 'Brush Script MT', 'Segoe Script', cursive;
+}
+

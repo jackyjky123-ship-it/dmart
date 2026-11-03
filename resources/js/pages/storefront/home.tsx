@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { ProductCard } from '@/components/product-card';
 import { Button } from '@/components/ui/button';
+import { HeroBanner } from '@/components/hero-banner';
 import { CartProduct, useCart } from '@/hooks/use-cart';
 import {
     ArrowRight,
@@ -159,68 +160,20 @@ export default function Home({
         <div className="space-y-16 pb-12">
             <Head title="DMART — Limited Releases & Modern Luxury Streetwear" />
 
-            {/* 1. HERO SECTION (Inspired by design_ref.png) */}
-            <section className="relative overflow-hidden rounded-2xl bg-[#121212] border border-[#262626] min-h-[580px] lg:min-h-[640px] flex items-center justify-center text-center px-6 py-20">
-                {/* Background Atmosphere */}
-                <div className="absolute inset-0 z-0 opacity-40">
-                    <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#121212]/60 to-[#121212]" />
-                </div>
-
-                {/* Subtle Orange Glow Ambient Spot */}
-                <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#F25623]/15 rounded-full blur-3xl pointer-events-none" />
-
-                <div className="relative z-10 max-w-4xl mx-auto space-y-6">
-                    {/* Capsule Badge */}
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/20 bg-black/60 backdrop-blur-md text-[11px] font-mono uppercase tracking-widest text-[#F25623]">
-                        <Flame className="w-3.5 h-3.5" />
-                        <span>Exclusive Capsule Drop 01</span>
-                    </div>
-
-                    {/* Headline Trio */}
-                    <div className="space-y-1 sm:space-y-2">
-                        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-none font-sans">
-                            STYLE
-                        </h1>
-                        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-[#e5e5e5] leading-none font-sans">
-                            VIBE
-                        </h2>
-                        <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-[#F25623] leading-none font-sans">
-                            REFLECT
-                        </h3>
-                    </div>
-
-                    {/* Subtitle */}
-                    <p className="max-w-xl mx-auto text-sm sm:text-base text-[#a3a3a3] font-light leading-relaxed">
-                        High-density textiles engineered for the modern disruptor. Precision silhouettes crafted to command presence without saying a word.
-                    </p>
-
-                    {/* Action CTA */}
-                    <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Button
-                            asChild
-                            variant="orange"
-                            size="lg"
-                            className="w-full sm:w-auto px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl shadow-[#F25623]/25 hover:scale-105 transition-all"
-                        >
-                            <Link href="/products">
-                                Shop Now <ArrowRight className="w-4 h-4 ml-1" />
-                            </Link>
-                        </Button>
-                        <Button
-                            asChild
-                            variant="outline"
-                            size="lg"
-                            className="w-full sm:w-auto px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest border-white/20 bg-black/40 text-white hover:bg-white/10 hover:border-white/40"
-                        >
-                            <Link href="/products?filter=drops">
-                                View Lookbook
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-            </section>
+            {/* 1. HERO SECTION (Recreated from banner_herosection_ref.png with bg_girlshopping.png) */}
+            <HeroBanner
+                storeName="Store"
+                offerText="FOR ONLINE ORDER"
+                discountPercent="30% OFF"
+                headlineSmall="NEW ARRIVALS"
+                headlineMain="JUST FOR"
+                headlineScript="you"
+                locationTitle="BUILDING NAME"
+                locationSubtitle="MAIN ROAD, COUNTRY, 45612"
+                ctaText="WWW.YOURSITE.COM"
+                ctaHref="/products"
+                backgroundImageUrl="/images/bg_girlshopping.png"
+            />
 
             {/* 2. MANIFESTO BANNER: "DESIGNED TO DISRUPT" (Directly from design_ref.png) */}
             <section className="text-center py-12 px-4 border-y border-[#262626] bg-[#141414]/50 rounded-2xl">
