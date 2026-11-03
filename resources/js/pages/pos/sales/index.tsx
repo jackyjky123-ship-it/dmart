@@ -53,9 +53,15 @@ export default function PosSalesIndex({ sales = [] }: PosSalesIndexProps) {
             s.order_number.toLowerCase().includes(search.toLowerCase()) ||
             s.payment_method.toLowerCase().includes(search.toLowerCase());
 
-        const matchesDate =
-            !dateFilter ||
-            (s.created_at && s.created_at.startsWith(dateFilter));
+        const matchesDate = !dateFilter || (() => {
+            if (!s.created_at) return false;
+            const d = new Date(s.created_at);
+            if (isNaN(d.getTime())) return false;
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}` === dateFilter;
+        })();
 
         return matchesSearch && matchesDate;
     });

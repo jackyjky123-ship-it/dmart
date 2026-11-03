@@ -491,5 +491,8 @@
     "khqr": "KHQR",
     "Walk-in": "Walk-in",
     "Reset": "Reset",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "Cash Register": "Cash Register",
+    ":count items": ":count items",
+    "Reg #01": "Reg #01"
 }

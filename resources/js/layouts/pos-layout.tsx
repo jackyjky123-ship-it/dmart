@@ -129,7 +129,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             }`}
                         >
                             <Terminal className="w-3.5 h-3.5" />
-                            <span>{t('Register')}</span>
+                            <span>{t('Cash Register')}</span>
                         </Link>
                         <Link
                             href="/pos/sales"
