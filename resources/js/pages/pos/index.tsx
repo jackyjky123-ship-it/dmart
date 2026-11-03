@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { formatMoney } from '@/lib/money';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     Search,
     Trash2,
@@ -97,6 +98,7 @@ export default function PosIndex({
     cashier,
 }: PosIndexProps) {
     const page = usePage();
+    const { t } = useTranslation();
 
     // Tickets state for holding sales (Ticket 1, Ticket 2, etc.)
     const [tickets, setTickets] = useState<PosTicket[]>([
@@ -180,7 +182,7 @@ export default function PosIndex({
 
     const handleAddToCart = (product: Product) => {
         if (product.stock <= 0) {
-            toast.error(`"${product.name}" is currently out of stock.`);
+            toast.error(t('":name" is currently out of stock.', { name: product.name }));
             return;
         }
 
@@ -188,21 +190,21 @@ export default function PosIndex({
         const currentQty = existing ? existing.quantity : 0;
 
         if (currentQty >= product.stock) {
-            toast.warning(`Cannot add more than ${product.stock} available unit(s).`);
+            toast.warning(t('Cannot add more than :count available unit(s).', { count: product.stock }));
             return;
         }
 
         if (existing) {
-            updateActiveTicket((t) => ({
-                ...t,
-                items: t.items.map((i) =>
+            updateActiveTicket((tState) => ({
+                ...tState,
+                items: tState.items.map((i) =>
                     i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
                 ),
             }));
         } else {
-            updateActiveTicket((t) => ({
-                ...t,
-                items: [...t.items, { product, quantity: 1 }],
+            updateActiveTicket((tState) => ({
+                ...tState,
+                items: [...tState.items, { product, quantity: 1 }],
             }));
         }
     };
@@ -212,46 +214,46 @@ export default function PosIndex({
         if (!item) return;
 
         if (newQty <= 0) {
-            updateActiveTicket((t) => ({
-                ...t,
-                items: t.items.filter((i) => i.product.id !== productId),
+            updateActiveTicket((tState) => ({
+                ...tState,
+                items: tState.items.filter((i) => i.product.id !== productId),
             }));
             return;
         }
 
         if (newQty > item.product.stock) {
-            toast.warning(`Only ${item.product.stock} unit(s) of "${item.product.name}" in stock.`);
+            toast.warning(t('Only :count unit(s) of ":name" in stock.', { count: item.product.stock, name: item.product.name }));
             return;
         }
 
-        updateActiveTicket((t) => ({
-            ...t,
-            items: t.items.map((i) =>
+        updateActiveTicket((tState) => ({
+            ...tState,
+            items: tState.items.map((i) =>
                 i.product.id === productId ? { ...i, quantity: newQty } : i
             ),
         }));
     };
 
     const handleRemoveItem = (productId: number) => {
-        updateActiveTicket((t) => ({
-            ...t,
-            items: t.items.filter((i) => i.product.id !== productId),
+        updateActiveTicket((tState) => ({
+            ...tState,
+            items: tState.items.filter((i) => i.product.id !== productId),
         }));
     };
 
     const handleClearActiveTicket = () => {
-        updateActiveTicket((t) => ({
-            ...t,
+        updateActiveTicket((tState) => ({
+            ...tState,
             customerName: '',
             items: [],
         }));
-        toast.info('Ticket items cleared.');
+        toast.info(t('Ticket items cleared.'));
     };
 
     // Hold and create a new ticket
     const handleNewTicket = () => {
         if (tickets.length >= 6) {
-            toast.warning('Maximum of 6 held tickets allowed.');
+            toast.warning(t('Maximum of 6 held tickets allowed.'));
             return;
         }
         const nextNumber = tickets.length + 1;
@@ -263,7 +265,7 @@ export default function PosIndex({
         };
         setTickets((prev) => [...prev, newTicket]);
         setActiveTicketId(newTicket.id);
-        toast.success(`Created ${newTicket.label}`);
+        toast.success(t('Created :label', { label: t(newTicket.label) }));
     };
 
     // Close or discard a ticket
@@ -273,7 +275,7 @@ export default function PosIndex({
             handleClearActiveTicket();
             return;
         }
-        const remaining = tickets.filter((t) => t.id !== ticketId);
+        const remaining = tickets.filter((tkt) => tkt.id !== ticketId);
         setTickets(remaining);
         if (activeTicketId === ticketId) {
             setActiveTicketId(remaining[0].id);
@@ -298,7 +300,7 @@ export default function PosIndex({
         if (ticketItems.length === 0 || isSubmitting) return;
 
         if (paymentMethod === 'cash' && isUnderTendered) {
-            toast.error('Cash tendered must cover the sale total.');
+            toast.error(t('Cash tendered must cover the sale total.'));
             return;
         }
 
@@ -331,7 +333,7 @@ export default function PosIndex({
                 // Reset or prune the completed ticket
                 setTickets((prev) => {
                     if (prev.length > 1) {
-                        const remaining = prev.filter((t) => t.id !== activeTicket.id);
+                        const remaining = prev.filter((tkt) => tkt.id !== activeTicket.id);
                         setActiveTicketId(remaining[0].id);
                         return remaining;
                     } else {
@@ -342,7 +344,7 @@ export default function PosIndex({
             onError: (errors) => {
                 setIsSubmitting(false);
                 const firstError = Object.values(errors)[0] as string | undefined;
-                toast.error(firstError || 'Failed to complete POS sale.');
+                toast.error(firstError || t('Failed to complete POS sale.'));
             },
         });
     };
@@ -353,7 +355,7 @@ export default function PosIndex({
 
     return (
         <div className="flex-1 flex flex-col lg:flex-row w-full h-[calc(100vh-3.5rem)] overflow-hidden bg-[#121212] text-white">
-            <Head title="POS Terminal — DMART" />
+            <Head title={`${t('POS Terminal')} — DMART`} />
 
             {/* Print Stylesheet for 80mm Thermal Receipt */}
             <style>{`
@@ -386,7 +388,7 @@ export default function PosIndex({
                         <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#737373] pointer-events-none" />
                         <Input
                             type="text"
-                            placeholder="Search by name or SKU..."
+                            placeholder={t('Search by name or SKU...')}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-full h-10 pl-10 pr-9 rounded-full border-[#2d2d2d] bg-[#202020] text-xs text-white placeholder:text-[#666] focus:border-[#F25623]"
@@ -403,9 +405,9 @@ export default function PosIndex({
                     </div>
 
                     <div className="flex items-center gap-2 text-xs font-mono text-[#888]">
-                        <span className="hidden sm:inline">Active Catalog:</span>
+                        <span className="hidden sm:inline">{t('Active Catalog:')}</span>
                         <Badge variant="outline" className="border-[#333] text-white bg-[#222]">
-                            {filteredProducts.length} items
+                            {t(':count items', { count: filteredProducts.length })}
                         </Badge>
                     </div>
                 </div>
@@ -422,7 +424,7 @@ export default function PosIndex({
                                 : 'bg-[#202020] text-[#a3a3a3] border-[#2d2d2d] hover:text-white hover:border-[#444]'
                         )}
                     >
-                        All Drops <span className="text-[10px] opacity-75 font-mono ml-1">({totalProductCount})</span>
+                        {t('All Drops')} <span className="text-[10px] opacity-75 font-mono ml-1">({totalProductCount})</span>
                     </button>
                     {categories.map((cat) => (
                         <button
@@ -436,7 +438,7 @@ export default function PosIndex({
                                     : 'bg-[#202020] text-[#a3a3a3] border-[#2d2d2d] hover:text-white hover:border-[#444]'
                             )}
                         >
-                            {cat.name}
+                            {t(cat.name)}
                             <span className="text-[10px] opacity-75 font-mono ml-1">({cat.product_count})</span>
                         </button>
                     ))}
@@ -447,11 +449,11 @@ export default function PosIndex({
                     {filteredProducts.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#737373]">
                             <ShoppingBag className="w-12 h-12 mb-3 stroke-[1.5] text-[#444]" />
-                            <div className="font-bold text-sm text-white mb-1">No products found</div>
+                            <div className="font-bold text-sm text-white mb-1">{t('No products found')}</div>
                             <div className="text-xs max-w-xs">
                                 {search
-                                    ? `No active items match "${search}". Try searching another name or SKU.`
-                                    : 'No active items available in this category.'}
+                                    ? t('No active items match ":search". Try searching another name or SKU.', { search })
+                                    : t('No active items available in this category.')}
                             </div>
                             {search && (
                                 <Button
@@ -460,7 +462,7 @@ export default function PosIndex({
                                     onClick={() => setSearch('')}
                                     className="mt-4 border-[#333] text-xs"
                                 >
-                                    Clear Search
+                                    {t('Clear Search')}
                                 </Button>
                             )}
                         </div>
@@ -497,18 +499,18 @@ export default function PosIndex({
                                                 {/* Stock Status Badge */}
                                                 {isOutOfStock ? (
                                                     <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-rose-500/90 text-white">
-                                                        Sold Out
+                                                        {t('Sold Out')}
                                                     </span>
                                                 ) : isLowStock ? (
                                                     <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-500/90 text-black">
-                                                        {p.stock} left
+                                                        {t(':count left', { count: p.stock })}
                                                     </span>
                                                 ) : null}
 
                                                 {/* In Cart Indicator */}
                                                 {inCartItem && (
                                                     <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#F25623] text-white shadow-md">
-                                                        {inCartItem.quantity} in cart
+                                                        {t(':count in cart', { count: inCartItem.quantity })}
                                                     </span>
                                                 )}
                                             </div>
@@ -516,7 +518,7 @@ export default function PosIndex({
                                             {/* SKU & Category */}
                                             <div className="flex items-center justify-between text-[10px] text-[#737373] font-mono mb-0.5">
                                                 <span>{p.sku}</span>
-                                                <span className="truncate max-w-[80px]">{p.category_name}</span>
+                                                <span className="truncate max-w-[80px]">{p.category_name ? t(p.category_name) : ''}</span>
                                             </div>
 
                                             {/* Name */}
@@ -531,7 +533,7 @@ export default function PosIndex({
                                                 {formatMoney(p.price_cents)}
                                             </span>
                                             <span className="text-[10px] text-[#737373] font-mono">
-                                                Stock: {p.stock}
+                                                {t('Stock:')} {p.stock}
                                             </span>
                                         </div>
                                     </button>
@@ -547,14 +549,14 @@ export default function PosIndex({
                 {/* Tickets Switcher & Cashier Tag */}
                 <div className="p-3 border-b border-[#242424] bg-[#1a1a1a] flex items-center justify-between gap-2 shrink-0">
                     <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-1">
-                        {tickets.map((t) => {
-                            const itemCount = t.items.reduce((acc, i) => acc + i.quantity, 0);
-                            const isActive = t.id === activeTicketId;
+                        {tickets.map((tkt) => {
+                            const itemCount = tkt.items.reduce((acc, i) => acc + i.quantity, 0);
+                            const isActive = tkt.id === activeTicketId;
                             return (
                                 <button
-                                    key={t.id}
+                                    key={tkt.id}
                                     type="button"
-                                    onClick={() => setActiveTicketId(t.id)}
+                                    onClick={() => setActiveTicketId(tkt.id)}
                                     className={cn(
                                         'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all border shrink-0',
                                         isActive
@@ -562,7 +564,7 @@ export default function PosIndex({
                                             : 'bg-[#1c1c1c] border-[#2d2d2d] text-[#888] hover:text-white'
                                     )}
                                 >
-                                    <span>{t.label}</span>
+                                    <span>{t(tkt.label)}</span>
                                     {itemCount > 0 && (
                                         <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#F25623] text-white">
                                             {itemCount}
@@ -570,9 +572,9 @@ export default function PosIndex({
                                     )}
                                     {tickets.length > 1 && (
                                         <span
-                                            onClick={(e) => handleCloseTicket(t.id, e)}
+                                            onClick={(e) => handleCloseTicket(tkt.id, e)}
                                             className="ml-1 text-[#666] hover:text-rose-400 p-0.5"
-                                            title="Close Ticket"
+                                            title={t('Close Ticket')}
                                         >
                                             <X className="w-3 h-3" />
                                         </span>
@@ -587,7 +589,7 @@ export default function PosIndex({
                             size="icon-xs"
                             onClick={handleNewTicket}
                             className="border-[#333] bg-[#222] text-[#888] hover:text-white hover:border-[#F25623] rounded-lg shrink-0"
-                            title="Hold & New Ticket"
+                            title={t('Hold Sale')}
                         >
                             <Plus className="w-3.5 h-3.5" />
                         </Button>
@@ -595,21 +597,21 @@ export default function PosIndex({
 
                     <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-[#888] shrink-0 pl-2 border-l border-[#2d2d2d]">
                         <User className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span className="text-white font-semibold truncate max-w-[120px]">{cashier?.name || 'Cashier'}</span>
+                        <span className="text-white font-semibold truncate max-w-[120px]">{cashier?.name || t('Cashier')}</span>
                     </div>
                 </div>
 
                 {/* Customer Name or Reference Field */}
                 <div className="px-4 py-2 border-b border-[#242424] bg-[#161616] flex items-center gap-2 shrink-0">
                     <span className="text-[11px] font-mono text-[#737373] uppercase tracking-wider shrink-0">
-                        Customer:
+                        {t('Customer:')}
                     </span>
                     <input
                         type="text"
-                        placeholder="Walk-in customer (optional name/note)"
+                        placeholder={t('Walk-in customer (optional name/note)')}
                         value={activeTicket.customerName}
                         onChange={(e) =>
-                            updateActiveTicket((t) => ({ ...t, customerName: e.target.value }))
+                            updateActiveTicket((tState) => ({ ...tState, customerName: e.target.value }))
                         }
                         className="w-full bg-transparent border-0 text-xs text-white placeholder:text-[#555] focus:outline-none"
                     />
@@ -618,21 +620,32 @@ export default function PosIndex({
                             type="button"
                             onClick={handleClearActiveTicket}
                             className="text-[#737373] hover:text-rose-400 text-[11px] font-mono shrink-0"
-                            title="Clear line items"
+                            title={t('Clear Cart')}
                         >
-                            Clear
+                            {t('Clear Cart')}
                         </button>
                     )}
                 </div>
+
+                {/* Cart basket column headers when items exist */}
+                {ticketItems.length > 0 && (
+                    <div className="px-4 py-1.5 text-[10px] uppercase font-mono text-[#737373] flex items-center justify-between border-b border-[#242424] bg-[#161616] shrink-0">
+                        <span>{t('Item')}</span>
+                        <div className="flex items-center gap-8 pr-12">
+                            <span>{t('Qty')}</span>
+                            <span>{t('Price')}</span>
+                        </div>
+                    </div>
+                )}
 
                 {/* Ticket Line Items List */}
                 <div className="flex-1 p-4 overflow-y-auto space-y-2.5">
                     {ticketItems.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#666]">
                             <ReceiptIcon className="w-12 h-12 mb-3 stroke-[1.2] text-[#333]" />
-                            <div className="font-semibold text-xs text-white mb-1">Current ticket is empty</div>
+                            <div className="font-semibold text-xs text-white mb-1">{t('Current ticket is empty')}</div>
                             <p className="text-[11px] text-[#737373] max-w-xs leading-relaxed">
-                                Tap items from the catalog on the left to add products to this order.
+                                {t('Tap items from the catalog on the left to add products to this order.')}
                             </p>
                         </div>
                     ) : (
@@ -691,7 +704,7 @@ export default function PosIndex({
                                         type="button"
                                         onClick={() => handleRemoveItem(item.product.id)}
                                         className="text-[#666] hover:text-rose-400 p-1"
-                                        title="Remove item"
+                                        title={t('Remove item')}
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
                                     </button>
@@ -705,15 +718,15 @@ export default function PosIndex({
                 <div className="p-4 border-t border-[#242424] bg-[#141414] space-y-3 shrink-0">
                     <div className="space-y-1.5 text-xs text-[#a3a3a3] font-mono">
                         <div className="flex justify-between">
-                            <span>Item Count</span>
-                            <span className="text-white">{totalItemCount} unit(s)</span>
+                            <span>{t('Item Count')}</span>
+                            <span className="text-white">{t(':count unit(s)', { count: totalItemCount })}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Subtotal</span>
+                            <span>{t('Subtotal')}</span>
                             <span className="text-white">{formatMoney(subtotalCents)}</span>
                         </div>
                         <div className="flex justify-between text-base font-black text-white pt-2 border-t border-[#242424]">
-                            <span>Total Due</span>
+                            <span>{t('Total Amount')}</span>
                             <span className="text-lg text-[#F25623]">{formatMoney(totalCents)}</span>
                         </div>
                     </div>
@@ -729,7 +742,7 @@ export default function PosIndex({
                             className="h-12 rounded-xl border-[#333] bg-[#202020] hover:bg-[#282828] hover:border-[#F25623] text-white flex items-center justify-center gap-2"
                         >
                             <Banknote className="w-4 h-4 text-[#F25623]" />
-                            <span className="text-xs font-bold uppercase tracking-wider">Cash Pay</span>
+                            <span className="text-xs font-bold uppercase tracking-wider">{t('Pay / Tender')}</span>
                         </Button>
 
                         <Button
@@ -741,7 +754,7 @@ export default function PosIndex({
                             className="h-12 rounded-xl border-[#333] bg-[#202020] hover:bg-[#282828] hover:border-emerald-400 text-white flex items-center justify-center gap-2"
                         >
                             <QrCode className="w-4 h-4 text-emerald-400" />
-                            <span className="text-xs font-bold uppercase tracking-wider">KHQR Pay</span>
+                            <span className="text-xs font-bold uppercase tracking-wider">{t('KHQR Pay')}</span>
                         </Button>
                     </div>
                 </div>
@@ -753,21 +766,21 @@ export default function PosIndex({
                     <DialogHeader>
                         <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center gap-2">
                             <Banknote className="w-5 h-5 text-[#F25623]" />
-                            <span>Cash Settlement</span>
+                            <span>{t('Cash Settlement')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
                     <div className="space-y-4 py-2 text-xs">
                         {/* Due Total */}
                         <div className="p-3 bg-[#222] rounded-xl border border-[#333] flex justify-between font-mono text-sm">
-                            <span className="text-[#a3a3a3]">Total Due:</span>
+                            <span className="text-[#a3a3a3]">{t('Total Due:')}</span>
                             <span className="text-[#F25623] font-bold text-base">{formatMoney(totalCents)}</span>
                         </div>
 
                         {/* Tendered Input */}
                         <div className="space-y-1.5">
                             <label className="text-[11px] font-mono uppercase text-[#a3a3a3]">
-                                Cash Tendered ($)
+                                {t('Received Cash')} ($)
                             </label>
                             <Input
                                 type="number"
@@ -787,7 +800,7 @@ export default function PosIndex({
                                 onClick={() => setTenderedCents(totalCents)}
                                 className="flex-1 min-w-[70px] py-2 rounded-lg border border-[#333] bg-[#222] text-xs font-mono font-bold hover:border-[#F25623]"
                             >
-                                Exact
+                                {t('Exact Amount')}
                             </button>
                             {[10, 20, 50, 100, 200].map((amt) => (
                                 <button
@@ -810,10 +823,10 @@ export default function PosIndex({
                                     : 'bg-[#111] border-[#333]'
                             )}
                         >
-                            <span className="text-[#a3a3a3]">Change to Return:</span>
+                            <span className="text-[#a3a3a3]">{t('Change Due:')}</span>
                             <span className={cn('font-bold', isUnderTendered ? 'text-rose-400' : 'text-emerald-400 text-base')}>
                                 {isUnderTendered
-                                    ? `Short by ${formatMoney(totalCents - tenderedCents)}`
+                                    ? t('Short by :amount', { amount: formatMoney(totalCents - tenderedCents) })
                                     : formatMoney(changeCents)}
                             </span>
                         </div>
@@ -826,7 +839,7 @@ export default function PosIndex({
                             disabled={isSubmitting}
                             className="border-[#333]"
                         >
-                            Cancel
+                            {t('Cancel')}
                         </Button>
                         <Button
                             variant="orange"
@@ -837,10 +850,10 @@ export default function PosIndex({
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
-                                    Recording Sale...
+                                    {t('Recording Sale...')}
                                 </>
                             ) : (
-                                'Complete Cash Sale'
+                                t('Complete Sale')
                             )}
                         </Button>
                     </DialogFooter>
@@ -853,7 +866,7 @@ export default function PosIndex({
                     <DialogHeader>
                         <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center justify-center gap-2">
                             <QrCode className="w-5 h-5 text-emerald-400" />
-                            <span>Bakong / KHQR Instant Pay</span>
+                            <span>{t('Bakong / KHQR Instant Pay')}</span>
                         </DialogTitle>
                     </DialogHeader>
 
@@ -865,17 +878,17 @@ export default function PosIndex({
                             </div>
                             <QrCode className="w-40 h-40 text-black stroke-[1.5]" />
                             <div className="text-[9px] font-mono text-zinc-600">
-                                DMART STORE #01
+                                {t('DMART STORE #01')}
                             </div>
                         </div>
 
                         <div className="space-y-1">
-                            <div className="text-xs text-[#a3a3a3]">Amount to collect:</div>
+                            <div className="text-xs text-[#a3a3a3]">{t('Amount to collect:')}</div>
                             <div className="text-2xl font-black text-white font-mono">{formatMoney(totalCents)}</div>
                         </div>
 
                         <p className="text-[11px] text-[#737373] max-w-xs mx-auto">
-                            Customer scans with any Cambodian banking app (Bakong, ABA, Acleda). Tap below once transaction confirms.
+                            {t('Customer scans with any Cambodian banking app (Bakong, ABA, Acleda). Tap below once transaction confirms.')}
                         </p>
                     </div>
 
@@ -886,7 +899,7 @@ export default function PosIndex({
                             disabled={isSubmitting}
                             className="border-[#333]"
                         >
-                            Cancel
+                            {t('Cancel')}
                         </Button>
                         <Button
                             variant="orange"
@@ -897,10 +910,10 @@ export default function PosIndex({
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
-                                    Recording Sale...
+                                    {t('Recording Sale...')}
                                 </>
                             ) : (
-                                'Confirm KHQR Payment'
+                                t('Confirm KHQR Payment')
                             )}
                         </Button>
                     </DialogFooter>
@@ -914,7 +927,7 @@ export default function PosIndex({
                         <DialogTitle className="text-base font-black uppercase tracking-wider text-white flex items-center justify-between">
                             <span className="flex items-center gap-2">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                                <span>Sale Completed</span>
+                                <span>{t('Sale Completed')}</span>
                             </span>
                             <Button
                                 size="sm"
@@ -923,7 +936,7 @@ export default function PosIndex({
                                 className="h-8 gap-1.5 text-xs border-[#444] text-white"
                             >
                                 <Printer className="w-3.5 h-3.5" />
-                                <span>Print (80mm)</span>
+                                <span>{t('Print Receipt')}</span>
                             </Button>
                         </DialogTitle>
                     </DialogHeader>
@@ -935,21 +948,22 @@ export default function PosIndex({
                         >
                             {/* Receipt Store Header */}
                             <div className="text-center space-y-1">
-                                <div className="font-black text-base tracking-tight">DMART FLAGSHIP STORE</div>
-                                <div className="text-[10px] text-slate-600">Samdach Penn Nouth St (214), Phnom Penh</div>
-                                <div className="text-[10px] text-slate-600">Tel: +855 23 888 999</div>
+                                <div className="font-black text-base tracking-tight">{t('DMART FLAGSHIP STORE')}</div>
+                                <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500">{t('Store Receipt')}</div>
+                                <div className="text-[10px] text-slate-600">{t('Samdach Penn Nouth St (214), Phnom Penh')}</div>
+                                <div className="text-[10px] text-slate-600">{t('Tel: +855 23 888 999')}</div>
                                 <div className="border-b border-dashed border-slate-400 my-2" />
                                 <div className="flex justify-between text-[10px]">
-                                    <span>Receipt: {completedReceipt.order_number}</span>
+                                    <span>{t('Receipt:')} {completedReceipt.order_number}</span>
                                     <span>{completedReceipt.created_at}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px]">
-                                    <span>Cashier: {completedReceipt.cashier_name || cashier?.name || 'Staff'}</span>
-                                    <span>Reg #01</span>
+                                    <span>{t('Cashier:')} {completedReceipt.cashier_name || cashier?.name || t('Staff')}</span>
+                                    <span>{t('Reg #01')}</span>
                                 </div>
                                 <div className="flex justify-between text-[10px]">
-                                    <span>Customer: {completedReceipt.customer_name || 'Walk-in'}</span>
-                                    <span className="uppercase">{completedReceipt.payment_method}</span>
+                                    <span>{t('Customer:')} {completedReceipt.customer_name || t('Walk-in')}</span>
+                                    <span className="uppercase">{t(completedReceipt.payment_method)}</span>
                                 </div>
                                 <div className="border-b border-dashed border-slate-400 my-2" />
                             </div>
@@ -973,21 +987,21 @@ export default function PosIndex({
                             {/* Financial Summary */}
                             <div className="space-y-1 text-xs">
                                 <div className="flex justify-between">
-                                    <span>Subtotal:</span>
+                                    <span>{t('Subtotal:')}</span>
                                     <span>{formatMoney(completedReceipt.subtotal_cents)}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-sm">
-                                    <span>TOTAL:</span>
+                                    <span>{t('TOTAL:')}</span>
                                     <span>{formatMoney(completedReceipt.total_cents)}</span>
                                 </div>
                                 {completedReceipt.cash_tendered_cents !== null && (
                                     <>
                                         <div className="flex justify-between text-[11px] text-slate-600">
-                                            <span>Cash Tendered:</span>
+                                            <span>{t('Cash Tendered:')}</span>
                                             <span>{formatMoney(completedReceipt.cash_tendered_cents)}</span>
                                         </div>
                                         <div className="flex justify-between text-[11px] text-slate-600 font-bold">
-                                            <span>Change Due:</span>
+                                            <span>{t('Change Due:')}</span>
                                             <span>{formatMoney(completedReceipt.change_cents || 0)}</span>
                                         </div>
                                     </>
@@ -998,8 +1012,8 @@ export default function PosIndex({
 
                             {/* Receipt Footer Message */}
                             <div className="text-center text-[10px] text-slate-600 space-y-0.5">
-                                <div className="font-bold">*** THANK YOU FOR VISITING DMART ***</div>
-                                <div>Keep this receipt for 30-day exchanges</div>
+                                <div className="font-bold">*** {t('Thank you for shopping with us!')} ***</div>
+                                <div>{t('Keep this receipt for 30-day exchanges')}</div>
                             </div>
                         </div>
                     )}
@@ -1010,7 +1024,7 @@ export default function PosIndex({
                             className="w-full uppercase font-bold text-xs"
                             onClick={() => setReceiptModalOpen(false)}
                         >
-                            Next Sale / Close
+                            {t('Next Sale / Close')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

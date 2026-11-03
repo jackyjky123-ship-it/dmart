@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useAppearance } from '@/hooks/use-appearance';
+import { useTranslation } from '@/hooks/use-translation';
 import {
     Terminal,
     Sun,
@@ -42,27 +43,37 @@ interface PosPageAuthProps {
 export default function PosLayout({ children }: { children: React.ReactNode }) {
     const { resolvedAppearance, updateAppearance } = useAppearance();
     const [currentTime, setCurrentTime] = useState('');
+    const [currentDate, setCurrentDate] = useState('');
     const { url, props } = usePage<PosPageAuthProps>();
+    const { t, isKhmer } = useTranslation();
 
     const user = props.auth?.user;
-    const cashierName = props.cashier?.name || user?.name || 'Cashier';
+    const cashierName = props.cashier?.name || user?.name || t('Cashier');
     const role = user?.role || 'cashier';
 
     useEffect(() => {
         const updateTime = () => {
             const now = new Date();
+            const dateLocale = isKhmer ? 'km-KH' : 'en-US';
             setCurrentTime(
-                now.toLocaleTimeString('en-US', {
+                now.toLocaleTimeString(dateLocale, {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
+                })
+            );
+            setCurrentDate(
+                now.toLocaleDateString(dateLocale, {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
                 })
             );
         };
         updateTime();
         const interval = setInterval(updateTime, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [isKhmer]);
 
     const toggleTheme = () => {
         updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
@@ -88,11 +99,11 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                     DMART <span className="text-[#F25623]">POS</span>
                                 </span>
                                 <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#242424] text-zinc-300 border border-[#333]">
-                                    REG #01
+                                    {t('REG #01')}
                                 </span>
                             </div>
                             <span className="text-[10px] text-zinc-400 font-mono mt-0.5 hidden xs:block">
-                                Counter Sales Terminal
+                                {t('Counter Sales Terminal')}
                             </span>
                         </div>
                     </Link>
@@ -102,13 +113,13 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                     {/* Online sync indicator */}
                     <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#202020] border border-[#2d2d2d] text-[11px] text-zinc-400 font-mono">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50" />
-                        <span>Instant Sync</span>
+                        <span>{t('Instant Sync')}</span>
                     </div>
                 </div>
 
                 {/* Center: Mode Segmented Switcher */}
                 <div className="flex items-center justify-center">
-                    <nav className="flex items-center bg-[#202020] p-1 rounded-xl border border-[#2d2d2d] shadow-inner" aria-label="Terminal Navigation">
+                    <nav className="flex items-center bg-[#202020] p-1 rounded-xl border border-[#2d2d2d] shadow-inner" aria-label={t('Terminal Navigation')}>
                         <Link
                             href="/pos"
                             className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
@@ -118,7 +129,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             }`}
                         >
                             <Terminal className="w-3.5 h-3.5" />
-                            <span>Terminal</span>
+                            <span>{t('Register')}</span>
                         </Link>
                         <Link
                             href="/pos/sales"
@@ -129,17 +140,17 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             }`}
                         >
                             <History className="w-3.5 h-3.5" />
-                            <span>Sales Archive</span>
+                            <span>{t('Sales History')}</span>
                         </Link>
                     </nav>
                 </div>
 
                 {/* Right: Clock, Portals, Theme & Cashier Profile */}
                 <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 text-xs">
-                    {/* Live Clock */}
+                    {/* Live Clock & Date */}
                     <div className="hidden lg:flex items-center gap-2 text-zinc-300 font-mono text-xs bg-[#202020] border border-[#2d2d2d] px-3 py-1.5 rounded-lg shadow-inner">
                         <Clock className="w-3.5 h-3.5 text-[#F25623]" />
-                        <span>{currentTime || '00:00:00'}</span>
+                        <span>{currentDate ? `${currentDate} • ${currentTime}` : currentTime || '00:00:00'}</span>
                     </div>
 
                     {/* Language Switcher */}
@@ -152,24 +163,24 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                 variant="ghost"
                                 size="sm"
                                 className="h-8.5 px-2.5 rounded-lg border border-[#2d2d2d] bg-[#202020] text-zinc-300 hover:text-white hover:bg-[#282828] text-xs gap-1.5"
-                                title="Switch workspace portal"
+                                title={t('Switch workspace portal')}
                             >
                                 <Store className="w-3.5 h-3.5 text-[#F25623]" />
-                                <span className="hidden xl:inline">Portals</span>
+                                <span className="hidden xl:inline">{t('Portals')}</span>
                                 <ChevronDown className="w-3 h-3 text-zinc-400" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-56 rounded-xl p-1.5 border border-[#333] bg-[#1a1a1a] text-white shadow-2xl">
                             <DropdownMenuLabel className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 px-2.5 py-1.5">
-                                Switch Portal
+                                {t('Switch Portal')}
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator className="bg-[#282828]" />
                             <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                 <Link href="/" className="flex items-center gap-2.5 py-2 px-2.5">
                                     <ShoppingBag className="w-4 h-4 text-[#F25623] shrink-0" />
                                     <div>
-                                        <div className="font-semibold text-xs text-white">Storefront</div>
-                                        <div className="text-[10px] text-zinc-400">Streetwear drops & shop</div>
+                                        <div className="font-semibold text-xs text-white">{t('Storefront')}</div>
+                                        <div className="text-[10px] text-zinc-400">{t('Streetwear drops & shop')}</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
@@ -177,8 +188,8 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                 <Link href="/admin" className="flex items-center gap-2.5 py-2 px-2.5">
                                     <Shield className="w-4 h-4 text-purple-400 shrink-0" />
                                     <div>
-                                        <div className="font-semibold text-xs text-white">Admin Console</div>
-                                        <div className="text-[10px] text-zinc-400">Management & inventory</div>
+                                        <div className="font-semibold text-xs text-white">{t('Admin Console')}</div>
+                                        <div className="text-[10px] text-zinc-400">{t('Management & inventory')}</div>
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
@@ -191,7 +202,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                         size="icon-sm"
                         onClick={toggleTheme}
                         className="rounded-lg text-zinc-400 hover:text-white hover:bg-[#282828] border border-[#2d2d2d] bg-[#202020] h-8.5 w-8.5"
-                        aria-label="Toggle appearance"
+                        aria-label={t('Toggle appearance')}
                     >
                         {resolvedAppearance === 'dark' ? (
                             <Sun className="h-4 w-4 text-amber-400" />
@@ -227,27 +238,27 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                                 <p className="text-[10px] text-zinc-400 truncate">{user?.email || 'cashier@dmart.test'}</p>
                                 <div className="mt-1.5 flex items-center gap-1.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                    <span className="text-[10px] font-mono text-zinc-400">Terminal 01 Shift Active</span>
+                                    <span className="text-[10px] font-mono text-zinc-400">{t('Terminal 01 Shift Active')}</span>
                                 </div>
                             </div>
                             <div className="py-1">
                                 <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                     <Link href="/pos/sales" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                         <History className="w-3.5 h-3.5 text-zinc-400" />
-                                        <span>Shift Sales History</span>
+                                        <span>{t('Shift Sales History')}</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                     <Link href="/" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                         <Store className="w-3.5 h-3.5 text-zinc-400" />
-                                        <span>Storefront</span>
+                                        <span>{t('Storefront')}</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 {role === 'admin' && (
                                     <DropdownMenuItem asChild className="rounded-lg cursor-pointer hover:bg-[#252525] focus:bg-[#252525]">
                                         <Link href="/admin" className="flex items-center gap-2 text-xs py-1.5 px-2.5">
                                             <Shield className="w-3.5 h-3.5 text-purple-400" />
-                                            <span>Admin Console</span>
+                                            <span>{t('Admin Console')}</span>
                                         </Link>
                                     </DropdownMenuItem>
                                 )}
@@ -256,7 +267,7 @@ export default function PosLayout({ children }: { children: React.ReactNode }) {
                             <DropdownMenuItem asChild className="rounded-lg cursor-pointer text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 focus:bg-rose-950/30">
                                 <Link href="/logout" method="post" as="button" className="w-full flex items-center gap-2 text-xs py-1.5 px-2.5">
                                     <LogOut className="w-3.5 h-3.5" />
-                                    <span>End Shift & Sign Out</span>
+                                    <span>{t('End Shift & Sign Out')}</span>
                                 </Link>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
